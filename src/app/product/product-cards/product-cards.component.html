@@ -1,0 +1,15 @@
+
+    <div class="row m-1" *ngIf="!isMobile">
+        <div class="col-xs p-0 m-0" *ngFor="let product of products; let i = index">
+            <app-card-view [product]="product" [onAddToCard]="onAddToCard" [isMobile]="false">
+            </app-card-view>
+        </div>
+    </div>
+
+
+    <div class="" *ngIf="isMobile">
+        <div class="m-1" *ngFor="let product of products; let i = index">
+            <app-card-view [product]="product" [onAddToCard]="onAddToCard" [isMobile]="true">
+            </app-card-view>
+        </div>
+    </div>

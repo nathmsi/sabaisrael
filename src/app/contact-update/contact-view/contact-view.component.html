@@ -1,0 +1,26 @@
+<div *ngIf="contact !== undefined"> 
+
+<div class="d-flex w-100 justify-content-between mb-0 pb-0">
+    <p class="mb-1 ">{{ contact.name }} </p>  <small> email : {{ contact.email }} </small> <small>  phone : {{ contact.mobile }} </small>
+    <div>
+    <small> <button class="btn-sm btn-secondary" type="button" (click)="openAnswer()">
+        <span *ngIf="!showAnswer">answer</span> <span *ngIf="showAnswer">close</span>
+    </button></small>
+    <small> <button class="btn-sm btn-danger ml-2" type="button" (click)="deleteElement_()">
+        delete
+    </button></small>
+
+</div>
+</div>
+<p class="mb-1"> message : <br/> {{ contact.message }}</p>
+<div class="input-group" *ngIf="showAnswer">
+    <input type="text" class="form-control" placeholder="your answer" aria-label="" aria-describedby="basic-addon1" 
+        [(ngModel)]="message">
+    <div class="input-group-append" *ngIf=" contact!== null && contact.answer !== 'undefined' " >
+        <button class="btn btn-success" type="button" (click)="sendMessage_()">sent</button>
+    </div>
+</div>
+
+    
+</div>
+

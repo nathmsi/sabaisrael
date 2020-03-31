@@ -1,0 +1,48 @@
+<div class="card border-0 shadow m-2 " *ngIf="product !== undefined && !isMobile">
+    <div class=" text-center bg-white p-2" *ngIf="!isMobile">
+        <div class="d-flex flex-wrap align-content-center justify-content-center" style="width: 150px; height: 130px;"
+            *ngIf="imageLoader">
+            <div class="spinner-border text-dark " role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <img class="card-img-top p-0" (click)="openImage(product.photo)" [hidden]="imageLoader" [src]="product.photo"
+            style="width: 150px; height: 130px; cursor: pointer;" (load)="imageLoader = false" [alt]="product.photo">
+    </div>
+    <div class="card-body p-0 pl-2 text-secondary">
+        <p class="card-text font-weight-bolder m-0 mb-1"> {{ product.name }} <small class="text-muted"
+                *ngIf="product.size"> {{ product.size + ' cm'  }} </small></p>
+        <p class="card-text"><small class="text-muted"> {{ product.description  }} </small></p>
+    </div>
+    <div class="card-footer bg-transparent ">
+        <div class="d-flex justify-content-between">
+            <mat-icon class="" style="cursor: pointer" (click)="openDialog(product)">add_shopping_cart
+            </mat-icon>
+            <h2 class="text-dark font-weight-bolder m-0"> {{ product.price }} ₪ </h2>
+        </div>
+    </div>
+</div>
+
+
+<div class="card mb-3 " *ngIf="isMobile">
+    <div class="row no-gutters">
+        <div class="col-4">
+            <img [src]="product.photo" style="height: 100px;" class="card-img">
+        </div>
+        <div class="col-8 d-flex flex-wrap align-content-center">
+            <div class="card-body p-1 ">
+                <div class="d-flex w-100 justify-content-between">
+                    <p class="card-text font-weight-bolder m-0 mb-1"> {{ product.name }} 
+                    <small class="text-muted" *ngIf="product.size"> {{ product.size + ' cm'  }} </small></p> 
+                    <mat-icon class="" style="cursor: pointer" (click)="openDialog(product)">add_shopping_cart
+                    </mat-icon>
+                </div>
+                
+                    <small class=""> {{ product.description  }} </small>
+                    <div class="d-flex align-content-end justify-content-end">
+                        <h2 class="text-dark font-weight-bolder m-0"> {{ product.price }} ₪ </h2>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>

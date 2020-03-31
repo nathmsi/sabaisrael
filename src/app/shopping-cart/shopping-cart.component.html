@@ -1,0 +1,23 @@
+<div class="d-flex flex-wrap align-content-center justify-content-center mt-5" *ngIf="!dataReceive">
+  <div class="spinner-border text-dark " role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
+
+
+<div *ngIf="dataReceive && !isPoPup">
+  <h3 class="text-center p-4 bg-light">Shopping cart</h3>
+  <app-table-view-sc [products]="products" [countUpdate]="countUpdate" [DeleteAll]="DeleteAll"
+    [DeleteOne]="DeleteOne">
+  </app-table-view-sc>
+</div>
+
+
+<div *ngIf="dataReceive && isPoPup">
+  <app-table-view-sc [products]="products" [countUpdate]="countUpdate" [DeleteAll]="DeleteAll"
+    [DeleteOne]="DeleteOne">
+  </app-table-view-sc>
+  <button class="btn btn-dark btn-block" [routerLink]="['/shopping-cart']" (click)="closePoPup()" routerLinkActive="router-link-active" >
+      Go to shopping cart
+  </button>
+</div>

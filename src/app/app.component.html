@@ -1,0 +1,13 @@
+<mat-progress-bar class="" color="primary" mode="indeterminate" *ngIf="!firebaseConnected"></mat-progress-bar>
+
+<div class="" *ngIf="firebaseConnected">
+
+  <app-header></app-header>
+
+  <div [ngClass]="{'content-app': !windowRefer.headerMobile , 'content-app-mobile': windowRefer.headerMobile}">
+    <router-outlet></router-outlet>
+  </div>
+
+  <app-footer></app-footer>
+
+</div>

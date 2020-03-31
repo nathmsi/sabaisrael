@@ -1,0 +1,17 @@
+<div mat-dialog-content class="p-4">
+    
+        <h2 mat-dialog-title class="text-center"> Update menu </h2>
+
+        <p *ngFor="let menu of menus; let i = index">
+            <button class="btn-sm btn btn-danger" (click)="handleDelete(i)"> - </button>
+            {{ menu }}  
+        </p>
+
+        <div class="form-group  ">
+            <label for="staticEmail" class="col-form-label">add categorie</label>
+            <input type="text" id="categorie" class="form-control" [(ngModel)]="categorie">
+            <button class="btn btn-primary rounded m-1 btn-block" (click)="addCategorie()">
+                add
+            </button>
+        </div>
+</div>

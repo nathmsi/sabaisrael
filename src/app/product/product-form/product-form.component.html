@@ -1,0 +1,96 @@
+<div mat-dialog-content class="bg-light">
+
+
+    <form class="p-2" [formGroup]="FormValidation" (ngSubmit)="onSubmit()">
+
+        <h2 mat-dialog-title class="text-center"> Add new prodcut</h2>
+
+        <div class="form-group row">
+            <label for="staticEmail" class="col-form-label">Categorie</label>
+            <select  class="custom-select" id="categorie" formControlName="categorie"
+            (change)="selectOptionCategorie($event.target.value)">
+                <option [value]="menu" *ngFor="let menu of menus">{{menu}}</option>
+              </select>
+        </div>
+
+
+        <div class="form-group row" *ngIf="isSubCategorie">
+            <label for="staticEmail" class="col-form-label">Sub categorie</label>
+            <select class="custom-select" id="categorie" formControlName="subCategorie">
+                <option value="Book">Book</option>
+            </select>
+        </div>
+
+
+
+
+        <div class="form-group row" *ngIf="isKippotCategorie">
+            <label for="staticEmail" class="col-form-label">Size</label>
+
+            <select class="custom-select" id="categorie" formControlName="size">
+                <option value="12">Size 12 cm</option>
+                <option value="14">Size 14 cm</option>
+                <option value="16">Size 16 cm</option>
+                <option value="18">Size 18 cm</option>
+                <option value="18">Size 20 cm</option>
+                <option value="18">Size 22 cm</option>
+            </select>
+        </div>
+
+        <div class="form-group row" *ngIf="isKippotCategorie">
+            <label for="staticEmail" class="col-form-label">Quality</label>
+
+            <select class="custom-select" id="categorie" formControlName="quality">
+                <option value="srouga">Quality srougua</option>
+                <option value="bad">Quality bad</option>
+                <option value="ktifa">Quality ktifa</option>
+                <option value="mehona">Quality mehona</option>
+            </select>
+        </div>
+
+
+
+
+        <div class="form-group row">
+            <label for="staticEmail" class="col-form-label">Name product</label>
+
+            <input type="text" id="name" class="form-control" formControlName="name">
+        </div>
+        <div class="form-group row">
+            <label for="staticEmail" class="col-form-label">description</label>
+
+            <input type="text" id="description" class="form-control" formControlName="description">
+        </div>
+        <div class="form-group row">
+            <label for="staticEmail" class="col-form-label">price</label>
+
+            <input type="number" id="price" class="form-control" formControlName="price">
+        </div>
+
+        <div class="input-group pb-2">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-lg">Image</span>
+            </div>
+            <input type="file" (change)="detectFiles($event)" class="form-control" formControlName="photo"
+                accept="image/*">
+        </div>
+
+
+        <p class="text-success" *ngIf="fileUploaded">File saved !</p>
+
+        <button mat-button class="btn btn-primary btn-block"
+            [disabled]="FormValidation.invalid || fileDetected === null" type="submit">
+            <div class="spinner-border spinner-border-sm" role="status" *ngIf="loadingContent">
+                <span class="sr-only">Loading...</span>
+            </div>
+            <p *ngIf="!loadingContent" class="text-white m-0">Add</p>
+        </button>
+
+        <button mat-button class="btn btn-secondary btn-block" (click)="onClose()" type='button'>
+            <p class="text-white m-0">Cancel</p>
+        </button>
+
+    </form>
+
+
+</div>

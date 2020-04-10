@@ -1,15 +1,40 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb m-2">
+        <li class="breadcrumb-item">
+            <a (click)="navigateTo('home')" style="cursor: pointer;" class="text-primary font-weight-bolder">
+                Home
+            </a>
+        </li>
+        <li (click)="navigateTo(categorie)"  class="breadcrumb-item active" aria-current="page" style="cursor: pointer;">
+            {{categorie}} </li>
+    </ol>
+</nav>
 
-    <div class="row m-1" *ngIf="!isMobile">
-        <div class="col-xs p-0 m-0" *ngFor="let product of products; let i = index">
-            <app-card-view [product]="product" [onAddToCard]="onAddToCard" [isMobile]="false">
+<div class="container-fluid" *ngIf="!isMobile">
+    <div class="row no-gutters">
+        <div class="col-sm-6 col-md-4 col-xlllg-3 col-xl-2 p-0 m-0" *ngFor="let product of products; let i = index">
+            <app-card-view [product]="product" [onAddToCard]="onAddToCard" [isMobile]="false"
+                [openProductView]="openProductView">
             </app-card-view>
         </div>
     </div>
+</div>
 
 
-    <div class="" *ngIf="isMobile">
-        <div class="m-1" *ngFor="let product of products; let i = index">
-            <app-card-view [product]="product" [onAddToCard]="onAddToCard" [isMobile]="true">
+<div class="container-fluid" *ngIf="isMobile">
+    <div class="row no-gutters">
+        <div class="col-6  p-0 m-0" *ngFor="let product of products; let i = index">
+            <app-card-view [product]="product" [onAddToCard]="onAddToCard" [isMobile]="false"
+                [openProductView]="openProductView">
             </app-card-view>
         </div>
     </div>
+</div>
+
+
+<!-- <div class="m-1" *ngIf="isMobile">
+        <div class="col-lg-2" *ngFor="let product of products; let i = index">
+            <app-card-view [product]="product" [onAddToCard]="onAddToCard" [isMobile]="true" [openProductView]="openProductView">
+            </app-card-view>
+        </div>
+    </div> -->

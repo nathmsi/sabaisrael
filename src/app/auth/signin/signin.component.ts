@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-signin',
   templateUrl: './signin.component.html',
@@ -13,7 +14,7 @@ export class SigninComponent implements OnInit {
   errorMessage: string;
   loadingContent: boolean = false;
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService, private toastr: ToastrService, private router: Router) { }
+  constructor(private formBuilder: FormBuilder, private authService: AuthService, private _snackBar: MatSnackBar, private router: Router) { }
   ngOnInit() {
     this.initForm();
   }
@@ -28,13 +29,21 @@ export class SigninComponent implements OnInit {
     const email = this.signinForm.get('email').value;
     const password = this.signinForm.get('password').value;
     this.authService.signInUser(email, password).then(() => {
-      this.toastr.success('welcome ' + this.authService.user.name);
+      this._snackBar.open( 'welcome ' + this.authService.user.name , 'close', {
+        duration: 2000,
+        horizontalPosition: 'right',
+        panelClass: 'snack-error'
+      });
       this.loadingContent = false;
       this.router.navigate(['/']);
     }, (error) => {
       this.loadingContent = false;
       this.errorMessage = error;
-      this.toastr.error(error);
+      this._snackBar.open( error , 'close', {
+        duration: 2000,
+        horizontalPosition: 'right',
+        panelClass: 'snack-error'
+      });
     });
   }
 

@@ -21,7 +21,6 @@ export class ProductFormComponent implements OnInit {
     private formBuilder: FormBuilder,
     private productService: ProductService,
     public dialog: MatDialog,
-    private toastr: ToastrService,
     public dialogRef: MatDialogRef<ProductFormComponent>,
   ) {
 
@@ -76,14 +75,12 @@ export class ProductFormComponent implements OnInit {
     }
     this.productService.createNewProduct(newProduct).then(
       () => {
-        this.toastr.success(name + ' add to products success !');
         this.loadingContent = false;
-        this.dialogRef.close();
+        this.dialogRef.close(true);
       },
       (error) => {
-        this.toastr.error('you not authorized to update these products');
         this.loadingContent = false;
-        this.dialogRef.close();
+        this.dialogRef.close(false);
       })
   }
 
@@ -115,7 +112,6 @@ export class ProductFormComponent implements OnInit {
           this.addProduct()
         },
         () => {
-          this.toastr.error('error upload image or you not authorized to update these products');
           this.loadingContent = false;
           this.dialogRef.close();
         }

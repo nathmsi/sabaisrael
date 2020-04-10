@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-signup',
@@ -17,8 +18,8 @@ export class SignupComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
     private authService: AuthService,
-    private toastr: ToastrService,
-    private router: Router) { }
+    private router: Router,
+    private _snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.initForm();
@@ -40,16 +41,28 @@ export class SignupComponent implements OnInit {
     this.authService.createNewUser(email, password, username).then(
       () => {
         this.loadingContent = false;
-        this.toastr.success('user created success ' + this.authService.user.name);
+        this._snackBar.open( 'user created success ' + this.authService.user.name , 'close', {
+          duration: 2000,
+          horizontalPosition: 'right',
+          panelClass: 'snack-error'
+        });
         this.router.navigate(['/']);
       },
       (error) => {
         this.loadingContent = false;
         this.errorMessage = error;
-        this.toastr.error(error);
+        this._snackBar.open( error , 'close', {
+          duration: 2000,
+          horizontalPosition: 'right',
+          panelClass: 'snack-error'
+        });
       }
     );
 
+  }
+
+  handelSigin(){
+    this.router.navigate(['auth','signin']);
   }
 
 }

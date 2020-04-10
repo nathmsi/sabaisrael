@@ -6,7 +6,7 @@ export class Contact {
     subject: string;
     message: string;
     answer: string ;
-
+    createdDate: Date;
     constructor() {
     }
 

@@ -1,10 +1,12 @@
+
+ <mat-progress-bar  color="primary" mode="indeterminate" *ngIf="!dataReceive"></mat-progress-bar>
+
 <div class="container">
-    <div class="text-center p-4" *ngIf="!dataReceive">
-        <div class="spinner-border" role="status"> <span class="sr-only">Loading...</span> </div>
-    </div>
     <h1 class="text-center m-4" *ngIf="dataReceive && contacts.length === 0"> 0 message contact found </h1>
+   
     <div class="list-group m-2" *ngIf="dataReceive && contacts.length !== 0">
-        <div class="list-group-item  flex-column align-items-start" *ngFor="let contact of contacts; let i = index">
+        <h2 class="text-center">List message receive  </h2>
+        <div class=" flex-column align-items-start" *ngFor="let contact of contacts; let i = index">
             <app-contact-view [contact]="contact" [sendMessage]="sendMessage" [deleteElement]="deleteElement">
             </app-contact-view>
         </div>

@@ -1,6 +1,6 @@
 .drawer-container-position {
     position: absolute;
-    top: 128px;
+    top: 124px;
     bottom: 52px;
     left: 0;
     right: 0;
@@ -17,7 +17,7 @@
 
 .progress-bar-position{
   position: absolute;
-  top: 64px;
+  top: 60px;
   left: 0;
   right: 0;
 }
@@ -27,4 +27,13 @@
   top: 54px;
   left: 0;
   right: 0;
+}
+
+
+.toolbar-icon {
+  padding: 0 14px;
+}
+
+.toolbar-spacer {
+  flex: 1 1 auto;
 }

@@ -1,117 +1,49 @@
-<!-- <mat-progress-bar class="mt-1" color="primary" mode="indeterminate" *ngIf="!menusReceive"></mat-progress-bar>
 
-<mat-tab-group mat-stretch-tabs (selectedTabChange)="tabClick($event)" >
-    <div *ngFor="let menu of menus; let i = index">
-        <mat-tab [label]="menu">
-            <div class="text-center p-4" *ngIf="!dataReceive">
-                <div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>
-            </div>
-            <app-table-view *ngIf="categorieSelected === menu" [products]="products" [editProduct]="editProduct"
-                [addProduct]="addProduct">
-            </app-table-view>
-        </mat-tab>
-    </div>
-</mat-tab-group> -->
+<mat-progress-bar [ngClass]="{'progress-bar-position': !isMobile , 'progress-bar-position-mobile': isMobile  }"
+    color="primary" mode="indeterminate" *ngIf="!dataReceive && !menusReceive"></mat-progress-bar>
 
-<div>
-    <mat-progress-bar [ngClass]="{'progress-bar-position': !isMobile , 'progress-bar-position-mobile': isMobile  }"
-    color="primary" mode="indeterminate" *ngIf="!dataReceive"></mat-progress-bar>
+<div *ngIf="menusReceive">
 
-    <mat-toolbar color="light" class="example-toolbar">
-        <div class="d-flex justify-content-between w-100">
-            <div class="d-flex justify-content-start align-content-center">
-                <mat-icon class="pt-1" *ngIf="!sidenavOpen" style="cursor: pointer;" (click)=" sidenavOpen = !sidenavOpen ">menu
-                </mat-icon>
-                <mat-icon class="pt-1" *ngIf="sidenavOpen" style="cursor: pointer;" (click)=" sidenavOpen = !sidenavOpen ">menu_open
-                </mat-icon>
-                <h2 class="ml-2" (click)=" sidenavOpen = !sidenavOpen " style="cursor: pointer;">{{ categorieSelected }}
-                </h2>
-            </div>
-            <div class="d-flex justify-content-end">
-                <span class="ml-2" (click)="addProduct()" style="cursor: pointer;" > Add <mat-icon>add_circle_outline</mat-icon> </span>
-                <span class="ml-2" (click)="updateMenu()"style="cursor: pointer;" >  Menu <mat-icon  >system_update_alt</mat-icon></span>
-            </div>
-        </div>
+    <mat-toolbar color="light">
+        <mat-toolbar-row>
+            <button mat-icon-button (click)=" sidenavOpen = !sidenavOpen ">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <h1 style="cursor: pointer;" (click)=" sidenavOpen = !sidenavOpen ">{{ categorieSelected }} </h1>
+            <span class="toolbar-spacer"></span>
+
+            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="addProduct()">
+                    <mat-icon>add_circle_outline</mat-icon>
+                    <span>Add new product</span>
+                </button>
+                <button mat-menu-item (click)="updateMenu()">
+                    <mat-icon>system_update_alt</mat-icon>
+                    <span>Update menu</span>
+                </button>
+            </mat-menu>
+        </mat-toolbar-row>
     </mat-toolbar>
 
     <mat-sidenav-container
         [ngClass]="{'drawer-container-position': !isMobile , 'drawer-container-position-mobile': isMobile  }"
         [style.marginTop.px]="0">
+
         <mat-sidenav #snav [(opened)]="sidenavOpen" [mode]="isMobile ? 'over' : 'side'" [fixedInViewport]="isMobile"
             fixedTopGap="110">
             <mat-accordion>
-                <mat-expansion-panel [expanded]="true" class="m-1">
+                <mat-expansion-panel *ngFor="let menu of menus; let i = index" [expanded]="i === 0" class="m-1">
                     <mat-expansion-panel-header>
-                        <mat-panel-title class="h5 mr-4 pr-2"> קיפות - Kippots</mat-panel-title>
+                        <mat-panel-title class="h5 mr-4 pr-2"> {{ menu.categorie }}</mat-panel-title>
                     </mat-expansion-panel-header>
-                    <a class="nav-link rounded-sm text-center" style="cursor: pointer"
+                    <a class="nav-link rounded-sm text-center mb-1" style="cursor: pointer"
                         [ngClass]="{'nav-link ': true , 'text-white bg-dark' : true }"
-                        (click)="handleSelectCatgorie('Kippots'); isMobile && sidenavOpen = false">Kippots קיפוט</a>
+                        *ngFor="let val of menu.value; let id = index"
+                        (click)="handleSelectCatgorie(val); isMobile && sidenavOpen = false">{{ val }}</a>
                 </mat-expansion-panel>
-
-                <mat-expansion-panel class="m-1">
-                    <mat-expansion-panel-header>
-                        <mat-panel-title class="h5 mr-4"> חגים - Holidays</mat-panel-title>
-                    </mat-expansion-panel-header>
-                    <a class="nav-link rounded-sm text-center mb-1" style="cursor: pointer"
-                        [ngClass]="{'nav-link': true , 'text-white bg-dark' : true }"
-                        (click)="handleSelectCatgorie('Pessah') ;isMobile && sidenavOpen = false">Pessah פסח</a>
-                    <a class="nav-link rounded-sm text-center" style="cursor: pointer"
-                        [ngClass]="{'nav-link': true , 'text-white bg-dark' : true }"
-                        (click)="handleSelectCatgorie('Hanouka') ; isMobile && sidenavOpen = false">Hanouka חנוכה</a>
-                </mat-expansion-panel>
-
-                <mat-expansion-panel class="m-1">
-                    <mat-expansion-panel-header>
-                        <mat-panel-title class="h5 mr-4">טליטות - Tallits</mat-panel-title>
-                    </mat-expansion-panel-header>
-                    <a class="nav-link rounded-sm text-center" style="cursor: pointer"
-                        [ngClass]="{'nav-link': true , 'text-white bg-dark' : true }"
-                        (click)="handleSelectCatgorie('Tallits') ; isMobile && sidenavOpen = false">טליטות - Tallits</a>
-                </mat-expansion-panel>
-
-                <mat-expansion-panel class="m-1">
-                    <mat-expansion-panel-header>
-                        <mat-panel-title class="h5 mr-4"> מזוזות - Mezouzots</mat-panel-title>
-                    </mat-expansion-panel-header>
-                    <a class="nav-link rounded-sm text-center mb-1" style="cursor: pointer"
-                        [ngClass]="{'nav-link': true , 'text-white bg-dark' : true }"
-                        (click)="handleSelectCatgorie('Mezouzots') ; isMobile && sidenavOpen = false">Mezouzots
-                        מזוזות</a>
-                    <a class="nav-link rounded-sm text-center" style="cursor: pointer"
-                        [ngClass]="{'nav-link': true , 'text-white bg-dark' : true }"
-                        (click)="handleSelectCatgorie('Klafims') ; isMobile && sidenavOpen = false">קלפים Klafims</a>
-                </mat-expansion-panel>
-
-                <mat-expansion-panel class="m-1">
-                    <mat-expansion-panel-header>
-                        <mat-panel-title class="h5 mr-4"> ספרים - Books</mat-panel-title>
-                    </mat-expansion-panel-header>
-                    <a class="nav-link rounded-sm text-center mb-1" style="cursor: pointer"
-                        [ngClass]="{'nav-link': true , 'text-white bg-dark' : true }"
-                        (click)="handleSelectCatgorie('Books') ; isMobile && sidenavOpen = false">Books ספרים</a>
-                </mat-expansion-panel>
-
-                <mat-expansion-panel class="m-1">
-                    <mat-expansion-panel-header>
-                        <mat-panel-title class="h5 mr-4"> ברסלב - Breslev</mat-panel-title>
-                    </mat-expansion-panel-header>
-                    <a class="nav-link rounded-sm text-center" style="cursor: pointer"
-                        [ngClass]="{'nav-link': true , 'text-white bg-dark' : true }"
-                        (click)="handleSelectCatgorie('Breslev') ; isMobile && sidenavOpen = false">Breslev ברסלב</a>
-                </mat-expansion-panel>
-
-                <mat-expansion-panel class="m-1">
-                    <mat-expansion-panel-header>
-                        <mat-panel-title class="h5 mr-4"> תפילין - Tefilins</mat-panel-title>
-                    </mat-expansion-panel-header>
-                    <a class="nav-link rounded-sm text-center" style="cursor: pointer"
-                        [ngClass]="{'nav-link': true , 'text-white bg-dark' : true }"
-                        (click)="handleSelectCatgorie('Tefilins') ; isMobile && sidenavOpen = false"> תפילין -
-                        Tefilins</a>
-                </mat-expansion-panel>
-
-
             </mat-accordion>
         </mat-sidenav>
 
@@ -119,10 +51,11 @@
             <div class="text-center p-4" *ngIf="!dataReceive">
                 <div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>
             </div>
+            <mat-progress-bar color="primary" mode="indeterminate" *ngIf="!dataReceive"></mat-progress-bar>
             <app-table-view [products]="products" [editProduct]="editProduct" [addProduct]="addProduct">
             </app-table-view>
-
         </mat-sidenav-content>
 
     </mat-sidenav-container>
+
 </div>

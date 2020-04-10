@@ -27,7 +27,6 @@ export class ProductUpdateComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private productService: ProductService,
-    private toastr: ToastrService,
     public dialog: MatDialog,
     public dialogRef: MatDialogRef<ProductUpdateComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Product,
@@ -59,14 +58,12 @@ export class ProductUpdateComponent implements OnInit {
       produtToUpdate.photo = this.fileUrl;
     }
     this.productService.updateProduct(produtToUpdate).then(() => {
-      this.toastr.success(produtToUpdate.name + ' updating success !');
       this.loadingContent = false;
-      this.dialogRef.close();
+      this.dialogRef.close(true);
     },
       (error) => {
-        this.toastr.error('you not authorized to update these products');
         this.loadingContent = false;
-        this.dialogRef.close();
+        this.dialogRef.close(false);
       }
     )
   }
@@ -123,19 +120,17 @@ export class ProductUpdateComponent implements OnInit {
     this.loadingContent = true;
     this.productService.removeProduct(this.data).then(() => {
       this.loadingContent = false;
-      this.toastr.show(' delete product success');
-      this.dialogRef.close();
+      this.dialogRef.close(true);
     },
       (error) => {
-        this.toastr.error('you not authorized to update these products');
         this.loadingContent = false;
-        this.dialogRef.close();
+        this.dialogRef.close(false);
       }
     )
   }
 
   onClose() {
-    this.dialogRef.close();
+    this.dialogRef.close(false);
   }
 
 

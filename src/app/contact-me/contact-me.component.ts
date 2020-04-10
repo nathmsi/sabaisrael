@@ -20,7 +20,6 @@ export class ContactMeComponent {
   constructor(
     private formBuilder: FormBuilder,
     private contactService: ContactService,
-    private toastr: ToastrService,
   ) {
     this.initForm();
   }
@@ -51,12 +50,10 @@ export class ContactMeComponent {
           this.loadingContent = false;
           this.initForm();
           console.log('success');
-          this.toastr.success(' contact sent...');
         },
         (error) => {
           this.loadingContent = false;
           console.log('error');
-          this.toastr.error(error);
         }
       )
     } else {

@@ -1,0 +1,44 @@
+<div class="m-2">
+    <nav aria-label="breadcrumb" class="sticky-top">
+        <ol class="breadcrumb mb-2">
+            <li class="breadcrumb-item">
+                <a (click)="navigateTo('home')" style="cursor: pointer;" class="text-primary font-weight-bolder">
+                    Home
+                </a>
+            </li>
+            <li class="breadcrumb-item active">
+                <a (click)="navigateTo(product.categorie)" style="cursor: pointer;" class="text-primary font-weight-bolder">
+                    {{ product.categorie }}
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">{{ product.name }}</li>
+        </ol>
+    </nav>
+
+    <div class="card " *ngIf="product !== null">
+        <div class="card-body bg-light border-0 shadow">
+            <h1 class="card-title">
+                <span class="font-weight-bolder"> {{ product.name }}</span>
+            </h1>
+            <div class="row">
+                <div class="col-sm">
+                    <img [src]="product.photo" class="img-thumbnail rounded  d-block">
+                </div>
+                <div class="col-sm">
+                    <h2 class="card-text font-weight-bolder m-0 mb-1"> {{ product.name }}
+                        <small class="text-muted" *ngIf="product.size"> {{ product.size + ' cm'  }} </small>
+                    </h2>
+                    <h3>{{ product.description }}</h3>
+                    <h3 class="text-dark font-weight-bolder "> {{ product.price }} ₪ </h3>
+
+                    <button class="btn btn-warning btn-block" (click)="addToShoppingCard()">
+                        <h3 class="m-0 p-0">Add to cart
+                            <mat-icon class="" style="cursor: pointer">add_shopping_cart</mat-icon>
+                        </h3>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h3 class="text-center" *ngIf="product === null"> Product doesn't exist !</h3>
+</div>

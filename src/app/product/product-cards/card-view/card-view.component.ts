@@ -4,6 +4,7 @@ import {MatDialog } from '@angular/material/dialog';
 // import { DialogOverviewComponent } from 'src/app/dialog-overview/dialog-overview.component';
 import { ProductUpdateComponent } from '../../product-update/product-update.component';
 import { ModalImageComponent } from '../modal-image/modal-image.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-card-view',
@@ -16,11 +17,12 @@ export class CardViewComponent implements OnInit {
   @Input() onDeleteProduct: any;
   @Input() onAddToCard: any;
   @Input() isMobile: boolean;
+  @Input() openProductView: Function;
 
 
   imageLoader: boolean = true;
 
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog ,public router: Router) { }
 
   ngOnInit(): void {
   }
@@ -39,12 +41,9 @@ export class CardViewComponent implements OnInit {
     this.onAddToCard(product);
   }
 
-  openImage(photo: string): void {
-    this.dialog.open(ModalImageComponent, {
-      width: '800px',
-      height: '600px',
-      data : { photo }
-    });
+  openImage(product: Product): void {
+    //this.router.navigate(['/product', 'view', product.categorie , product.id]);
+    this.openProductView(product);
   }
 
 

@@ -13,6 +13,7 @@ export class TableViewScComponent implements OnInit {
   @Input() DeleteAll: Function;
   @Input() DeleteOne: Function;
   @Input() countUpdate: Function;
+  @Input() isPoPup: boolean;
 
 
   dataSource = new MatTableDataSource<Product>(this.products);
@@ -35,6 +36,10 @@ export class TableViewScComponent implements OnInit {
     /** Gets the total cost of all transactions. */
     getTotalCost() {
       return this.products.map(t => parseInt(t.price)*t.count).reduce((acc, value) => acc + value, 0);
+    }
+
+    getTotalCount(){
+      return this.products.map(t => t.count).reduce((acc, value) => acc + value, 0);
     }
 
     

@@ -64,7 +64,7 @@ export class AuthService {
       phone,
       level: "client"
     };
-    if (environment.uidManager.includes(uid)) {
+    if (environment.emailManager.includes(email)) {
       this.user.level = 'manager';
     }
     this.emitUser();

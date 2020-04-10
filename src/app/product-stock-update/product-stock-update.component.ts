@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { Subscription  } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Product } from '../models/product.model';
 import { ProductService } from '../services/product.service';
 import { ToastrService } from 'ngx-toastr';
@@ -25,10 +25,8 @@ export class ProductStockUpdateComponent implements OnInit {
   sidenavOpen: boolean = false;
   isMobile: boolean = false;
   SubscriptionRefWindow: Subscription;
-  menus: string[] = [];
+  menus: any[] = [];
   categorieSelected: string = 'Kippots'
-
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   constructor(
     private productService: ProductService,
@@ -51,14 +49,20 @@ export class ProductStockUpdateComponent implements OnInit {
 
 
   ngOnInit() {
-    this.productService.getMenus().then(
-      (data: string[]) => {
+    this.getMENU();
+    this.handleSelectCatgorie("Kippots");
+  }
+
+  getMENU = () => {
+    this.menusReceive = false;
+    this.productService.getMainMenus().then(
+      (data: any[]) => {
         this.menus = data;
         this.menusReceive = true;
       }
     )
-    this.handleSelectCatgorie("Kippots");
   }
+
 
 
   handleSelectCatgorie(categorie: string) {
@@ -86,17 +90,18 @@ export class ProductStockUpdateComponent implements OnInit {
 
   addProduct() {
     const dialogRef = this.dialog.open(ProductFormComponent);
-    dialogRef.afterClosed().subscribe(() => {
-      this.handleSelectCatgorie(this.categorieSelected);
-      console.log('The dialog Edit was closed');
+    dialogRef.afterClosed().subscribe((result) => {
+      result && this.handleSelectCatgorie(this.categorieSelected);
     });
   }
 
   updateMenu() {
-    const dialogRef = this.dialog.open(MenuUpdateComponent);
-    dialogRef.afterClosed().subscribe(() => {
-      this.handleSelectCatgorie(this.categorieSelected);
-      console.log('updateMenu was closed');
+    const dialogRef = this.dialog.open(MenuUpdateComponent, {
+      height: '600px',
+      width: '800px',
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      result && this.getMENU();
     });
   }
 
@@ -108,8 +113,7 @@ export class ProductStockUpdateComponent implements OnInit {
       data: product
     });
 
-    dialogRef.afterClosed().subscribe(() => {
-      console.log('The dialog Edit was closed');
+    dialogRef.afterClosed().subscribe((result) => {
       this.handleSelectCatgorie(this.categorieSelected);
     });
   }
@@ -118,6 +122,7 @@ export class ProductStockUpdateComponent implements OnInit {
 
 
   ngOnDestroy() {
+    this.SubscriptionRefWindow.unsubscribe();
   }
 
 

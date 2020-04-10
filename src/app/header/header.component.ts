@@ -77,7 +77,11 @@ export class HeaderComponent implements OnInit {
   }
 
   clickSC = () => {
-    this.showSC = !this.showSC;
+    if(this.router.url === '/shopping-cart'){
+        this.showSC = false;
+    }else{
+      this.showSC = !this.showSC;
+    }
   }
 
 

@@ -1,0 +1,8 @@
+<mat-progress-bar class="m-2"  color="primary" mode="buffer" *ngIf="!dataReceive"></mat-progress-bar>
+
+
+<div class="" *ngIf="dataReceive && products.length > 0">
+    <app-product-cards class="" [categorie]="categorie" [products]="products" [isMobile]="isMobile" [navigateTo]="navigateTo"
+        [openProductView]="openProductView" [onAddToCard]="onAddToCard">
+    </app-product-cards>
+</div>

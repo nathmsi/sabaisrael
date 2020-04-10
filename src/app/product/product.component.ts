@@ -1,13 +1,14 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Product } from 'src/app/models/product.model';
 import { ProductService } from 'src/app/services/product.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Platform } from '@angular/cdk/platform';
-import { ToastrService } from 'ngx-toastr';
 import { WindowRef } from '../services/windowRef.service';
 import { Subscription } from 'rxjs';
 import { WindowReference } from '../models/windowRef.model';
-import { MediaMatcher } from '@angular/cdk/layout';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: 'app-product',
@@ -17,72 +18,102 @@ import { MediaMatcher } from '@angular/cdk/layout';
 export class ProductComponent implements OnInit {
 
   products: Product[] = [];
-  prodcuctFilter: Product[] = [];
+  productSelected: Product;
   categorieSelected: string = 'Kippots'
   isMobile: boolean = false;
   dataReceive: boolean = false;
   menusReceive: boolean = false;
   mobileQuery: MediaQueryList;
-  // imgFontKippots: string = 'https://firebasestorage.googleapis.com/v0/b/saba-israel.appspot.com/o/images%2Fmenu%2Fkippot.jpg?alt=media&token=7f14d998-4058-4f6f-938a-b49df082262b';
-  // sizesKippots: string[] = ['12', '14', '16', '18', '20'];
-  // qualityKippots: string[] = ['srouga', 'bad', 'ktifa'];
   panelOpenState = false;
   SubscriptionRefWindow: Subscription;
-  menus: string[] = [];
+  menus: any[] = [];
   sidenavOpen: boolean = false;
-
+  showProductView: boolean = false;
+  showProductHome: boolean = false;
+  openProductSearch: boolean = false;
 
   constructor(
-    private toastr: ToastrService,
     public dialog: MatDialog,
     private productService: ProductService,
-    private platform: Platform,
     private windowRef: WindowRef,
-    private changeDetectorRef: ChangeDetectorRef,
-    private media: MediaMatcher) {
+    private _snackBar: MatSnackBar,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
 
 
     this.SubscriptionRefWindow = this.windowRef.windowSubject.subscribe(
       (windowRefer: WindowReference) => {
         this.isMobile = windowRefer.contentMobile;
-        if(!this.isMobile){ this.sidenavOpen = true} else {this.sidenavOpen = false}
+        if (!this.isMobile) { this.sidenavOpen = true } else { this.sidenavOpen = false }
       }
     )
 
+    this.productService.getProductMapSearch();
     this.windowRef.emitWindowRef();
 
   }
 
 
   ngOnInit(): void {
-    this.isMobile = this.platform.ANDROID || this.platform.IOS;
-    this.productService.getMenus().then(
-      (data: string[]) => {
+    this.route.params.subscribe(
+      (params: { categorie: string , id: string}) => {
+        //console.log(params);
+        this.dataReceive = false;
+        if(params.id !== ''){
+          this.handleSelectProduct(params.categorie,params.id);
+        }else{
+          params.categorie === 'home' ? this.handleSelectMenu() : this.handleSelectCatgorie_(params.categorie);
+        }
+      }
+    );
+    this.productService.getMainMenus().then(
+      (data: any[]) => {
         this.menus = data;
         this.menusReceive = true;
       }
     )
-    this.handleSelectCatgorie(this.categorieSelected);
+
+  }
+
+  handleSelectMenu(){
+    this.categorieSelected = 'Home';
+    this.dataReceive = true;
+    this.showProductView = false;
+    this.showProductHome = true;
   }
 
 
-
-  tabClick(event) {
-    this.handleSelectCatgorie(event.tab.textLabel)
-  }
-
-
-
-  handleSelectCatgorie(categorie: string) {
-    this.products = [];
-    this.dataReceive = false;
+  handleSelectProduct(categorie: string,id: string){
+    this.showProductView = false;
+    this.showProductHome = false;
+    this.productSelected = null;
     this.categorieSelected = categorie;
+    //!this.isMobile && (this.sidenavOpen = false );
+    this.productService.getProductByID_Categorie(categorie,id).then(
+      (product: Product) =>{
+        this.productSelected = product;
+        this.showProductView = true;
+        this.dataReceive = true;
+      },
+      (error) =>{
+        console.log(error);
+      }
+    )
+  }
+
+
+
+  handleSelectCatgorie_(categorie: string) {
+    this.products = [];
+    this.showProductView = false;
+    this.showProductHome = false;
+    this.categorieSelected = categorie;
+    //!this.isMobile && (this.sidenavOpen = true );
     this.productService.getProductByCategorie(categorie).then(
       (products: Product[]) => {
-        //console.log(products);
         this.dataReceive = true;
         this.products = products;
-        this.prodcuctFilter = products;
       },
       (error) => {
         this.dataReceive = true;
@@ -91,15 +122,38 @@ export class ProductComponent implements OnInit {
     )
   }
 
+  handleSelectCatgorie(categorie: string) {
+    this.router.navigate(['product',categorie,'']);
+  }
+
 
 
   onAddToCard = (product: Product) => {
     this.productService.addToShoppingCard(product);
-    this.toastr.success('+ shopping card ');
+    let snackBarRef = this._snackBar.open('+ shopping cart ', 'Go', {
+      duration: 4000,
+      verticalPosition: this.isMobile ? 'bottom' : 'top',
+      horizontalPosition: 'center',
+      panelClass: 'snack-error'
+    });
+    snackBarRef.onAction().subscribe(() => {
+      this.router.navigate(['/shopping-cart']);
+    })
   }
 
-  
-  
+  openProductView = (product: Product) =>{
+    this.router.navigate(['product',product.categorie,product.id]);
+  }
+
+  closeProductView = () =>{
+    this.router.navigate(['product',this.productSelected.categorie,'']);
+  }
+
+  navigateTo = (path: string) => {
+    this.router.navigate(['product',path,'']);
+  }
+
+
 
   ngOnDestroy(): void {
     this.SubscriptionRefWindow.unsubscribe();

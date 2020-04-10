@@ -1,13 +1,15 @@
+<mat-progress-bar color="primary" mode="indeterminate" *ngIf="loadingContent"></mat-progress-bar>
+
 
 <div class="container pt-3">
     <div class="row">
         <div class="col-lg-2"></div>
-        <div class="col-lg-8 card border-0 shadow p-3">
+        <div class="col-lg-8 card m-1 p-3">
             <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
                 <h2 class="text-center">Create account</h2>
                 <div class="form-group">
                     <label for="username">Username</label>
-                    <input type="text" id="name" class="form-control" formControlName="username">
+                    <input type="text" id="name" class="form-control" formControlName="username" maxlength="20" >
                 </div>
                 <div class="form-group">
                     <label for="email">Email</label>
@@ -22,6 +24,9 @@
                         <span class="sr-only">Loading...</span>
                     </div>
                     <div *ngIf="!loadingContent">Create account</div>        
+                </button>
+                <button class="btn btn-sm btn-link m-1"  (click)="handelSigin()" >
+                    You have account ? please Login   
                 </button>
                     <p class="text-danger">{{ errorMessage }}</p>
             </form>

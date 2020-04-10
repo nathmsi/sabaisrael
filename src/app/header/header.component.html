@@ -1,4 +1,4 @@
-<nav [ngClass]="{'navbar navbar-expand-lg navbar-dark  fixed-top  ': true}"
+<nav [ngClass]="{'navbar navbar-expand-lg navbar-dark ': true  , 'fixed-top': isMobile }"
   [ngStyle]="{'background-color': colorTheme }">
 
 
@@ -14,6 +14,12 @@
         <mat-icon aria-hidden="false" [matBadge]="lengthShoppingCard > 0 ? lengthShoppingCard : null"
           aria-label="home icon">shopping_cart</mat-icon>
       </a>
+
+      <a  class="navbar-brand " *ngIf="user.isAuth && isMobile" style="cursor: pointer;"
+        routerLink="account" [routerLinkActive]="['text-white','font-weight-bolder']">
+        <mat-icon aria-hidden="false">person_pin</mat-icon>
+      </a>
+
     </div>
 
     <a class="navbar-brand" routerLink="home" *ngIf="isMobile" (click)="isMenuCollapsed = true">
@@ -44,13 +50,12 @@
 
       <li class="nav-item ">
         <a class="nav-link mr-1 text-center text-white rounded" routerLink="product"
-          [routerLinkActive]="['text-dark','bg-white']" [routerLinkActiveOptions]="{ exact: true }"
-          (click)="isMenuCollapsed = true">
+          [routerLinkActive]="['text-dark','bg-white']" (click)="isMenuCollapsed = true">
           <span>Store</span>
         </a>
       </li>
       <li class="nav-item " *ngIf="user.level === 'manager'">
-        <a class="nav-link mr-1 text-center text-white rounded" routerLink="product/update"
+        <a class="nav-link mr-1 text-center text-white rounded" routerLink="update/product"
           [routerLinkActive]="['text-dark','bg-white']" [routerLinkActiveOptions]="{ exact: true }"
           (click)="isMenuCollapsed = true">
           Update Store
@@ -64,32 +69,48 @@
         </a>
       </li>
       <li class="nav-item " *ngIf="user.level === 'manager'">
-        <a class="nav-link mr-1 text-center text-white rounded" routerLink="contact/update"
+        <a class="nav-link mr-1 text-center text-white rounded" routerLink="update/contact"
           [routerLinkActive]="['text-dark','bg-white']" [routerLinkActiveOptions]="{ exact: true }"
           (click)="isMenuCollapsed = true">
           Update Contact
         </a>
       </li>
+      <!-- <li class="nav-item  ">
+        <a class="nav-link mr-1 text-center text-white rounded" routerLink="tehilims"
+          [routerLinkActive]="['text-dark','bg-white']" (click)="isMenuCollapsed = true">
+          tehilims
+        </a>
+      </li> -->
       <li class="nav-item  ">
         <a class="nav-link mr-1 text-center text-white rounded" routerLink="about"
           [routerLinkActive]="['text-dark','bg-white']" (click)="isMenuCollapsed = true">
-          About me
+          About
         </a>
       </li>
 
+
     </ul>
+
   </div>
+
+  
 
 
   <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse ">
     <ul class="navbar-nav ml-auto">
 
-      <a class="nav-link waves-light" *ngIf="user.isAuth && !isMobile" routerLink="account"
+      <!-- <a class="nav-link waves-light" *ngIf="user.isAuth && !isMobile" routerLink="account"
         [routerLinkActive]="['text-white']" (click)="isMenuCollapsed = true">
-        <!-- <mat-icon aria-hidden="false" aria-label="home icon">person</mat-icon> -->
-        <h4 class="m-1 ">
+        <mat-icon aria-hidden="false" aria-label="home icon">person</mat-icon>
+        <span class="m-1 ">
           Welecome <span class="font-weight-bolder">{{ user.name }}</span>
-        </h4>
+        </span>
+
+      </a> -->
+
+      <a  class="navbar-brand pt-2 pb-2 mr-1 " *ngIf="user.isAuth && !isMobile" style="cursor: pointer;"
+        routerLink="account" [routerLinkActive]="['text-white']">
+        <mat-icon aria-hidden="false">person_pin</mat-icon>
       </a>
 
       <div *ngIf="!isMobile">
@@ -101,14 +122,17 @@
           <mat-icon aria-hidden="false" [matBadge]="lengthShoppingCard > 0 ? lengthShoppingCard : null"
             aria-label="home icon">shopping_cart</mat-icon>
         </a>
+
+
+
         <kendo-popup [anchor]="anchor" (anchorViewportLeave)="showSC = false" *ngIf="showSC">
           <div class='content-dialog-sc p-1'>
             <app-shopping-cart [isPoPup]="true" [closePoPup]="clickSC"></app-shopping-cart>
           </div>
         </kendo-popup>
 
-        <a #anchor class="navbar-brand pt-2 pb-2" style="cursor: pointer;" (click)="clickSC()">
-          <mat-icon *ngIf="!showSC"> keyboard_arrow_left</mat-icon>
+        <a #anchor class="navbar-brand pt-2 pb-2 mr-0" style="cursor: pointer;" (click)="clickSC()">
+          <mat-icon *ngIf="!showSC"> keyboard_arrow_up</mat-icon>
           <mat-icon *ngIf="showSC"> keyboard_arrow_down</mat-icon>
         </a>
 

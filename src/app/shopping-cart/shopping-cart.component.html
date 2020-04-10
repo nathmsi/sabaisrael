@@ -7,17 +7,20 @@
 
 <div *ngIf="dataReceive && !isPoPup">
   <h3 class="text-center p-4 bg-light">Shopping cart</h3>
-  <app-table-view-sc [products]="products" [countUpdate]="countUpdate" [DeleteAll]="DeleteAll"
-    [DeleteOne]="DeleteOne">
-  </app-table-view-sc>
+  <div class="container border p-1 rounded-lg">
+    <app-table-view-sc [products]="products" [countUpdate]="countUpdate" [DeleteAll]="DeleteAll" [isPoPup]="false"
+      [DeleteOne]="DeleteOne">
+    </app-table-view-sc>
+  </div>
 </div>
 
 
-<div *ngIf="dataReceive && isPoPup">
-  <app-table-view-sc [products]="products" [countUpdate]="countUpdate" [DeleteAll]="DeleteAll"
+<div *ngIf="dataReceive && isPoPup" class="bg-white">
+  <app-table-view-sc [products]="products" [countUpdate]="countUpdate" [DeleteAll]="DeleteAll" [isPoPup]="true"
     [DeleteOne]="DeleteOne">
   </app-table-view-sc>
-  <button class="btn btn-dark btn-block" [routerLink]="['/shopping-cart']" (click)="closePoPup()" routerLinkActive="router-link-active" >
-      Go to shopping cart
+  <button class="btn btn-dark btn-block" [routerLink]="['/shopping-cart']" (click)="closePoPup()"
+    routerLinkActive="router-link-active">
+    Go to shopping cart
   </button>
 </div>

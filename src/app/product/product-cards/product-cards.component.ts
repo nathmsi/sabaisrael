@@ -20,6 +20,8 @@ export class ProductCardsComponent implements OnInit {
   @Input() products: Product[];
   @Input() onAddToCard: Function;
   @Input() isMobile: Boolean;
+  @Input() openProductView: Function;
+  @Input() navigateTo: Function;
 
 
   productFilter: Product[] = [];

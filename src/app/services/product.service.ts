@@ -25,6 +25,38 @@ export class ProductService {
     userUid: string = "";
     userSubscription: Subscription;
     private menus: string[] = [];
+    productSearch: any[] = [];
+    productSearchSubject = new Subject<Product[]>();
+
+    MainMenu: string[] =
+        ["Kippots", "Books", "Tefilins", "Breslev", "Mezouzots", "Pessah", "Klafims", "Hanouka", "Tallits"]
+
+    object_: Object = {
+        "Kippots": [
+            "Kippots"
+        ],
+        "Hollidays": [
+            "Pessah",
+            "Hanouka"
+        ],
+        "Tallits": [
+            "Tallits"
+        ],
+        "Mezouzots": [
+            "Mezouzots",
+            "Klafims"
+        ],
+        "Books": [
+            "Books"
+        ],
+        "Breslev": [
+            "Breslev"
+        ],
+        "Tefilins": [
+            "Tefilins"
+        ]
+    }
+
 
     constructor(private authService: AuthService, private localStorageService: LocalStorageService) {
         this.userSubscription = this.authService.userSubject.subscribe(
@@ -40,8 +72,88 @@ export class ProductService {
         this.productsSubject.next(this.products);
     }
 
+    emitProductSearch() {
+        this.productSearchSubject.next(this.productSearch);
+    }
+
     emitShoppingCard() {
         this.shoppingCardSubject.next(this.productsshoppingCard);
+    }
+
+    getProductMapSearch() {
+        console.log("%c getProductMapSearch() ", "color:yellow");
+        firebase.database().ref('/products-search')
+            .once('value',
+                (data) => {
+                    const dataR = data.val() ? Object.keys(data.val()).map((i) => {
+                        let element = data.val()[i];
+                        //this.getSearchProductById(element.id);
+                        return element;
+                    }) : [];
+                    this.productSearch = dataR;
+                    this.emitProductSearch();
+                },
+                (error) => {
+                    console.log(error);
+                }
+            );
+    }
+
+    getSearchProductById(id: string) {
+        return new Promise(
+            (resolve, reject) => {
+                firebase.database().ref('/products-search').orderByChild('id').equalTo(id).once('value').then(
+                    (data) => {
+                        if (data.val()) {
+                            console.log(data.val());
+                            resolve(data.val());
+                        } else {
+                            reject();
+                        }
+                    },
+                    (error) => {
+                        console.log(error);
+                        reject();
+                    })
+            }
+        )
+    }
+
+
+    setProductSearch(name, categorie, id) {
+        firebase.database().ref('/products-search').push({
+            name,
+            categorie,
+            id
+        })
+            .then(() => {
+            },
+                () => {
+                })
+    }
+
+    setProductMap(categorie: string) {
+        firebase.database().ref('/products/' + categorie)
+            .once('value', (data) => {
+                const dataR = data.val() ? Object.keys(data.val()).map((i) => {
+                    let element = data.val()[i];
+                    this.setProductSearch(element.name, element.categorie, i);
+                    element.id = i;
+                    return element;
+                }) : [];
+            },
+                (error) => {
+                }
+            )
+    }
+
+    setCategorieMap(categories: string[]) {
+        console.log('setCategorieMap per categroie');
+        categories.forEach(
+            categorie => {
+                this.setProductMap(categorie)
+            }
+        )
     }
 
     getMenus() {
@@ -50,10 +162,34 @@ export class ProductService {
                 firebase.database().ref('/products-menu')
                     .once('value',
                         (data) => {
+                            let result = [];
                             if (data.val()) {
-                                this.menus = data.val();
+                                let menus = data.val();
+                                menus.forEach((element: any) => {
+                                    element.value.forEach(val => {
+                                        result.push(val);
+                                    });
+                                });
                             }
-                            resolve(this.menus);
+                            //this.setCategorieMap(result);
+                            resolve(result);
+                        },
+                        (error) => {
+                            console.log(error);
+                            reject(error);
+                        }
+                    );
+            })
+    }
+
+    getMainMenus() {
+        return new Promise(
+            (resolve, reject) => {
+                firebase.database().ref('/products-menu')
+                    .once('value',
+                        (data) => {
+                            const dataR = data.val() ? data.val() : [];
+                            resolve(dataR);
                         },
                         (error) => {
                             console.log(error);
@@ -98,6 +234,44 @@ export class ProductService {
             }
         )
     }
+
+    getProductByID_Categorie(categorie: string, id: string) {
+        console.log(`%c getProductByID_Categorie() ${categorie} id ${id}`, "color:yellow");
+        return new Promise(
+            (resolve, reject) => {
+                firebase.database().ref('/products/' + categorie + '/' + id)
+                    .once('value', (data) => {
+                        resolve(data.val());
+                    },
+                        (error) => {
+                            reject(error);
+                        }
+                    );
+            }
+        )
+    }
+
+    getProductByCategorieLimited(categorie: string, limitedNumber: number) {
+        console.log(`%c getProductByCategorieLimited() ${categorie} limit ${limitedNumber}`, "color:yellow");
+        return new Promise(
+            (resolve, reject) => {
+                firebase.database().ref('/products/' + categorie).limitToFirst(limitedNumber)
+                    .once('value', (data) => {
+                        const dataR = data.val() ? Object.keys(data.val()).map((i) => {
+                            let element = data.val()[i];
+                            element.id = i;
+                            return element;
+                        }) : [];
+                        resolve(dataR);
+                    },
+                        (error) => {
+                            reject(error);
+                        }
+                    );
+            }
+        )
+    }
+
 
     getShoppingCard() {
         this.productsshoppingCard = this.localStorageService.getLocalStorageProductCard();
@@ -192,9 +366,10 @@ export class ProductService {
         return new Promise(
             (resolve, reject) => {
                 firebase.database().ref('/products/' + newProduct.categorie).push(newProduct)
-                    .then(() => {
-                        console.log("%c createNewBook => ", "color:yellow", newProduct);
-                        this.getProductByCategorie(newProduct.categorie);
+                    .then((product) => {
+                        console.log("%c createNewBook => ", "color:yellow", product);
+                        //this.getProductByCategorie(newProduct.categorie);
+                        this.setProductSearch(newProduct.name, newProduct.categorie, product.key);
                         resolve();
                     },
                         () => {
@@ -210,8 +385,25 @@ export class ProductService {
                 firebase.database().ref('/products/' + product.categorie + '/' + product.id).set(product)
                     .then(() => {
                         console.log("%c updateProduct  ", "color:yellow", product);
-                        this.getProductByCategorie(product.categorie);
-                        resolve();
+                        this.getSearchProductById(product.id).then(
+                            (data) => {
+                                if (data) {
+                                    let id = Object.keys(data);
+                                    firebase.database().ref('/products-search/' + id).set({
+                                        name: product.name,
+                                        categorie: product.categorie,
+                                        id: product.id
+                                    })
+                                        .then(() => {
+                                            resolve();
+                                        },
+                                            (error) => {
+                                                reject(error);
+                                            })
+                                }
+                            }
+                        )
+                        //this.getProductByCategorie(product.categorie);
                     },
                         (error) => {
                             reject(error);
@@ -231,8 +423,20 @@ export class ProductService {
                             firebase.database().ref('/products/' + product.categorie + '/' + product.id).remove().then(
                                 () => {
                                     console.log("%c products removed! ", "color:yellow", product);
-                                    this.emitProduct();
-                                    resolve();
+                                    this.getSearchProductById(product.id).then(
+                                        (data) => {
+                                            if (data) {
+                                                let id = Object.keys(data);
+                                                firebase.database().ref('/products-search/' + id).remove()
+                                                    .then(() => {
+                                                        resolve();
+                                                    },
+                                                        (error) => {
+                                                            reject(error);
+                                                        })
+                                            }
+                                        }
+                                    )
                                 },
                                 (error) => {
                                     reject(error);

@@ -1,0 +1,25 @@
+<div class="m-2">
+
+
+    <div *ngFor="let menu of menuList" >
+        <!-- <nav aria-label="breadcrumb navbar" class=" ">
+            <ol class="breadcrumb m-2">
+                <li class="breadcrumb-item">
+                    <a style="cursor: pointer;" class="text-primary font-weight-bolder">
+                        Home
+                    </a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page" style="cursor: pointer;"
+                    (click)="navigateTo(menu)"> {{menu}} </li>
+            </ol>
+        </nav> -->
+
+        <app-home-view-product [categorie]="menu" [isMobile]="isMobile" [openProductView]="openProductView" [navigateTo]="navigateTo"
+            [onAddToCard]="onAddToCard"></app-home-view-product>
+    </div>
+
+
+
+
+
+</div>

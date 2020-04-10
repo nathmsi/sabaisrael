@@ -1,8 +1,10 @@
 
+<mat-progress-bar color="primary" mode="indeterminate" *ngIf="loadingContent"></mat-progress-bar>
+
 <div class="container pt-3">
     <div class="row">
         <div class="col-lg-2"></div>
-        <div class="col-lg-8 card border-0 shadow p-3">
+        <div class="col-lg-8 card m-1 p-3">
             <form [formGroup]="signinForm" (ngSubmit)="onSubmit()">
                 <h2 class="text-center">SignIn</h2>
                 <div class="form-group">
@@ -20,7 +22,7 @@
                     <div *ngIf="!loadingContent">Connexion</div>        
                 </button>
                 <button class="btn btn-sm btn-link m-1"  (click)="handelSigUp()" >
-                    Not register yet ? please signup  
+                     Not register yet ? please signup  
                 </button>
                 <p class="text-danger">{{ errorMessage }}</p>
             </form>

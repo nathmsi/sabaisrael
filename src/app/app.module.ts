@@ -7,7 +7,6 @@ import { Routes, RouterModule } from '@angular/router'
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { StorageServiceModule } from 'ngx-webstorage-service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ToastrModule } from 'ngx-toastr';
 import { PopupModule } from '@progress/kendo-angular-popup';
 
 
@@ -30,6 +29,12 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {DragDropModule} from '@angular/cdk/drag-drop';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatInputModule} from '@angular/material/input';
+
 
 // Services
 import { AuthService } from './services/auth.service'
@@ -38,7 +43,7 @@ import { LocalStorageService } from './services/storageLocalStorage.service'
 import { WindowRef } from './services/windowRef.service'
 import { AuthGuardService } from './services/auth-guard.service'
 import { ContactService } from './services/contact.service'
-
+import { TehilimsService } from './services/tehilim.service'
 
 // Components
 import { AppComponent } from './app.component';
@@ -65,6 +70,12 @@ import { ModalImageComponent } from './product/product-cards/modal-image/modal-i
 import { MenuUpdateComponent } from './product-stock-update/menu-update/menu-update.component';
 import { TableViewScComponent } from './shopping-cart/table-view-sc/table-view-sc.component';
 import { ModalConfirmationComponent } from './modal-confirmation/modal-confirmation.component';
+import { ProductViewComponent } from './product/product-view/product-view.component';
+import { TehilimsComponent } from './tehilims/tehilims.component';
+import { ProductHomeComponent } from './product/product-home/product-home.component';
+import { HomeViewProductComponent } from './product/product-home/home-view-product/home-view-product.component';
+import { ProductSearchComponent } from './product/product-search/product-search.component';
+import { ProductSearchViewComponent } from './product/product-search/product-search-view/product-search-view.component';
 
 
 
@@ -72,23 +83,21 @@ const appRoutes: Routes = [
   { path: 'auth/signup', component: SignupComponent },
   { path: 'auth/signin', component: SigninComponent },
   { path: 'account',  component: AccountComponent },
-  { path: 'product', component: ProductComponent },
-  { path: 'product/update', canActivate: [AuthGuardService] , component: ProductStockUpdateComponent },
+  { path: 'product', redirectTo: 'product/home/', pathMatch: 'full'},
+  { path: 'product/:categorie', redirectTo: 'product/:categorie/', pathMatch: 'full'},
+  { path: 'product/:categorie/:id', component: ProductComponent},
+  { path: 'update/product', canActivate: [AuthGuardService] , component: ProductStockUpdateComponent },
   { path: 'shopping-cart', component: ShoppingCartComponent },
   { path: 'about', component: AboutComponent },
   { path: 'contact', component: ContactMeComponent },
-  { path: 'contact/update',  canActivate: [AuthGuardService] , component: ContactUpdateComponent },
-  { path: 'home', component: HomeComponent },
-  { path: '', component: ProductComponent },
+  { path: 'update/contact',  canActivate: [AuthGuardService] , component: ContactUpdateComponent },
+  { path: 'home', redirectTo: 'product/home/' , pathMatch: 'full'  },
+  { path: 'tehilims', component: TehilimsComponent },
+  { path: '', redirectTo: 'product/home/' , pathMatch: 'full' },
   // { path: '', redirectTo: 'books', pathMatch: 'full' },
-  { path: '**', redirectTo: 'product' }
+  { path: '**', redirectTo: '' }
 ];
 
-const settingToastr: any = {
-  timeOut: 2000,
-  positionClass: 'toast-top-center',
-  preventDuplicates: true,
-}
 
 const MAtModule = [
   MatBadgeModule,
@@ -105,7 +114,12 @@ const MAtModule = [
   MatToolbarModule,
   MatFormFieldModule,
   MatExpansionModule,
-  MatProgressBarModule
+  MatProgressBarModule,
+  MatSnackBarModule,
+  DragDropModule,
+  MatMenuModule,
+  MatAutocompleteModule,
+  MatInputModule
 ];
 
 
@@ -135,6 +149,12 @@ const MAtModule = [
     MenuUpdateComponent,
     TableViewScComponent,
     ModalConfirmationComponent,
+    ProductViewComponent,
+    TehilimsComponent,
+    ProductHomeComponent,
+    HomeViewProductComponent,
+    ProductSearchComponent,
+    ProductSearchViewComponent,
   ],
   imports: [
     ...MAtModule,
@@ -148,7 +168,6 @@ const MAtModule = [
     StorageServiceModule,
     BrowserAnimationsModule, 
     PopupModule,
-    ToastrModule.forRoot(settingToastr), 
     RouterModule.forRoot(appRoutes), 
   ],
   providers: [
@@ -157,7 +176,8 @@ const MAtModule = [
     LocalStorageService,
     WindowRef,
     AuthGuardService,
-    ContactService
+    ContactService,
+    TehilimsService
   ],
   bootstrap: [AppComponent]
 })

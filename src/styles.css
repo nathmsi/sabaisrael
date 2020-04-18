@@ -11,7 +11,19 @@ body {
     margin: 0;
 }
 
+/* pour le buuton fase lannimation  */
 button:focus, button:active:focus, button.active:focus {
     outline: none !important;
     outline-style: none !important;
+}
+
+
+/* pour la snackbar soit en top screen */
+.cdk-overlay-container {
+    position: fixed;
+    z-index: 10000;
+}
+
+.mat-dialog-container {
+    padding: 5px !important;
 }

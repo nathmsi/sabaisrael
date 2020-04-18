@@ -1,25 +1,23 @@
-<form class="pb-0" *ngIf="dataReceive">
-  <!-- <mat-form-field class="example-full-width pb-0" style="font-size: 14px;  padding: 0;"
-    [style.width.px]="isMobile? 190 : 280" hintLabel="search product"> -->
-    <input class="form-control" type="text" aria-label="Number"  [formControl]="myControl" placeholder="search product" [style.width.px]="isMobile? 160 : 280"
-      [matAutocomplete]="auto">
+<form class="form-inline pb-0" *ngIf="dataReceive">
+    <input class="form-control" id="" type="text" aria-label="Number"  [formControl]="myControl" placeholder="search product" 
+    [style.width.px]="isMobile? 190 : 280"
+      [matAutocomplete]="auto" 
+      (keyup.enter)="openProductKEYUP()"
+      >
     <mat-autocomplete #auto="matAutocomplete" class="pb-0">
       <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name"
-        (click)="functiontest(option.id,option.categorie)">
+        (click)="openProduct(option.id,option.categorie)" >
         <app-product-search-view [categorie]="option.categorie" [id]="option.id">
         </app-product-search-view>
       </mat-option>
-      <mat-option *ngIf="noResult">
+      <mat-option *ngIf="noResult" [value]="''">
         <div class="d-flex justify-content-center flex-wrap align-content-center">
           <p class="text-black font-weight-bolde ">search not found ...</p>
         </div>
       </mat-option>
     </mat-autocomplete>
-    <!-- <mat-icon matSuffix>sentiment_very_satisfied</mat-icon> -->
-    <!-- <mat-hint align="end">search product</mat-hint> -->
-  <!-- </mat-form-field> -->
+    <mat-icon style="cursor: pointer;" class="ml-1" (click)="openProductKEYUP()">search</mat-icon>
 </form>
-
 
 
 <!-- <form class="form-inline">

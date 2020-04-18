@@ -23,8 +23,9 @@ export class ProductStockUpdateComponent implements OnInit {
   dataReceive: boolean = false;
   menusReceive: boolean = false;
   sidenavOpen: boolean = false;
-  isMobile: boolean = false;
   SubscriptionRefWindow: Subscription;
+  refWindow: WindowReference;
+  
   menus: any[] = [];
   categorieSelected: string = 'Kippots'
 
@@ -34,14 +35,14 @@ export class ProductStockUpdateComponent implements OnInit {
     private windowRef: WindowRef,
   ) {
 
-
-
     this.SubscriptionRefWindow = this.windowRef.windowSubject.subscribe(
       (windowRefer: WindowReference) => {
-        this.isMobile = windowRefer.contentMobile;
-        if (!this.isMobile) { this.sidenavOpen = true } else { this.sidenavOpen = false }
+        this.refWindow = windowRefer;
+        if (!this.refWindow.contentMobile) { this.sidenavOpen = true } else { this.sidenavOpen = false }
       }
     )
+
+    this.windowRef.emitWindowRef();
 
     this.windowRef.emitWindowRef();
   }
@@ -89,7 +90,9 @@ export class ProductStockUpdateComponent implements OnInit {
 
 
   addProduct() {
-    const dialogRef = this.dialog.open(ProductFormComponent);
+    const dialogRef = this.dialog.open(ProductFormComponent,{
+      width: '500px'
+    });
     dialogRef.afterClosed().subscribe((result) => {
       result && this.handleSelectCatgorie(this.categorieSelected);
     });

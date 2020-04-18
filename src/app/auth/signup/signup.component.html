@@ -6,26 +6,26 @@
         <div class="col-lg-2"></div>
         <div class="col-lg-8 card m-1 p-3">
             <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
-                <h2 class="text-center">Create account</h2>
+                <h2 class="text-center rounded" [style.color]="windowRef.colorText" [style.backgroundColor]="windowRef.colorTheme">Create account</h2>
                 <div class="form-group">
-                    <label for="username">Username</label>
+                    <label for="username" class="rounded p-1" [style.backgroundColor]="windowRef.colorText" [style.color]="windowRef.colorTheme">Username</label>
                     <input type="text" id="name" class="form-control" formControlName="username" maxlength="20" >
                 </div>
                 <div class="form-group">
-                    <label for="email">Email</label>
+                    <label for="email" class="rounded p-1" [style.backgroundColor]="windowRef.colorText" [style.color]="windowRef.colorTheme">Email</label>
                     <input type="text" id="email" class="form-control" formControlName="email">
                 </div>
                 <div class="form-group">
-                    <label for="password">Password</label>
+                    <label for="password" class="rounded p-1" [style.backgroundColor]="windowRef.colorText" [style.color]="windowRef.colorTheme">Password</label>
                     <input type="password" id="password" class="form-control" formControlName="password">
                 </div>
-                <button class="btn btn-dark btn-block" type="submit" [disabled]="signupForm.invalid">
+                <button class="btn font-weight-bold   " type="submit" [disabled]="signupForm.invalid" [style.color]="windowRef.colorText" [style.backgroundColor]="windowRef.colorTheme">
                     <div class="spinner-border spinner-border-sm" role="status" *ngIf="loadingContent">
                         <span class="sr-only">Loading...</span>
                     </div>
                     <div *ngIf="!loadingContent">Create account</div>        
                 </button>
-                <button class="btn btn-sm btn-link m-1"  (click)="handelSigin()" >
+                <button class="btn btn-sm btn-link m-1 font-weight-bold"  (click)="handelSigin()" >
                     You have account ? please Login   
                 </button>
                     <p class="text-danger">{{ errorMessage }}</p>

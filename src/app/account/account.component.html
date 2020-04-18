@@ -1,32 +1,74 @@
+<mat-progress-bar [ngClass]="{'progress-bar-position': true }" color="primary" mode="indeterminate"
+    *ngIf="!dataReceive"></mat-progress-bar>
 
-<mat-progress-bar 
-color="primary" mode="indeterminate" *ngIf="!dataReceive"></mat-progress-bar>
-
-<div class="container mt-4" >
+<div class="container mt-4">
     <div class="row">
         <div class="col-lg-2"></div>
         <div class="col-lg-8 card border-0 shadow p-3">
             <form (ngSubmit)="onSubmit(f)" #f="ngForm">
-                <h1 class="text-center">
+                <h1 class="text-center m-1 rounded" [style.color]="windowRef.colorText" [style.backgroundColor]="windowRef.colorTheme">
                     My account
                 </h1>
-                <div class=" text-center bg-white p-2">
-                    <img class="img-thumbnail rounded-circle" [src]="user.photo"  style="width: 150px; height: 150px;"
-                         [alt]="user.photo">
-                </div>
-                <div class="form-group ">
-                    <label for="staticEmail" class="col-form-label">Username</label>
-        
-                    <input type="text" class="form-control" name="username" id="" [ngModel]="user.name" maxlength="20"
-                    placeholder="username">
+                <div class=" text-center bg-white p-2 m-1" *ngIf="user.photo">
+                    <div class="d-flex flex-wrap align-content-center justify-content-center"
+                        style="width: 150px; height: 150px;" *ngIf="imageLoader">
+
+                    </div>
+                    <img class="card-img-top rounded-circle p-0" [hidden]="imageLoader" [src]="user.photo"
+                        style="max-width: 150px; max-height: 150px; cursor: pointer;" (load)="imageLoader = false"
+                        [alt]="user.photo">
                 </div>
                 <div class="form-group">
-                    <label for="staticEmail" class="col-form-label">Image profil</label>
-        
+                    <label for="staticEmail" class="rounded p-1" [style.backgroundColor]="windowRef.colorText" [style.color]="windowRef.colorTheme">Username</label>
+
+                    <input type="text" class="form-control" name="username" id="" [ngModel]="user.name" maxlength="20"
+                        placeholder="username">
+                </div>
+                <div class="form-group">
+                    <label for="staticEmail" class="rounded p-1" [style.backgroundColor]="windowRef.colorText" [style.color]="windowRef.colorTheme">Image profil</label>
+
                     <input type="file" (change)="detectFiles($event)" class="form-control" accept="image/*">
 
                 </div>
-                <button type="submit" class="btn btn-dark btn-block">Save</button>
+
+
+                <div class="pb-2">
+                    <button mat-button [matMenuTriggerFor]="beforeMenu" type="button"
+                        [style.backgroundColor]="windowRef.colorText" [style.color]="windowRef.colorTheme">Color
+                        Theme</button>
+
+                    <mat-menu #beforeMenu="matMenu" xPosition="before" class=" p-1">
+                        <button class="btn  font-weight-bold  m-2" (click)="setColorTheme('#2a6592','#ffffff')"
+                            type="button" style="color: #ffffff; background-color: #2a6592;">
+                            Blue azur
+                        </button>
+                        <button class="btn  font-weight-bold  m-2" (click)="setColorTheme('#5bc0de','#ffffff')"
+                            type="button" style="color: #ffffff; background-color: #5bc0de; ">
+                            info
+                        </button>
+                        <button class="btn font-weight-bold  m-2" (click)="setColorTheme('#f0ad4e','#ffffff')"
+                            type="button" style="color: #ffffff; background-color: #f0ad4e; ">
+                            Warning
+                        </button>
+                        <button class="btn  font-weight-bold  m-2" (click)="setColorTheme('#292b2c','#ffffff')"
+                            type="button" style="color: #ffffff; background-color: #292b2c; ">
+                            Inverse
+                        </button>
+                        <button class="btn  font-weight-bold  m-2" (click)="setColorTheme('#0022a0','#ffffff')"
+                            type="button" style="color: #ffffff; background-color: #0022a0">
+                            Primary
+                        </button>
+                        <button class="btn  font-weight-bold  m-2" (click)="setColorTheme('#d9534f','#ffffff')"
+                            type="button" style="color: #ffffff; background-color: #d9534f; ">
+                            Danger
+                        </button>
+                    </mat-menu>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn  pl-5 pr-5  font-weight-bold" [style.color]="windowRef.colorText"
+                    [style.backgroundColor]="windowRef.colorTheme">Save</button>
+                </div>
+         
             </form>
         </div>
         <div class="col-lg-2"> </div>

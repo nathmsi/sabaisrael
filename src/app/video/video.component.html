@@ -1,0 +1,6 @@
+<div class="container p-0" style="margin-bottom: 55px;">
+    <h1 class="text-center bg-light m-2"> Video</h1>
+    <div class="d-flex justify-content-center" *ngFor="let video of videos">
+        <app-youtube-player [idVideo]="video" [widthScreen]="widthScreen" [isMobile]="isMobile"> </app-youtube-player>
+    </div>
+</div>

@@ -10,6 +10,7 @@ export class WindowReference {
     headerMobile: boolean;
     contentMobile: boolean;
     colorTheme: string ;
+    colorText: string;
     
     constructor( isMobile ) {
         this.isMobile = isMobile;

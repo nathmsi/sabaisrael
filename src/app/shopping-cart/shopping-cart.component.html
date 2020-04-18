@@ -1,25 +1,30 @@
-<div class="d-flex flex-wrap align-content-center justify-content-center mt-5" *ngIf="!dataReceive">
+<!-- <div class="d-flex flex-wrap align-content-center justify-content-center mt-1" *ngIf="!dataReceive">
   <div class="spinner-border text-dark " role="status">
     <span class="sr-only">Loading...</span>
   </div>
-</div>
+</div> -->
 
 
-<div *ngIf="dataReceive && !isPoPup">
-  <h3 class="text-center p-4 bg-light">Shopping cart</h3>
+
+<mat-progress-bar [ngClass]="{'progress-bar-position': true }" color="primary" mode="indeterminate"
+  *ngIf="!dataReceive"></mat-progress-bar>
+
+<div *ngIf="dataReceive && !isPoPup" class="container-position-absolute">
+  <h3 class="text-center m-1 p-1  rounded" [style.color]="windowRef.colorText" [style.backgroundColor]="windowRef.colorTheme" >Shopping cart</h3>
   <div class="container border p-1 rounded-lg">
-    <app-table-view-sc [products]="products" [countUpdate]="countUpdate" [DeleteAll]="DeleteAll" [isPoPup]="false"
-      [DeleteOne]="DeleteOne">
+    <app-table-view-sc [products]="products" [countUpdate]="countUpdate" [DeleteAll]="DeleteAll" [isPoPup]="false" [openProductView]="openProductView"
+      [windowRef]="windowRef" [DeleteOne]="DeleteOne">
     </app-table-view-sc>
   </div>
 </div>
 
 
-<div *ngIf="dataReceive && isPoPup" class="bg-white">
-  <app-table-view-sc [products]="products" [countUpdate]="countUpdate" [DeleteAll]="DeleteAll" [isPoPup]="true"
-    [DeleteOne]="DeleteOne">
+<div *ngIf="dataReceive && isPoPup">
+  <app-table-view-sc [products]="products" [countUpdate]="countUpdate" [DeleteAll]="DeleteAll" [isPoPup]="true" [openProductView]="openProductView"
+    [windowRef]="windowRef" [DeleteOne]="DeleteOne">
   </app-table-view-sc>
-  <button class="btn btn-dark btn-block" [routerLink]="['/shopping-cart']" (click)="closePoPup()"
+  <button class="btn font-weight-bold  m-2" [routerLink]="['/shopping-cart']" (click)="closePoPup"
+    [style.color]="windowRef.colorText" [style.backgroundColor]="windowRef.colorTheme"
     routerLinkActive="router-link-active">
     Go to shopping cart
   </button>

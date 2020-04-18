@@ -5,7 +5,7 @@ import { Product } from '../models/product.model';
 
 // key that is used to access the data in local storage
 const STORAGE_KEY_PRODUCTS = 'List Shopping Card';
-
+const STORAGE_KEY_THEME = 'ColorTheme';
 
 
 @Injectable()
@@ -17,9 +17,14 @@ export class LocalStorageService {
 
     // shopping card 
 
-    storeOnLocalStorageProductCard(product: Product): void {
+    storeOnLocalStorageProductCard(id: string,categorie: string): void {
+        let product = {
+            id,
+            count: 0,
+            categorie
+        };
         let products = this.storage.get(STORAGE_KEY_PRODUCTS) ? this.storage.get(STORAGE_KEY_PRODUCTS) : [];
-        let countProducById = products.filter(e => e.id === product.id).length;
+        let countProducById = products.filter(e => e.id === id).length;
         if (countProducById === 0) {
             product.count = 1;
             products.push(product);
@@ -33,6 +38,7 @@ export class LocalStorageService {
         this.storage.set(STORAGE_KEY_PRODUCTS, products);
         console.log('Shopping Card storeOnLocalStorageProductCard()', products || 'LocaL storage is empty');
     }
+
     getLocalStorageProductCard(): any {
         console.log("%c Local Storage Shopping Card getLocalStorageProductCard() ", "color:orange", this.storage.get(STORAGE_KEY_PRODUCTS));
         return this.storage.get(STORAGE_KEY_PRODUCTS) ? this.storage.get(STORAGE_KEY_PRODUCTS) : [];
@@ -62,6 +68,25 @@ export class LocalStorageService {
     }
 
 
+
+
+    //// storage them color
+
+    setColorTheme(colorTheme: string ,textColor: string){
+        this.storage.set(STORAGE_KEY_THEME, {
+            colorTheme,
+            textColor
+        });
+        console.log('setColorTheme()', {
+            colorTheme,
+            textColor
+        } || 'LocaL storage is empty');
+    }
+
+    getColorTheme(){
+        console.log("%c getColorTheme() ", "color:orange", this.storage.get(STORAGE_KEY_THEME));
+        return this.storage.get(STORAGE_KEY_THEME) ? this.storage.get(STORAGE_KEY_THEME) : [];
+    }
 
 
 

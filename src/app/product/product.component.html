@@ -1,48 +1,51 @@
-<mat-progress-bar [ngClass]="{'progress-bar-position': !isMobile , 'progress-bar-position-mobile': isMobile  }"
-    color="primary" mode="indeterminate" *ngIf="!dataReceive || !menusReceive"></mat-progress-bar>
+<mat-progress-bar color="primary" [style.color]="refWindow.colorText" mode="indeterminate" *ngIf="!menusReceive"></mat-progress-bar>
 
 <div *ngIf="menusReceive">
 
 
 
-    <mat-toolbar color="light">
+    <mat-toolbar [style.backgroundColor]="refWindow.colorTheme" [style.color]="refWindow.colorText"
+        [ngClass]="{ 'sticky-top': refWindow.isMobile}">
         <mat-toolbar-row>
             <button mat-icon-button (click)=" sidenavOpen = !sidenavOpen ">
                 <mat-icon>menu</mat-icon>
             </button>
-            <h1 style="cursor: pointer;" (click)=" sidenavOpen = !sidenavOpen ">{{ categorieSelected }} </h1>
+            <h3 class="m-0" style="cursor: pointer;" (click)=" sidenavOpen = !sidenavOpen ">{{ categorieSelected }}
+            </h3>
             <span class="toolbar-spacer"></span>
-            <mat-icon style="cursor: pointer;" (click)="openProductSearch = !openProductSearch">search</mat-icon>
-            <app-product-search *ngIf="openProductSearch" [isMobile]="isMobile"></app-product-search>
+            <app-product-search [isMobile]="refWindow.headerMobile"></app-product-search>
         </mat-toolbar-row>
     </mat-toolbar>
 
     <mat-sidenav-container
-        [ngClass]="{'drawer-container-position': !isMobile , 'drawer-container-position-mobile': isMobile  }"
-        [style.marginTop.px]="0">
+        [ngClass]="{'drawer-container-position bg-white': !refWindow.headerMobile , 'drawer-container-position-mobile': refWindow.headerMobile  }"
+        [style.marginTop.px]="0" class="bg-white">
 
-
-        <mat-sidenav #snav [(opened)]="sidenavOpen" [mode]="isMobile ? 'over' : 'side'" [fixedInViewport]="isMobile"
-            fixedTopGap="110">
-            <mat-accordion>
+        <mat-sidenav #snav [(opened)]="sidenavOpen" [mode]="refWindow.headerMobile ? 'over' : 'side'"
+            [fixedInViewport]="refWindow.headerMobile" [ngClass]="{'sidenav-mobile': refWindow.headerMobile}"
+            [fixedTopGap]="56">
+            <mat-accordion class="bg-white">
                 <mat-expansion-panel *ngFor="let menu of menus; let i = index"
                     [expanded]="menu.value.includes(categorieSelected)" class="m-1">
                     <mat-expansion-panel-header>
                         <mat-panel-title class="h5 mr-4 pr-2"> {{ menu.categorie }}</mat-panel-title>
                     </mat-expansion-panel-header>
-                    <a class="nav-link rounded-sm text-center mb-1" style="cursor: pointer"
-                        [ngClass]="{'nav-link ': true , 'text-white bg-dark' : true }"
+                    <a class="nav-link rounded-sm text-center mb-1  font-weight-bold" style="cursor: pointer"
+                        [style.color]="refWindow.colorText" [style.backgroundColor]="refWindow.colorTheme"
                         *ngFor="let val of menu.value; let id = index"
-                        (click)="handleSelectCatgorie(val); isMobile && sidenavOpen = false">{{ val }}</a>
+                        (click)="handleSelectCatgorie(val); refWindow.headerMobile && sidenavOpen = false">{{ val }}</a>
                 </mat-expansion-panel>
             </mat-accordion>
         </mat-sidenav>
 
-        <mat-sidenav-content class="">
-           
+        <mat-sidenav-content class="bg-white">
+
+            <mat-progress-bar color="primary" mode="indeterminate" *ngIf="!dataReceive"></mat-progress-bar>
+
             <div class="m-2" *ngIf="dataReceive && !showProductView && !showProductHome">
-                <app-product-cards class="" [categorie]="categorieSelected" [products]="products" [isMobile]="isMobile" [navigateTo]="navigateTo"
-                    [openProductView]="openProductView" [onAddToCard]="onAddToCard">
+                <app-product-cards class="" [categorie]="categorieSelected" [products]="products"
+                    [refWindow]="refWindow" [navigateTo]="navigateTo" [openProductView]="openProductView"
+                    [onAddToCard]="onAddToCard">
                 </app-product-cards>
                 <div class="text-center p-4" *ngIf="products.length === 0">
                     <h3> 0 products was found</h3>
@@ -50,10 +53,11 @@
             </div>
 
             <app-product-view *ngIf="showProductView" [product]="productSelected" [navigateTo]="navigateTo"
-                [onAddToCard]="onAddToCard">
+                [refWindow]="refWindow" [onAddToCard]="onAddToCard">
             </app-product-view>
-            <app-product-home *ngIf="showProductHome" [isMobile]="isMobile" [openProductView]="openProductView"
+            <app-product-home *ngIf="showProductHome" [refWindow]="refWindow" [openProductView]="openProductView"
                 [menus]="menus" [navigateTo]="navigateTo" [onAddToCard]="onAddToCard"></app-product-home>
+
         </mat-sidenav-content>
 
     </mat-sidenav-container>

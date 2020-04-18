@@ -5,6 +5,7 @@ import {MatDialog } from '@angular/material/dialog';
 import { ProductUpdateComponent } from '../../product-update/product-update.component';
 import { ModalImageComponent } from '../modal-image/modal-image.component';
 import { Router } from '@angular/router';
+import { WindowReference } from 'src/app/models/windowRef.model';
 
 @Component({
   selector: 'app-card-view',
@@ -18,6 +19,7 @@ export class CardViewComponent implements OnInit {
   @Input() onAddToCard: any;
   @Input() isMobile: boolean;
   @Input() openProductView: Function;
+  @Input() refWindow: WindowReference;
 
 
   imageLoader: boolean = true;

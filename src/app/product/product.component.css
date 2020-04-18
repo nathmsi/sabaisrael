@@ -1,6 +1,6 @@
 .drawer-container-position {
     position: absolute;
-    top: 124px;
+    top: 117px;
     bottom: 52px;
     left: 0;
     right: 0;
@@ -8,7 +8,7 @@
 
  .drawer-container-position-mobile {
   position: absolute;
-  top: 110px;
+  top: 112px;
   bottom: 0;
   left: 0;
   right: 0;
@@ -16,16 +16,19 @@
 
 .progress-bar-position{
   position: absolute;
-  top: 60px;
+  top: 53px;
   left: 0;
   right: 0;
 }
 
 .progress-bar-position-mobile{
   position: absolute;
-  top: 54px;
+  top: 53px;
   left: 0;
   right: 0;
+}
+.sidenav-mobile{
+  padding-top: 56px;
 }
 
 .side-style {

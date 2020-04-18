@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { User } from '../models/user.model';
 import { Router } from '@angular/router';
@@ -17,8 +17,8 @@ import { WindowReference } from '../models/windowRef.model';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
+
   public isMenuCollapsed = true;
-  isMobile: boolean = false;
   lengthShoppingCard: number = 0;
   showSC: boolean = false;
   user: User = {
@@ -30,12 +30,13 @@ export class HeaderComponent implements OnInit {
     phone: "",
     level: ""
   };
-  colorTheme: string = '';
+  refWindow: WindowReference;
   userSubscription: Subscription;
   SubscriptionShoppingCard: Subscription;
   SubscriptionRefWindow: Subscription;
 
 
+  
 
   constructor(
     public platform: Platform,
@@ -59,8 +60,7 @@ export class HeaderComponent implements OnInit {
 
     this.SubscriptionRefWindow = this.windowRef.windowSubject.subscribe(
       (windowRefer: WindowReference) =>{
-        this.isMobile = windowRefer.headerMobile;
-        this.colorTheme = windowRefer.colorTheme;
+        this.refWindow = windowRefer;
       }
     )
 
@@ -85,6 +85,16 @@ export class HeaderComponent implements OnInit {
   }
 
 
+
+  @HostListener('window:scroll', ['$event']) 
+    scrollHandler(event) {
+      window.pageYOffset >= 54 && this.router.url.startsWith("/product") &&  ( this.isMenuCollapsed = true );
+    }
+  
+
+
+
+
   
 
   onSignOut() {
@@ -94,6 +104,7 @@ export class HeaderComponent implements OnInit {
 
   ngOnDestroy() {
     this.userSubscription.unsubscribe();
+    this.SubscriptionRefWindow.unsubscribe();
   }
 
 

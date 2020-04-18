@@ -9,6 +9,12 @@ import { ProductFormComponent } from '../product-form/product-form.component';
 import { WindowRef } from 'src/app/services/windowRef.service';
 import { WindowReference } from 'src/app/models/windowRef.model';
 
+interface Sort {
+  value: string;
+  viewValue: string;
+}
+
+
 @Component({
   selector: 'app-product-cards',
   templateUrl: './product-cards.component.html',
@@ -19,7 +25,7 @@ export class ProductCardsComponent implements OnInit {
   @Input() categorie: string;
   @Input() products: Product[];
   @Input() onAddToCard: Function;
-  @Input() isMobile: Boolean;
+  @Input() refWindow: WindowReference;
   @Input() openProductView: Function;
   @Input() navigateTo: Function;
 
@@ -27,12 +33,23 @@ export class ProductCardsComponent implements OnInit {
   productFilter: Product[] = [];
   sizeSelected: string = "";
   qualitySelected: string = "";
+  selectedOptionPrice: string = "";
+  selectedOptionKippotsSize: string = "";
+  isFilterLoading: boolean = true;
 
 
-  constructor(  public dialog: MatDialog) {
+  foods: Sort[] = [
+    { value: 'steak-0', viewValue: 'Steak' },
+    { value: 'pizza-1', viewValue: 'Pizza' },
+    { value: 'tacos-2', viewValue: 'Tacos' }
+  ];
+
+
+  constructor(public dialog: MatDialog) {
   }
 
   ngOnInit(): void {
+    this.productFilter = this.products.map(e => e);
   }
 
 
@@ -44,7 +61,24 @@ export class ProductCardsComponent implements OnInit {
 
   }
 
+  onSelectedOptionPrice() {
+    console.log(this.selectedOptionPrice);
+    this.productFilter = this.products.map(e => e);
+    this.selectedOptionPrice === 'less' && this.productFilter.sort((a, b) => (a.price > b.price) ? 1 : -1);
+    this.selectedOptionPrice === 'plus' && this.productFilter.sort((a, b) => (a.price > b.price) ? 1 : -1).reverse();
+    this.selectedOptionPrice === 'new' && this.productFilter.reverse();
+    console.log(this.productFilter,this.products);
+  }
+
+  onSelectedOptionKippotSize() {
+    console.log(this.selectedOptionKippotsSize);
+    this.productFilter = this.products.map(e => e);
+    console.log(this.productFilter,this.products);
+  }
+
   
+
+
 
 
   // onAddToCard = (product: Product) => {
@@ -88,7 +122,7 @@ export class ProductCardsComponent implements OnInit {
 
 
   ngOnDestroy() {
-   
+
   }
 
 

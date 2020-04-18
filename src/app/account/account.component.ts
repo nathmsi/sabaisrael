@@ -5,6 +5,8 @@ import { Subscription } from 'rxjs';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { WindowReference } from '../models/windowRef.model';
+import { WindowRef } from '../services/windowRef.service';
 
 @Component({
   selector: 'app-account',
@@ -28,9 +30,16 @@ export class AccountComponent implements OnInit {
   };
   userSubscription: Subscription;
   fileDetected: File = null;
+  imageLoader: boolean = true;
+  windowRef: WindowReference;
+  SubscriptionRefWindow: Subscription;
+  
+  constructor(
+     private authService: AuthService,
+     private _snackBar: MatSnackBar,
+     private windowRefer: WindowRef,
+     ) {
 
-
-  constructor(private authService: AuthService, private _snackBar: MatSnackBar) {
     this.userSubscription = this.authService.userSubject.subscribe(
       (user: User) => {
         console.log("%c Account component ", "color: orange", user);
@@ -39,6 +48,14 @@ export class AccountComponent implements OnInit {
       }
     );
     this.authService.emitUser();
+
+    this.SubscriptionRefWindow = this.windowRefer.windowSubject.subscribe(
+      (windowRefer: WindowReference) => {
+        this.windowRef = windowRefer;
+      }
+    )
+
+    this.windowRefer.emitWindowRef();
   }
 
   ngOnInit(): void {
@@ -63,19 +80,11 @@ export class AccountComponent implements OnInit {
               this.fileUrl = url;
               this.fileIsUploading = false;
               this.fileUploaded = true;
-              this._snackBar.open('upload file success', 'close', {
-                duration: 2000,
-                horizontalPosition: 'right',
-                panelClass: 'snack-error'
-              });
+              this._snackBar.open('upload file success', 'close');
               resolve();
             },
             (error) => {
-              this._snackBar.open('upload file error', 'close', {
-                duration: 2000,
-                horizontalPosition: 'right',
-                panelClass: 'snack-error'
-              });
+              this._snackBar.open('upload file error', 'close');
               resolve();
             }
           );
@@ -93,23 +102,20 @@ export class AccountComponent implements OnInit {
         this.saveImage().then(
           () => {
             this.dataReceive = true
-            this._snackBar.open('user saved', 'close', {
-              duration: 2000,
-              horizontalPosition: 'right',
-              panelClass: 'snack-error'
-            });
+            this._snackBar.open('user saved', 'close');
           }
         )
       },
       (error) => {
-        this._snackBar.open('saved error', 'close', {
-          duration: 2000,
-          horizontalPosition: 'right',
-          panelClass: 'snack-error'
-        });
+        this._snackBar.open('saved error', 'close', );
       }
     )
   }
+
+  setColorTheme(colorTheme: string ,textColor: string){
+    this.windowRefer.setColorTheme(colorTheme,textColor);
+  }
+
 
   ngOnDestroy() {
     this.userSubscription.unsubscribe();

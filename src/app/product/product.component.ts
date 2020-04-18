@@ -20,7 +20,6 @@ export class ProductComponent implements OnInit {
   products: Product[] = [];
   productSelected: Product;
   categorieSelected: string = 'Kippots'
-  isMobile: boolean = false;
   dataReceive: boolean = false;
   menusReceive: boolean = false;
   mobileQuery: MediaQueryList;
@@ -30,7 +29,8 @@ export class ProductComponent implements OnInit {
   sidenavOpen: boolean = false;
   showProductView: boolean = false;
   showProductHome: boolean = false;
-  openProductSearch: boolean = false;
+  openProductSearch: boolean = true;
+  refWindow: WindowReference;
 
   constructor(
     public dialog: MatDialog,
@@ -44,8 +44,9 @@ export class ProductComponent implements OnInit {
 
     this.SubscriptionRefWindow = this.windowRef.windowSubject.subscribe(
       (windowRefer: WindowReference) => {
-        this.isMobile = windowRefer.contentMobile;
-        if (!this.isMobile) { this.sidenavOpen = true } else { this.sidenavOpen = false }
+        this.refWindow =  windowRefer;
+        this.refWindow.isMobile = windowRefer.contentMobile;
+        if (!this.refWindow.isMobile) { this.sidenavOpen = true  } else { this.sidenavOpen = false , this.openProductSearch = false }
       }
     )
 
@@ -130,12 +131,7 @@ export class ProductComponent implements OnInit {
 
   onAddToCard = (product: Product) => {
     this.productService.addToShoppingCard(product);
-    let snackBarRef = this._snackBar.open('+ shopping cart ', 'Go', {
-      duration: 4000,
-      verticalPosition: this.isMobile ? 'bottom' : 'top',
-      horizontalPosition: 'center',
-      panelClass: 'snack-error'
-    });
+    let snackBarRef = this._snackBar.open('+ shopping cart ', 'Go');
     snackBarRef.onAction().subscribe(() => {
       this.router.navigate(['/shopping-cart']);
     })

@@ -1,5 +1,5 @@
-<div [ngClass]="{ 'footer-container-position': !isMobile , 'fixed-bottom': false  }" style="background-color: #ffffff;">
-    <div [ngClass]="{ 'footer-copyright text-center py-3': true, 'text-white bg-dark': !isMobile  }">© 2020 Copyright:
+<div [ngClass]="{ 'fixed-bottom': true  }"  [style.backgroundColor]="refWindow.colorTheme" [style.color]="refWindow.colorText" >
+    <div class='footer-copyright text-center py-3' >© 2020 Copyright:
         Saba Israel
     </div>
 </div>

@@ -1,4 +1,4 @@
-.container-popup  {
+/* .container-popup  {
     max-height: 300px;
     overflow: auto;
   }
@@ -6,7 +6,7 @@
 .container-not-popup {
     max-height: 700px;
     overflow: auto;
-  }
+  } */
 
   tr.mat-footer-row {
     font-weight: bold;

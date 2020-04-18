@@ -10,9 +10,9 @@ import { Subscription } from 'rxjs';
 })
 export class FooterComponent implements OnInit {
 
-  isMobile: boolean = false;
   SubscriptionRefWindow: Subscription;
   colorTheme: string = '';
+  refWindow: WindowReference;
 
 
   constructor(
@@ -21,8 +21,7 @@ export class FooterComponent implements OnInit {
 
     this.SubscriptionRefWindow = this.windowRef.windowSubject.subscribe(
       (windowRefer: WindowReference) => {
-        this.isMobile = windowRefer.contentMobile;
-        this.colorTheme = windowRefer.colorTheme;
+        this.refWindow = windowRefer;
       }
     )
 

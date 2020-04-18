@@ -3,6 +3,10 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ContactService } from '../services/contact.service';
 import { ToastrService } from 'ngx-toastr';
 import { Contact } from '../models/contact.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { WindowRef } from '../services/windowRef.service';
+import { Subscription } from 'rxjs';
+import { WindowReference } from '../models/windowRef.model';
 
 @Component({
   selector: 'app-contact-me',
@@ -15,13 +19,23 @@ export class ContactMeComponent {
   validatorInvalid: boolean = false;
   loadingContent: boolean = false;
 
+  subscription: Subscription;
+  windowRef: WindowReference;
 
 
   constructor(
     private formBuilder: FormBuilder,
     private contactService: ContactService,
+    private _snackBar: MatSnackBar,
+    private windowReferService: WindowRef
   ) {
     this.initForm();
+    this.subscription = this.windowReferService.windowSubject.subscribe(
+      (windowRef: WindowReference) =>{
+        this.windowRef = windowRef;
+      }
+    )
+    this.windowReferService.emitWindowRef();
   }
 
   initForm() {
@@ -49,6 +63,7 @@ export class ContactMeComponent {
         () => {
           this.loadingContent = false;
           this.initForm();
+          this._snackBar.open('Your message has been sent', 'close');
           console.log('success');
         },
         (error) => {
@@ -60,6 +75,11 @@ export class ContactMeComponent {
       this.validatorInvalid = true;
     }
   }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
 
 
 

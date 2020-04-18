@@ -1,7 +1,9 @@
-<div class="m-2">
+<mat-progress-bar [ngClass]="{'progress-bar-position': true}" color="primary" mode="indeterminate" *ngIf="countReceive > 0"></mat-progress-bar>
 
 
-    <div *ngFor="let menu of menuList" >
+<div class="m-0">
+
+    <div *ngFor="let menu of menuList; let i = index" >
         <!-- <nav aria-label="breadcrumb navbar" class=" ">
             <ol class="breadcrumb m-2">
                 <li class="breadcrumb-item">
@@ -14,8 +16,8 @@
             </ol>
         </nav> -->
 
-        <app-home-view-product [categorie]="menu" [isMobile]="isMobile" [openProductView]="openProductView" [navigateTo]="navigateTo"
-            [onAddToCard]="onAddToCard"></app-home-view-product>
+        <app-home-view-product [categorie]="menu" [refWindow]="refWindow" [openProductView]="openProductView" [navigateTo]="navigateTo"
+            [onAddToCard]="onAddToCard"  [setDataReceive]="setDataReceive"></app-home-view-product>
     </div>
 
 

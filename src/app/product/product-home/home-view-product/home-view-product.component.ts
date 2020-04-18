@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Product } from 'src/app/models/product.model';
 import { ProductService } from 'src/app/services/product.service';
+import { WindowReference } from 'src/app/models/windowRef.model';
 
 @Component({
   selector: 'app-home-view-product',
@@ -11,9 +12,10 @@ export class HomeViewProductComponent implements OnInit {
 
   @Input() onAddToCard: Function;
   @Input() openProductView: Function;
-  @Input() isMobile: boolean;
+  @Input() refWindow: WindowReference;
   @Input() categorie: string;
   @Input() navigateTo: Function;
+  @Input() setDataReceive: Function;
 
   products: Product[] = [];
   dataReceive: boolean = false;
@@ -27,10 +29,11 @@ export class HomeViewProductComponent implements OnInit {
   }
 
   getProduct(){
-    this.productService.getProductByCategorieLimited(this.categorie,this.isMobile? 2 : 6).then(
+    this.productService.getProductByCategorieLimited(this.categorie,this.refWindow.contentMobile? 2 : 6).then(
       (products: Product[]) => {
         this.products = products;
         this.dataReceive = true;
+        this.setDataReceive(this.categorie);
       },
       (error) => {
         console.log(error);
@@ -38,5 +41,6 @@ export class HomeViewProductComponent implements OnInit {
       }
     )
   }
+
 
 }

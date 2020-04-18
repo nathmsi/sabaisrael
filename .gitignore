@@ -3,3 +3,4 @@ src/environments
 e2e
 dist
 functions
+.firebase/

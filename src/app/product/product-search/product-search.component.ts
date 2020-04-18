@@ -64,15 +64,38 @@ export class ProductSearchComponent implements OnInit {
 
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
-    return filterValue === '' ? [] : 
-    this.productSeach.filter(element => {
-      return element.name.toLowerCase().includes(filterValue) || element.categorie.toLowerCase().includes(filterValue)
-    }).slice(0, 3);
+    return filterValue === '' ? [] :
+      this.productSeach.filter(element => {
+        return element.name.toLowerCase().includes(filterValue) || element.categorie.toLowerCase().includes(filterValue)
+      }).slice(0, 3);
   }
 
 
-  functiontest(id, categorie) {
+  openProduct(id, categorie) {
     this.router.navigate(['product', categorie, id]);
+    this.closeKeyboard();
   }
+
+  openProductKEYUP() {
+    if (this.myControl.value !== null) {
+      let firstProduct: any[];
+      firstProduct = this._filter(this.myControl.value);
+      if (firstProduct[0]) {
+        //console.log(firstProduct);
+        this.openProduct(firstProduct[0].id, firstProduct[0].categorie);
+        this.myControl.setValue('');
+      } else {
+        this.myControl.setValue('');
+        this.closeKeyboard();
+      }
+    }
+  }
+
+  closeKeyboard() {
+    let activeElement = <HTMLElement>document.activeElement;
+    activeElement && activeElement.blur && activeElement.blur();
+  }
+
+
 
 }

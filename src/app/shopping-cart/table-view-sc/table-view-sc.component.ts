@@ -2,6 +2,7 @@ import { Component, OnInit, Input, ViewChild, SimpleChanges } from '@angular/cor
 import { Product } from 'src/app/models/product.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import { WindowReference } from 'src/app/models/windowRef.model';
 @Component({
   selector: 'app-table-view-sc',
   templateUrl: './table-view-sc.component.html',
@@ -14,6 +15,8 @@ export class TableViewScComponent implements OnInit {
   @Input() DeleteOne: Function;
   @Input() countUpdate: Function;
   @Input() isPoPup: boolean;
+  @Input() windowRef: WindowReference;
+  @Input() openProductView: Function;
 
 
   dataSource = new MatTableDataSource<Product>(this.products);

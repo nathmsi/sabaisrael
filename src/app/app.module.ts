@@ -1,40 +1,40 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule  } from '@angular/common/http'
-import { ReactiveFormsModule ,FormsModule } from '@angular/forms'
+import { HttpClientModule } from '@angular/common/http'
+import { ReactiveFormsModule, FormsModule } from '@angular/forms'
 import { Routes, RouterModule } from '@angular/router'
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { StorageServiceModule } from 'ngx-webstorage-service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PopupModule } from '@progress/kendo-angular-popup';
-
+import { YouTubePlayerModule } from '@angular/youtube-player';
 
 
 
 // material ui
 import { MatCardModule } from '@angular/material/card';
-import {MatButtonModule} from '@angular/material/button';
-import {MatGridListModule} from '@angular/material/grid-list';
-import {MatIconModule} from '@angular/material/icon';
-import {MatTabsModule} from '@angular/material/tabs';
-import {MatSelectModule} from '@angular/material/select';
-import {MatBadgeModule} from '@angular/material/badge';
-import {MatTableModule} from '@angular/material/table';
-import {MatPaginatorModule} from '@angular/material/paginator';
-import {MatChipsModule} from '@angular/material/chips';
-import {MatDialogModule} from '@angular/material/dialog';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatExpansionModule} from '@angular/material/expansion';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {DragDropModule} from '@angular/cdk/drag-drop';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
-import {MatInputModule} from '@angular/material/input';
-
+import { MatButtonModule } from '@angular/material/button';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatSelectModule } from '@angular/material/select';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatInputModule } from '@angular/material/input';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 // Services
 import { AuthService } from './services/auth.service'
@@ -76,24 +76,35 @@ import { ProductHomeComponent } from './product/product-home/product-home.compon
 import { HomeViewProductComponent } from './product/product-home/home-view-product/home-view-product.component';
 import { ProductSearchComponent } from './product/product-search/product-search.component';
 import { ProductSearchViewComponent } from './product/product-search/product-search-view/product-search-view.component';
+import { VideoComponent } from './video/video.component';
+import { YoutubePlayerComponent } from './video/youtube-player/youtube-player.component';
+import { ImageModalComponent } from './product/product-view/image-modal/image-modal.component';
 
+
+const snackBarOption = {
+  duration: 2000,
+  horizontalPosition: 'center',
+  verticalPosition : 'top',
+  panelClass: 'snack-error'
+}
 
 
 const appRoutes: Routes = [
   { path: 'auth/signup', component: SignupComponent },
   { path: 'auth/signin', component: SigninComponent },
-  { path: 'account',  component: AccountComponent },
-  { path: 'product', redirectTo: 'product/home/', pathMatch: 'full'},
-  { path: 'product/:categorie', redirectTo: 'product/:categorie/', pathMatch: 'full'},
-  { path: 'product/:categorie/:id', component: ProductComponent},
-  { path: 'update/product', canActivate: [AuthGuardService] , component: ProductStockUpdateComponent },
+  { path: 'account', component: AccountComponent },
+  { path: 'product', redirectTo: 'product/home/', pathMatch: 'full' },
+  { path: 'product/:categorie', redirectTo: 'product/:categorie/', pathMatch: 'full' },
+  { path: 'product/:categorie/:id', component: ProductComponent },
+  { path: 'update/product', canActivate: [AuthGuardService], component: ProductStockUpdateComponent },
   { path: 'shopping-cart', component: ShoppingCartComponent },
   { path: 'about', component: AboutComponent },
   { path: 'contact', component: ContactMeComponent },
-  { path: 'update/contact',  canActivate: [AuthGuardService] , component: ContactUpdateComponent },
-  { path: 'home', redirectTo: 'product/home/' , pathMatch: 'full'  },
+  { path: 'update/contact', canActivate: [AuthGuardService], component: ContactUpdateComponent },
+  { path: 'video', component: VideoComponent },
+  { path: 'home', redirectTo: 'product/home/', pathMatch: 'full' },
   { path: 'tehilims', component: TehilimsComponent },
-  { path: '', redirectTo: 'product/home/' , pathMatch: 'full' },
+  { path: '', redirectTo: 'product/home/', pathMatch: 'full' },
   // { path: '', redirectTo: 'books', pathMatch: 'full' },
   { path: '**', redirectTo: '' }
 ];
@@ -119,7 +130,8 @@ const MAtModule = [
   DragDropModule,
   MatMenuModule,
   MatAutocompleteModule,
-  MatInputModule
+  MatInputModule,
+  MatProgressSpinnerModule
 ];
 
 
@@ -155,6 +167,9 @@ const MAtModule = [
     HomeViewProductComponent,
     ProductSearchComponent,
     ProductSearchViewComponent,
+    VideoComponent,
+    YoutubePlayerComponent,
+    ImageModalComponent,
   ],
   imports: [
     ...MAtModule,
@@ -166,9 +181,10 @@ const MAtModule = [
     HttpClientModule,
     NgbModule,
     StorageServiceModule,
-    BrowserAnimationsModule, 
+    BrowserAnimationsModule,
     PopupModule,
-    RouterModule.forRoot(appRoutes), 
+    YouTubePlayerModule,
+    RouterModule.forRoot(appRoutes),
   ],
   providers: [
     AuthService,
@@ -177,8 +193,9 @@ const MAtModule = [
     WindowRef,
     AuthGuardService,
     ContactService,
-    TehilimsService
+    TehilimsService,
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: snackBarOption }
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

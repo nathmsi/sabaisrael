@@ -1,8 +1,7 @@
-<div *ngIf="dataReceive" class="border border-warning rounded p-1 m-1">
+<div *ngIf="dataReceive" class="border border-warning border-top-0 border-left-0 border-right-0 p-1 m-1">
     <div class="d-flex flex-row justify-content-between">
         <div class="">
-            <small class=" font-weight-bolder m-0"> {{ product.name }} </small> <br/>
-            <small class="" *ngIf="product.size"> {{ product.size + ' cm'  }} </small>
+            <h5 class=" font-weight-bolder m-0"> {{ product.name }} </h5> 
             <p class="text-dark font-weight-bolder m-0"> {{ product.price }} ₪ </p>
         </div>
         <div class="">
@@ -17,6 +16,7 @@
         </div>
     </div>
 </div>
+
 
 <div class="d-flex justify-content-center flex-wrap align-content-center" *ngIf="!dataReceive">
     <div class="spinner-border spinner-border-sm text-center" role="status">

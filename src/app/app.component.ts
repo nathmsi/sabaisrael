@@ -47,7 +47,6 @@ export class AppComponent {
     this.windowRefer.setPlatform(this.platform);
     this.windowRefer.width = window.innerWidth;
     this.windowRefer.height = window.innerHeight;
-    this.windowRefer.colorTheme = '#343a40';
     this.setObjectWindowRef();
   }
 

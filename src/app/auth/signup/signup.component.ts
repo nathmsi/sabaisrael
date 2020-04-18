@@ -4,6 +4,9 @@ import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { WindowRef } from 'src/app/services/windowRef.service';
+import { WindowReference } from 'src/app/models/windowRef.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-signup',
@@ -15,11 +18,24 @@ export class SignupComponent implements OnInit {
   signupForm: FormGroup;
   errorMessage: string;
   loadingContent: boolean = false;
+  windowRef: WindowReference;
+  SubscriptionRefWindow: Subscription;
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(
+    private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private _snackBar: MatSnackBar) { }
+    private _snackBar: MatSnackBar,
+    private windowRefer: WindowRef,
+    ) { 
+      this.SubscriptionRefWindow = this.windowRefer.windowSubject.subscribe(
+        (windowRefer: WindowReference) => {
+          this.windowRef = windowRefer;
+        }
+      )
+  
+      this.windowRefer.emitWindowRef();
+    }
 
   ngOnInit() {
     this.initForm();
@@ -41,21 +57,13 @@ export class SignupComponent implements OnInit {
     this.authService.createNewUser(email, password, username).then(
       () => {
         this.loadingContent = false;
-        this._snackBar.open( 'user created success ' + this.authService.user.name , 'close', {
-          duration: 2000,
-          horizontalPosition: 'right',
-          panelClass: 'snack-error'
-        });
+        this._snackBar.open( 'user created success ' + this.authService.user.name , 'close');
         this.router.navigate(['/']);
       },
       (error) => {
         this.loadingContent = false;
         this.errorMessage = error;
-        this._snackBar.open( error , 'close', {
-          duration: 2000,
-          horizontalPosition: 'right',
-          panelClass: 'snack-error'
-        });
+        this._snackBar.open( error , 'close');
       }
     );
 

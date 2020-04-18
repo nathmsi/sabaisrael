@@ -1,8 +1,20 @@
 .headerNavHover a:hover {
-    background-color: rgb(92, 92, 92);
+    /* background-color: rgb(156, 156, 156); */
+    color: black;
 }
 
 
 .content-dialog-sc {
     width: 600px;
+}
+
+
+::ng-deep .cdk-overlay-pane .filesList{
+    min-width:500px;
+}
+
+.routerActive{
+    /* background-color: rgb(156, 156, 156); */
+    font-weight: bolder;
+    color: black;
 }

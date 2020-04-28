@@ -1,6 +1,7 @@
 .headerNavHover a:hover {
-    /* background-color: rgb(156, 156, 156); */
-    color: black;
+    /* background-color: rgb(250, 250, 250);
+    color: black; */
+    /* font-weight: bolder; */
 }
 
 
@@ -16,5 +17,27 @@
 .routerActive{
     /* background-color: rgb(156, 156, 156); */
     font-weight: bolder;
-    color: black;
 }
+
+
+.nav-link-style {
+    margin-right: 10px;
+}
+
+
+
+
+
+/* @import url(https://fonts.googleapis.com/css?family=Quando); */
+/* *, *:after, *:before {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+} */
+
+
+.navlink-animate{
+
+}
+
+
+  

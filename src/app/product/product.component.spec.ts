@@ -6,7 +6,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ProductService } from '../services/product.service';
 import { Platform } from '@angular/cdk/platform';
 import { WindowRef } from '../services/windowRef.service';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../services/Authentication/auth.service';
 import { LocalStorageService } from '../services/storageLocalStorage.service';
 
 describe('ProductComponent', () => {

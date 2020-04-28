@@ -27,3 +27,11 @@ button:focus, button:active:focus, button.active:focus {
 .mat-dialog-container {
     padding: 5px !important;
 }
+
+.snackbar { 
+    background-color: #000000;
+    color: #ffffff;
+}
+.snackbar .mat-button-wrapper {
+        color: rgb(255, 255, 255) !important;  
+};

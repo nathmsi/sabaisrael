@@ -3,9 +3,11 @@ import * as firebase from 'firebase/app'
 import 'firebase/auth';
 import 'firebase/firestore'
 
-import { User } from '../models/user.model'
+import { User } from '../../models/user.model'
 import { Subject } from 'rxjs/Subject';
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
+import { httpClientCrudService } from './httpService.service';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable()
 export class AuthService {
@@ -20,12 +22,21 @@ export class AuthService {
     isAuth: false,
     photo: "",
     phone: "",
-    level: ""
+    level: "",
+    token: "",
+    photoUrl: ""
   };
 
   userSubject = new Subject<User>();
 
-  constructor() {
+  constructor(
+    private httpClient: HttpClient
+  ) {
+  }
+
+
+  getToken() {
+    return this.user.token;
   }
 
   connectFirebase() {
@@ -35,12 +46,21 @@ export class AuthService {
         firebase.initializeApp(firebaseConfig)
         this.db = this.server.firestore();
         this.server.auth().onAuthStateChanged(
-          (user) =>{
-            if (user) {
-              console.log(`%c user connected ${user.displayName} `, "color:yellow", user);
-              this.isAuth(user.displayName, user.email, user.uid, true, user.photoURL || "", user.phoneNumber);
+          (user) => {
+            console.log('user', user);
+            if (user === null) {
+              resolve(true);
             }
-            resolve(true);
+            if (user) {
+              firebase.auth().currentUser.getIdToken(true).then(
+                (token) => {
+                  console.log(`%c user connected ${user.displayName} `, "color:yellow", user);
+                  this.isAuth(user.displayName, user.email, user.uid, true, user.photoURL || "", user.phoneNumber, token);
+                  resolve(true);
+                }
+              );
+            }
+            //resolve(true);
           },
           (error) => reject(error)
         )
@@ -54,7 +74,7 @@ export class AuthService {
     this.userSubject.next(this.user);
   }
 
-  isAuth(displayName: string, email: string, uid: string, isAuth: boolean, photoURL: string, phone: string) {
+  isAuth(displayName: string, email: string, uid: string, isAuth: boolean, photoURL: string, phone: string, token: string) {
     this.user = {
       name: displayName,
       email,
@@ -62,7 +82,9 @@ export class AuthService {
       isAuth,
       photo: photoURL,
       phone,
-      level: "client"
+      token,
+      level: "client",
+      photoUrl: photoURL
     };
     if (environment.emailManager.includes(email)) {
       this.user.level = 'manager';
@@ -71,13 +93,28 @@ export class AuthService {
   }
 
 
-  
+
 
   setCurrentUser() {
-    const currentUser = this.server.auth().currentUser;
-    if (currentUser) {
-      this.isAuth(currentUser.displayName, currentUser.email, currentUser.uid, true, currentUser.photoURL || "", currentUser.phoneNumber);
-    }
+    return new Promise(
+      (resolve,reject)=>{
+        const user = this.server.auth().currentUser;
+        if (user) {
+          firebase.auth().currentUser.getIdToken(true).then(
+            (token) => {
+              console.log(`%c user connected ${user.displayName} `, "color:yellow", user);
+              this.isAuth(user.displayName, user.email, user.uid, true, user.photoURL || "", user.phoneNumber, token);
+              resolve();
+            },
+            (error)=>{
+              console.log(error);
+              reject(error);
+            }
+          );
+        }
+      }
+    )
+    
   }
 
   createNewUser(email: string, password: string, username: string) {
@@ -88,8 +125,9 @@ export class AuthService {
             this.server.auth().currentUser.updateProfile({
               displayName: username,
             }).then(
-              () => {
-                this.setCurrentUser();
+              async () => {
+                await this.setCurrentUser();
+                await this.saveUserToServer();
                 console.log("%c createNewUser => ", "color:yellow", user);
                 resolve();
               },
@@ -113,9 +151,9 @@ export class AuthService {
     return new Promise(
       (resolve, reject) => {
         this.server.auth().signInWithEmailAndPassword(email, password).then(
-          (user) => {
+         async (user) => {
             console.log("%c signInUser  ", "color:yellow", user);
-            this.setCurrentUser();
+            await this.setCurrentUser();
             resolve();
           },
           (error) => {
@@ -134,7 +172,9 @@ export class AuthService {
       isAuth: false,
       photo: "",
       phone: "",
-      level: ""
+      level: "",
+      token: "",
+      photoUrl: ""
     };
     this.server.auth().signOut();
     this.emitUser();
@@ -197,13 +237,45 @@ export class AuthService {
           () => {
             console.log("%c saveUser  ", "color:yellow", username);
             this.user.name = username;
-            this.emitUser()
-            resolve();
+            this.emitUser();
+            this.saveUserToServer().then(
+              () => {
+                resolve();
+              },
+              (error) => {
+                console.log(error);
+                reject();
+              }
+            )
           },
           (error) => {
+            console.log(error);
             reject(error);
           }
         )
+      }
+    )
+  }
+
+  saveUserToServer() {
+    const header = {
+      //responseType: 'text' as 'json',
+      headers: new HttpHeaders()
+        .set('Authorization', `Bearer ${this.user.token}`)
+        .set('responseType', '')
+    }
+    return new Promise(
+      (resolve, reject) => {
+        this.httpClient.post('https://us-central1-saba-israel.cloudfunctions.net/webApi/api/v1/' + 'users'
+          , {
+            displayName: this.user.name,
+            email: this.user.email,
+            uid: this.user.uid,
+            photoUrl: this.user.photo
+          }, header).subscribe({
+            next: data => resolve(data),
+            error: error => reject(error.error)
+          })
       }
     )
   }

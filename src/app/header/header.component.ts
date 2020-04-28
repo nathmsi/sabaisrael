@@ -1,5 +1,5 @@
 import { Component, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../services/Authentication/auth.service';
 import { User } from '../models/user.model';
 import { Router } from '@angular/router';
 import { Subscription, Observable } from 'rxjs';
@@ -28,7 +28,9 @@ export class HeaderComponent implements OnInit {
     isAuth: false,
     photo: "",
     phone: "",
-    level: ""
+    level: "",
+    token: "",
+    photoUrl: ""
   };
   refWindow: WindowReference;
   userSubscription: Subscription;

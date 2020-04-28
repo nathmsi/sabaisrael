@@ -2,7 +2,7 @@ import { Component, HostListener, ChangeDetectorRef } from '@angular/core';
 import { WindowRef } from './services/windowRef.service';
 import { Platform } from '@angular/cdk/platform';
 import { WindowReference } from './models/windowRef.model';
-import { AuthService } from './services/auth.service';
+import { AuthService } from './services/Authentication/auth.service';
 import { MediaMatcher } from '@angular/cdk/layout';
 
 @Component({

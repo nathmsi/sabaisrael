@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../services/Authentication/auth.service';
 import { User } from '../models/user.model';
 import { Subscription } from 'rxjs';
 import { NgForm } from '@angular/forms';
@@ -26,7 +26,9 @@ export class AccountComponent implements OnInit {
     isAuth: false,
     photo: "",
     phone: "",
-    level: ""
+    level: "",
+    token: "",
+    photoUrl: ""
   };
   userSubscription: Subscription;
   fileDetected: File = null;

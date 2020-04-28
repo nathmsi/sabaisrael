@@ -50,7 +50,7 @@ export class WindowRef {
 
 
     setDefaultColorTheme(){
-        this.setColorTheme('#2a6592','#ffffff');
+        this.setColorTheme('#34495E','#ffffff');
     }
 
 

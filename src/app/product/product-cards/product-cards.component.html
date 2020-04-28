@@ -1,11 +1,11 @@
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb mb-2" [style.color]="refWindow.colorText" [style.backgroundColor]="refWindow.colorTheme">
+<nav aria-label="breadcrumb" >
+    <ol class="breadcrumb mb-2 bg-white" [style.color]="refWindow.colorTheme"  >
         <li class="breadcrumb-item ">
             <a (click)="navigateTo('home')" style="cursor: pointer;" class="font-weight-bolder">
                 Home
             </a>
         </li>
-        <li class="breadcrumb-item active" aria-current="page" [style.color]="refWindow.colorText">
+        <li class="breadcrumb-item active" aria-current="page" [style.color]="refWindow.colorTheme">
             {{categorie}} </li>
     </ol>
 </nav>

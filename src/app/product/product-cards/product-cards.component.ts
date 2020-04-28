@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { ProductService } from 'src/app/services/product.service';
 import { Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
-import { ProductFormComponent } from '../product-form/product-form.component';
 import { WindowRef } from 'src/app/services/windowRef.service';
 import { WindowReference } from 'src/app/models/windowRef.model';
 
@@ -52,6 +51,10 @@ export class ProductCardsComponent implements OnInit {
     this.productFilter = this.products.map(e => e);
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+   this.productFilter = this.products.map(e => e);
+ }
+
 
   onSubmitForm() {
 
@@ -62,18 +65,18 @@ export class ProductCardsComponent implements OnInit {
   }
 
   onSelectedOptionPrice() {
-    console.log(this.selectedOptionPrice);
+    // console.log(this.selectedOptionPrice);
     this.productFilter = this.products.map(e => e);
     this.selectedOptionPrice === 'less' && this.productFilter.sort((a, b) => (a.price > b.price) ? 1 : -1);
     this.selectedOptionPrice === 'plus' && this.productFilter.sort((a, b) => (a.price > b.price) ? 1 : -1).reverse();
     this.selectedOptionPrice === 'new' && this.productFilter.reverse();
-    console.log(this.productFilter,this.products);
+    // console.log(this.productFilter,this.products);
   }
 
   onSelectedOptionKippotSize() {
-    console.log(this.selectedOptionKippotsSize);
+    // console.log(this.selectedOptionKippotsSize);
     this.productFilter = this.products.map(e => e);
-    console.log(this.productFilter,this.products);
+    // console.log(this.productFilter,this.products);
   }
 
   

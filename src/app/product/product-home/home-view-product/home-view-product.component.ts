@@ -15,10 +15,11 @@ export class HomeViewProductComponent implements OnInit {
   @Input() refWindow: WindowReference;
   @Input() categorie: string;
   @Input() navigateTo: Function;
-  @Input() setDataReceive: Function;
 
-  products: Product[] = [];
-  dataReceive: boolean = false;
+  @Input() products : Product[];
+
+  // products: Product[] = [];
+  // dataReceive: boolean = false;
 
   constructor(
     private productService: ProductService
@@ -29,17 +30,17 @@ export class HomeViewProductComponent implements OnInit {
   }
 
   getProduct(){
-    this.productService.getProductByCategorieLimited(this.categorie,this.refWindow.contentMobile? 2 : 6).then(
-      (products: Product[]) => {
-        this.products = products;
-        this.dataReceive = true;
-        this.setDataReceive(this.categorie);
-      },
-      (error) => {
-        console.log(error);
-        this.dataReceive = true;
-      }
-    )
+    // this.productService.getProductByCategorieLimited(this.categorie,this.refWindow.contentMobile? 2 : 6).then(
+    //   (products: Product[]) => {
+    //     this.products = products;
+    //     this.dataReceive = true;
+    //     this.setDataReceive(this.categorie);
+    //   },
+    //   (error) => {
+    //     console.log(error);
+    //     this.dataReceive = true;
+    //   }
+    // )
   }
 
 

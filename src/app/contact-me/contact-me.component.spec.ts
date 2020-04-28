@@ -4,7 +4,7 @@ import { ContactMeComponent } from './contact-me.component';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrService, ToastrModule } from 'ngx-toastr';
 import { ContactService } from '../services/contact.service';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../services/Authentication/auth.service';
 
 describe('ContactMeComponent', () => {
   let component: ContactMeComponent;

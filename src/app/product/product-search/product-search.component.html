@@ -6,9 +6,11 @@
       >
     <mat-autocomplete #auto="matAutocomplete" class="pb-0">
       <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name"
-        (click)="openProduct(option.id,option.categorie)" >
-        <app-product-search-view [categorie]="option.categorie" [id]="option.id">
-        </app-product-search-view>
+        (click)="openProduct(option.id)" >
+        <div class="p-2 m-1">
+          <small > {{ option.categorie }} </small>
+          <p >{{ option.name }}</p> 
+        </div>
       </mat-option>
       <mat-option *ngIf="noResult" [value]="''">
         <div class="d-flex justify-content-center flex-wrap align-content-center">
@@ -16,7 +18,9 @@
         </div>
       </mat-option>
     </mat-autocomplete>
-    <mat-icon style="cursor: pointer;" class="ml-1" (click)="openProductKEYUP()">search</mat-icon>
+    <button mat-icon-button class="ml-1" (click)="openProductKEYUP()">
+      <mat-icon mat-icon-button  class="ml-1" >search</mat-icon>
+    </button>
 </form>
 
 

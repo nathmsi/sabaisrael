@@ -1,9 +1,9 @@
-<mat-progress-bar [ngClass]="{'progress-bar-position': true}" color="primary" mode="indeterminate" *ngIf="countReceive > 0"></mat-progress-bar>
+<!-- <mat-progress-bar [ngClass]="{'progress-bar-position': true}" color="primary" mode="indeterminate" *ngIf="!dataReceive"></mat-progress-bar> -->
 
 
 <div class="m-0">
 
-    <div *ngFor="let menu of menuList; let i = index" >
+    <!-- <div *ngFor="let menu of menuList; let i = index" > -->
         <!-- <nav aria-label="breadcrumb navbar" class=" ">
             <ol class="breadcrumb m-2">
                 <li class="breadcrumb-item">
@@ -16,11 +16,46 @@
             </ol>
         </nav> -->
 
-        <app-home-view-product [categorie]="menu" [refWindow]="refWindow" [openProductView]="openProductView" [navigateTo]="navigateTo"
-            [onAddToCard]="onAddToCard"  [setDataReceive]="setDataReceive"></app-home-view-product>
+        <!-- <app-home-view-product [categorie]="menu" [refWindow]="refWindow" [openProductView]="openProductView" [navigateTo]="navigateTo"
+            [onAddToCard]="onAddToCard"  [products]="_filterProductByCategorie(menu)"></app-home-view-product>
+    </div> -->
+
+    <div  *ngIf="products.length > 0">
+        <!-- <app-product-cards class="" [categorie]="categorie" [products]="products" [isMobile]="isMobile" [navigateTo]="navigateTo"
+            [openProductView]="openProductView" [onAddToCard]="onAddToCard">
+        </app-product-cards> -->
+        <nav class="p-0 m-0 "   style="cursor: pointer;"    >
+            <ol class="breadcrumb  m-1 bg-white" [style.color]="refWindow.colorTheme"  >
+                <li class="breadcrumb-item ">
+                    <a class="font-weight-bolder">
+                       Home
+                    </a>
+                </li>
+            </ol>
+        </nav>
+        
+        <div class="container-fluid p-0" *ngIf="!refWindow.contentMobile ">
+            <div class="row no-gutters">
+                <div class="col-sm-6 col-md-4 col-xlllg-3 col-xl-2 p-0 m-0" *ngFor="let product of products; let i = index">
+                    <app-card-view [product]="product" [onAddToCard]="onAddToCard" [isMobile]="false"
+                        [openProductView]="openProductView">
+                    </app-card-view>
+                </div>
+            </div>
+        </div>
+        
+        
+        <div class="container-fluid p-0" *ngIf="refWindow.contentMobile ">
+            <div class="row no-gutters">
+                <div class="col-6  p-0 m-0" *ngFor="let product of products; let i = index">
+                    <app-card-view [product]="product" [onAddToCard]="onAddToCard" [isMobile]="false"
+                        [openProductView]="openProductView">
+                    </app-card-view>
+                </div>
+            </div>
+        </div>
+        
     </div>
-
-
 
 
 

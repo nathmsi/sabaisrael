@@ -1,28 +1,22 @@
-<nav [ngClass]="{'navbar navbar-expand-lg navbar-light ': true,
-                  'border border-top-0 border-right-0 border-left-0 border-bottom': false,
-                  'sticky-top': refWindow.headerMobile  }" 
-                  [style.backgroundColor]="refWindow.colorTheme" [style.color]="refWindow.colorText"
-                  >
+<nav [ngClass]="{'navbar navbar-expand-lg navbar-light ': true, 
+                  'sticky-top': refWindow.headerMobile  }" [style.backgroundColor]="refWindow.colorTheme"
+  [style.color]="refWindow.colorText">
 
   <div [ngClass]="{ 'd-flex justify-content-between w-100' : refWindow.headerMobile }">
 
     <div class="d-flex justify-content-start">
-      <a class="navbar-brand" *ngIf="refWindow.headerMobile" routerLink="home" (click)="isMenuCollapsed = true"
-        [style.color]="refWindow.colorText">
-        <mat-icon aria-hidden="false" aria-label="home icon">apps</mat-icon>
-      </a>
-
-      <a class="navbar-brand" *ngIf="refWindow.headerMobile" routerLink="shopping-cart" (click)="isMenuCollapsed = true"
-        [style.color]="refWindow.colorText" [routerLinkActive]="['font-weight-bold' ]">
-        <mat-icon aria-hidden="false" [matBadge]="lengthShoppingCard > 0 ? lengthShoppingCard : null"
-          aria-label="home icon">shopping_cart</mat-icon>
-      </a>
-
-      <a class="navbar-brand " *ngIf="user.isAuth && refWindow.headerMobile" style="cursor: pointer;" routerLink="account" (click)="isMenuCollapsed = true"
-        [style.color]="refWindow.colorText" [routerLinkActive]="['font-weight-bold' ]">
-        <mat-icon aria-hidden="false">person_pin</mat-icon>
-      </a>
-
+      <button mat-icon-button *ngIf="refWindow.headerMobile" type="button" routerLink="home"
+        (click)="isMenuCollapsed = true" [style.color]="refWindow.colorText">
+        <div class="d-flex align-items-center  justify-content-center">
+          <mat-icon>apps</mat-icon>
+        </div>
+      </button>
+      <button mat-icon-button *ngIf="refWindow.headerMobile" type="button" routerLink="shopping-cart"
+        (click)="isMenuCollapsed = true" [style.color]="refWindow.colorText">
+        <div class="d-flex align-items-center  justify-content-center">
+          <mat-icon [matBadge]="lengthShoppingCard > 0 ? lengthShoppingCard : null">shopping_cart</mat-icon>
+        </div>
+      </button>
     </div>
 
     <a class="navbar-brand" routerLink="home" *ngIf="refWindow.headerMobile" (click)="isMenuCollapsed = true"
@@ -32,9 +26,11 @@
     </a>
 
 
-    <button mat-icon-button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed"
+    <button mat-icon-button class="navbar-toggler " type="button" (click)="isMenuCollapsed = !isMenuCollapsed"
       [style.color]="refWindow.colorText">
+      <div class="d-flex align-items-center  justify-content-center">
         <mat-icon>menu</mat-icon>
+      </div>
     </button>
 
   </div>
@@ -47,88 +43,87 @@
   <div [ngbCollapse]="isMenuCollapsed" class=" collapse navbar-collapse ">
 
 
-    <!-- <a class="navbar-brand  ml-3   mr-3  " routerLink="home" *ngIf="!refWindow.isMobile" (click)="isMenuCollapsed = true">
+    <!-- <a class="navbar-brand  ml-3   mr-3  " routerLink="home" *ngIf="!refWindow.isMobile" (click)="isMenuCollapsed = true" [style.color]="refWindow.colorText">
       <mat-icon aria-hidden="false" aria-label="home icon">home</mat-icon>
-      <h3 class="m-0 font-weight-bolder">Saba israel</h3>
+      <h3 class="m-0 font-weight-bolder">saba israel</h3>
     </a> -->
 
-    <ul class="navbar-nav  mr-auto headerNavHover  ">
+    <div class=" d-flex justify-content-start">
+      <ul class="navbar-nav    headerNavHover ">
 
-      <a class="nav-link nav-link-style " routerLink="product" [style.color]="refWindow.colorText"
-        [routerLinkActive]="['routerActive' ]" (click)="isMenuCollapsed = true">
-        <!-- <div class="p m-0">Store</div> -->
-        <div class="p m-0">Store</div>
-      </a>
-      <a class="nav-link nav-link-style" routerLink="update/product" *ngIf="user.level === 'manager'"
-        [style.color]="refWindow.colorText" [routerLinkActive]="['routerActive' ]"
-        [routerLinkActiveOptions]="{ exact: true }" (click)="isMenuCollapsed = true">
-        <div class="p m-0">Update Store</div>
-      </a>
-      <!-- <a class="nav-link nav-link-style" routerLink="video" [routerLinkActive]="['routerActive' ]"
-        [routerLinkActiveOptions]="{ exact: true }" [style.color]="refWindow.colorText"
-        (click)="isMenuCollapsed = true">
-        <div class="p m-0">Video</div>
-      </a> -->
-      <a class="nav-link nav-link-style" routerLink="contact" [routerLinkActive]="['routerActive' ]"
-        [routerLinkActiveOptions]="{ exact: true }" [style.color]="refWindow.colorText"
-        (click)="isMenuCollapsed = true">
-        <div class="p m-0">Contact Us</div>
-      </a>
-      <a class="nav-link nav-link-style" routerLink="update/contact" *ngIf="user.level === 'manager'"
-        [style.color]="refWindow.colorText" [routerLinkActive]="['routerActive' ]"
-        [routerLinkActiveOptions]="{ exact: true }" (click)="isMenuCollapsed = true">
-        <div class="p m-0">Update Contact</div>
-      </a>
-      <a class="nav-link nav-link-style" routerLink="about" [style.color]="refWindow.colorText"
-        [routerLinkActive]="['routerActive' ]" (click)="isMenuCollapsed = true">
-        <div class="p m-0">About</div>
-      </a>
-
-    </ul>
-
-  </div>
+        <a class="nav-link nav-link-style " routerLink="product" [style.color]="refWindow.colorText"
+          [routerLinkActive]="['routerActive' ]" (click)="isMenuCollapsed = true">
+          <!-- <div class="p m-0">Store</div> -->
+          Store
+        </a>
+        <a class="nav-link nav-link-style" routerLink="contact" [routerLinkActive]="['routerActive' ]"
+          [routerLinkActiveOptions]="{ exact: true }" [style.color]="refWindow.colorText"
+          (click)="isMenuCollapsed = true">
+          Contact Us
+        </a>
+        <a class="nav-link nav-link-style" routerLink="about" [style.color]="refWindow.colorText"
+          [routerLinkActive]="['routerActive' ]" (click)="isMenuCollapsed = true">
+          About
+        </a>
 
 
+        
+
+      </ul>
+    </div>
 
 
-  <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse ">
     <ul class="navbar-nav ml-auto headerNavHover">
 
-
-      <a class="navbar-brand  mr-1 " *ngIf="user.isAuth && !refWindow.headerMobile" style="cursor: pointer;"
-        routerLink="account" [style.color]="refWindow.colorText" [routerLinkActive]="['font-weight-bold']">
-        <mat-icon aria-hidden="false" [style.color]="refWindow.colorText">person_pin</mat-icon>
-      </a>
-
-      <div *ngIf="!refWindow.headerMobile">
-        <a #anchor class="navbar-brand    pr-0 mr-0" style="cursor: pointer;" routerLink="shopping-cart"
+      <div *ngIf="!refWindow.headerMobile" class="">
+        <!-- <a   [matMenuTriggerFor]="beforeMenu" #tMenu="matMenuTrigger"  class="" style="cursor: pointer; width: 20px;"
+          [style.color]="refWindow.colorText">
+            <mat-icon *ngIf="tMenu.menuOpen"> keyboard_arrow_down</mat-icon>
+            <mat-icon *ngIf="!tMenu.menuOpen"> keyboard_arrow_up</mat-icon>
+        </a>
+        <mat-menu #beforeMenu="matMenu" xPosition="before" class="filesList">
+          <app-shopping-cart  [isPoPup]="true" [closePoPup]="clickSC"></app-shopping-cart>
+        </mat-menu> -->
+        <a #anchor class="navbar-brand    pr-0 mr-2" style="cursor: pointer;" routerLink="shopping-cart"
           [style.color]="refWindow.colorText" [routerLinkActive]="['font-weight-bold']">
           <mat-icon aria-hidden="false" [matBadge]="lengthShoppingCard > 0 ? lengthShoppingCard : null"
             aria-label="home icon">shopping_cart</mat-icon>
         </a>
-        <a [matMenuTriggerFor]="beforeMenu" #tMenu="matMenuTrigger" class="p-0" style="cursor: pointer;"
-          [style.color]="refWindow.colorText">
-          <mat-icon *ngIf="tMenu.menuOpen"> keyboard_arrow_down</mat-icon>
-          <mat-icon *ngIf="!tMenu.menuOpen"> keyboard_arrow_up</mat-icon>
-        </a>
-        <mat-menu #beforeMenu="matMenu" xPosition="before" class="filesList">
-          <app-shopping-cart [isPoPup]="true" [closePoPup]="clickSC"></app-shopping-cart>
-        </mat-menu>
-
+        
       </div>
 
-      <li class="nav-item " style="cursor:pointer" *ngIf="!user.isAuth">
-        <a class="nav-link   p-0 pt-1" (click)="isMenuCollapsed = true" routerLink="auth/signin"
-          [style.color]="refWindow.colorText">
-          <h3 class="m-0 text-right"> Login </h3>
-        </a>
-      </li>
 
-      <li class="nav-item ml-2" style="cursor:pointer" (click)="onSignOut()" *ngIf="user.isAuth">
-        <a class="nav-link  p-0 pt-1" (click)="isMenuCollapsed = true" [style.color]="refWindow.colorText">
-          <h3 class="m-0 text-right"> LogOut </h3>
+      <a class="navbar-brand mr-0" [matMenuTriggerFor]="menu" style="cursor: pointer;" *ngIf="!refWindow.headerMobile"
+        [style.color]="refWindow.colorText" [routerLinkActive]="['font-weight-bold']">
+        <mat-icon aria-hidden="false" [style.color]="refWindow.colorText">person_pin</mat-icon>
+      </a>
+
+      <div class="d-flex justify-content-end  " *ngIf="refWindow.headerMobile">
+        <a mat-icon-button [matMenuTriggerFor]="menu" #tMenuMobile="matMenuTrigger" class="p-0  "
+          style="cursor: pointer;" [style.color]="refWindow.colorText">
+          <mat-icon aria-hidden="false" [style.color]="refWindow.colorText">person_pin</mat-icon>
+          <mat-icon *ngIf="tMenuMobile.menuOpen"> keyboard_arrow_down</mat-icon>
+          <mat-icon *ngIf="!tMenuMobile.menuOpen"> keyboard_arrow_up</mat-icon>
         </a>
-      </li>
+      </div>
+
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item *ngIf="user.isAuth " routerLink="account" (click)="isMenuCollapsed = true">
+          <mat-icon>account_box</mat-icon>
+          <span>My account</span>
+        </button>
+        <button mat-menu-item *ngIf="!user.isAuth" routerLink="auth/signin" (click)="isMenuCollapsed = true">
+          <mat-icon>how_to_reg</mat-icon>
+          <span>Login</span>
+        </button>
+        <button mat-menu-item (click)="onSignOut() ; isMenuCollapsed = true" *ngIf="user.isAuth">
+          <mat-icon>exit_to_app</mat-icon>
+          <span>Logout</span>
+        </button>
+      </mat-menu>
+
+
+
 
     </ul>
   </div>

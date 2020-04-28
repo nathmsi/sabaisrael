@@ -1,7 +1,9 @@
+
+<app-view-header title="Contact" subTitle="Sabaisrael" url="magazin3.jpg" ></app-view-header>
+
 <div class=" card border-0  p-3 m-1">
     <div class="">
         <form [formGroup]="FormValidation" (ngSubmit)="onSubmit()" class="container">
-            <h2 class="text-center rounded" [style.color]="windowRef.colorText" [style.backgroundColor]="windowRef.colorTheme">  Contact Me</h2>
             <div class="form-group">
                 <input type="text" class="form-control" id="name" name="name" placeholder="Name" formControlName="name"
                     maxlength="20">

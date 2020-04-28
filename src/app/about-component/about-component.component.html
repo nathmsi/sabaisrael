@@ -1,0 +1,245 @@
+<div class="image-aboutus-banner">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="lg-text">About Us</h1>
+                <p class="image-aboutus-para">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container paddingTB60" style="padding-top: 60px; padding-bottom: 60px;">
+    <div class="row">
+
+        <!-- Blog Post Content Column -->
+        <div class="col-lg-8">
+
+            <hr>
+
+            <h2>Your title of your project </h2>
+
+            <hr>
+            <!-- Post Content -->
+            <p class="lead">
+                Here your resume ...... Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus, vero,
+                obcaecati, aut,
+                error
+                quam sapiente nemo saepe quibusdam sit excepturi nam quia corporis eligendi eos magni recusandae laborum
+                minus
+                inventore?</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut, tenetur natus doloremque laborum quos iste
+                ipsum
+                rerum obcaecati impedit odit illo dolorum ab tempora nihil dicta earum fugiat. Temporibus, voluptatibus.
+            </p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos, doloribus, dolorem iusto blanditiis unde
+                eius
+                illum consequuntur neque dicta incidunt ullam ea hic porro optio ratione repellat perspiciatis. Enim,
+                iure!</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error, nostrum, aliquid, animi, ut quas placeat
+                totam
+                sunt tempora commodi nihil ullam alias modi dicta saepe minima ab quo voluptatem obcaecati?</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Harum, dolor quis. Sunt, ut, explicabo, aliquam
+                tenetur ratione tempore quidem voluptates cupiditate voluptas illo saepe quaerat numquam recusandae?
+                Qui,
+                necessitatibus, est!</p>
+
+            <hr>
+
+
+
+
+        </div>
+
+        <!-- Blog Sidebar Widgets Column -->
+        <div class="col-md-4">
+
+            <!-- Blog Search Well -->
+            <div class=" p-3 m-1 rounded" style="background-color: #2a6592; color: white;">
+                <h4>Blog Search</h4>
+                <div class="input-group">
+                    <input class="form-control" type="text" placeholder="search ex: example" [(ngModel)]="seachValue"
+                        (keyup.enter)="handleSearch()">
+                    <span class="input-group-btn ml-1">
+                        <button class="btn text-white" type="button" (click)="handleSearch()">
+                            search
+                        </button>
+                    </span>
+                </div>
+                <!-- /.input-group -->
+            </div>
+
+            <!-- Blog Categories Well -->
+            <div class="well p-3 m-1 rounded" style="background-color: #2a6592; color: white;">
+                <h4 class="">Quick Links</h4>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <ul class="list-unstyled">
+                            <li><a href="#" class="text-white">Category Name</a>
+                            </li>
+                            <li><a href="#" class="text-white">Category Name</a>
+                            </li>
+                            <li><a href="#" class="text-white">Category Name</a>
+                            </li>
+                            <li><a href="#" class="text-white">Category Name</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-6">
+                        <ul class="list-unstyled">
+                            <li><a href="#" class="text-white">Category Name</a>
+                            </li>
+                            <li><a href="#" class="text-white">Category Name</a>
+                            </li>
+                            <li><a href="#" class="text-white">Category Name</a>
+                            </li>
+                            <li><a href="#" class="text-white">Category Name</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- /.row -->
+            </div>
+
+            <!-- Side Widget Well -->
+            <div class=" p-3 m-1 rounded" style="background-color: #2a6592; color: white;">
+                <h4 class="">Side Widget Well</h4>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore, perspiciatis adipisci accusamus
+                    laudantium odit aliquam repellat tempore quos aspernatur vero.</p>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div style="background-color: #2a6592; color: white;">
+    <div class="container">
+        <div class="row pt-5 pb-5 ">
+            <div class="col-md-12">
+                <h2 class=" m-0 p-0" style="font-size: 30px;">Contact Me</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class=" card border-0  p-3 m-1">
+    <div class="">
+        <form [formGroup]="FormValidation" (ngSubmit)="onSubmit()" class="container">
+            <div class="form-group">
+                <input type="text" class="form-control" id="name" name="name" placeholder="Name" formControlName="name"
+                    maxlength="20">
+                <mat-error *ngIf="FormValidation.get('name').invalid && validatorInvalid"> You must enter a value
+                </mat-error>
+            </div>
+            <div class="form-group">
+                <input type="email" class="form-control" id="email" name="email" placeholder="Email"
+                    formControlName="email">
+                <mat-error *ngIf="FormValidation.get('email').invalid && validatorInvalid"> You must enter a value
+                </mat-error>
+            </div>
+            <div class="form-group">
+                <input type="phone" class="form-control" id="mobile" name="mobile" placeholder="Mobile Number"
+                    formControlName="mobile">
+                <mat-error *ngIf="FormValidation.get('mobile').invalid && validatorInvalid"> You must enter a value
+                </mat-error>
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" id="subject" name="subject" placeholder="Subject" maxlength="20"
+                    formControlName="subject">
+
+            </div>
+            <div class="form-group">
+                <textarea class="form-control" type="textarea" id="message" name="message" placeholder="Message"
+                    formControlName="message" maxlength="400" rows="7"></textarea>
+                <mat-error *ngIf="FormValidation.get('message').invalid && validatorInvalid"> You must enter a value
+                </mat-error>
+            </div>
+            <div class="d-flex justify-content-center">
+                <button type="submit" id="submit" name="submit" class="btn  pl-5 pr-5"
+                    style="background-color: #2a6592; color: white;">
+                    <div class="spinner-border spinner-border-sm" role="status" *ngIf="loadingContent">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                    <p *ngIf="!loadingContent" class="font-weight-bold m-0">Send</p>
+                </button>
+            </div>
+
+        </form>
+    </div>
+    <div class="col-lg-2"> </div>
+</div>
+
+
+
+
+<div style="background-color: #2a6592; color: white;">
+    <div class="container">
+        <div class="row pt-5 pb-5 ">
+            <div class="col-sm d-flex justify-content-start">
+                <h3><span class="glyphicon glyphicon-cog "></span> <b>Homes for sale?</b> Explore properties like a pro.
+                </h3>
+            </div>
+            <div class="col-sm d-flex justify-content-end">
+                <button type="button" class="btn btn-outline-secondary text-white ">Start Right Now</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div style="background-color:white;">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3 p-4">
+                <h3 class="text-secondary">About Us </h3>
+                <p>Cras sociis natoque penatibus et magnis dis parturient montes,</p>
+            </div>
+            <div class="col-sm-3 p-4">
+                <h3 class="text-secondary">Information </h3>
+                <ul class="pl-3">
+                    <li><a href="maintenance.html" class="text-dark">Maintenance Tips</a></li>
+                    <li><a href="contact.html" class="text-dark">Locations</a></li>
+                    <li><a href="about.html" class="text-dark">Testimonials</a></li>
+                    <li><a href="about.html" class="text-dark">Careers</a></li>
+                    <li><a href="about.html" class="text-dark">Partners</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-3 p-4">
+                <h3 class="text-secondary">Helpful Links </h3>
+                <ul class="pl-3">
+                    <li><a href="maintenance.html" class="text-dark">Maintenance Tips</a></li>
+                    <li><a href="contact.html" class="text-dark">Locations</a></li>
+                    <li><a href="about.html" class="text-dark">Testimonials</a></li>
+                    <li><a href="about.html" class="text-dark">Careers</a></li>
+                    <li><a href="about.html" class="text-dark">Partners</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-3 p-4">
+                <h3 class="text-secondary">Helpful Links </h3>
+                <ul class="pl-3">
+                    <li><a href="maintenance.html" class="text-dark">Maintenance Tips</a></li>
+                    <li><a href="contact.html" class="text-dark">Locations</a></li>
+                    <li><a href="about.html" class="text-dark">Testimonials</a></li>
+                    <li><a href="about.html" class="text-dark">Careers</a></li>
+                    <li><a href="about.html" class="text-dark">Partners</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 text-center ">
+                    <div class="copyright-text">
+                        <p>CopyRight © 2017 Digital All Rights Reserved</p>
+                    </div>
+                </div> <!-- End Col -->
+
+            </div>
+        </div>
+    </div>
+</div>

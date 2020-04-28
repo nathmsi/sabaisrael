@@ -1,0 +1,41 @@
+<div class="">
+  <div class="m-1 ">
+    <div class="d-flex justify-content-between">
+      <button mat-stroked-button color="primary" (click)="onSubmitOrder()">
+        <div class="spinner-border spinner-border-sm" role="status" *ngIf="isLoading">
+          <span class="sr-only">Loading...</span>
+        </div>
+        <!-- <mat-icon *ngIf="!isLoading">done</mat-icon> save --> save
+      </button>
+      <h2 class="m-0 d-flex align-self-center">Order status</h2>
+      <button mat-stroked-button color="primary" (click)="onDismiss()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <div class="card">
+    <table class="table">
+      <thead class="">
+        <tr [style.color]="data.windowRef.colorTheme" [style.backgroundColor]="data.windowRef.colorText">
+          <th></th>
+          <th>count</th>
+          <th>price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">Total</th>
+          <td>{{ getTotalCount() }}</td>
+          <td>{{ getTotalCost() }} ₪</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <app-order-form-view [onSaveForm]="onSaveForm" [user]="data.user" [windowRef]="data.windowRef">
+    </app-order-form-view>
+
+  </div>
+
+
+</div>

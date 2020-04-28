@@ -1,12 +1,12 @@
 <!-- <mat-progress-bar class="m-2"  color="primary" mode="buffer" *ngIf="!dataReceive"></mat-progress-bar>
  -->
 
-<div class="" *ngIf="dataReceive && products.length > 0">
+<div  *ngIf="products.length > 0">
     <!-- <app-product-cards class="" [categorie]="categorie" [products]="products" [isMobile]="isMobile" [navigateTo]="navigateTo"
         [openProductView]="openProductView" [onAddToCard]="onAddToCard">
     </app-product-cards> -->
     <nav class="p-0 m-0 "   style="cursor: pointer;" (click)="navigateTo(categorie)"   >
-        <ol class="breadcrumb  m-1" [style.color]="refWindow.colorText" [style.backgroundColor]="refWindow.colorTheme" >
+        <ol class="breadcrumb  m-1 bg-white" [style.color]="refWindow.colorTheme"  >
             <li class="breadcrumb-item ">
                 <a class="font-weight-bolder">
                     {{categorie}}

@@ -1,17 +1,17 @@
-<div class="m-2">
+<div class="m-2 ">
     <nav aria-label="breadcrumb" class="sticky-top">
-        <ol class="breadcrumb mb-2"  [style.color]="refWindow.colorText" [style.backgroundColor]="refWindow.colorTheme">
+        <ol class="breadcrumb mb-2 bg-white"  [style.color]="refWindow.colorTheme"  >
             <li class="breadcrumb-item">
                 <a (click)="navigateTo('home')" style="cursor: pointer;" class="font-weight-bolder" >
                     Home
                 </a>
             </li>
             <li class="breadcrumb-item active">
-                <a (click)="navigateTo(product.categorie)" style="cursor: pointer;" class="font-weight-bolder" [style.color]="refWindow.colorText" >
+                <a (click)="navigateTo(product.categorie)" style="cursor: pointer;" class="font-weight-bolder" [style.color]="refWindow.colorTheme" >
                     {{ product.categorie }}
                 </a>
             </li>
-            <li class="breadcrumb-item active" aria-current="page" [style.color]="refWindow.colorText" >
+            <li class="breadcrumb-item active" aria-current="page" [style.color]="refWindow.colorTheme" >
                 {{ product.name }}
             </li>
         </ol>
@@ -24,7 +24,13 @@
             </h1>
             <div class="row">
                 <div class="col-sm">
-                    <img [src]="product.photo" class="rounded float-left img-thumbnail" (click)="handleClickImage()" style="cursor: pointer;">
+                    <div class="d-flex justify-content-center flex-wrap align-content-center" style="width: 150px; height: 110px;" *ngIf="imageLoader">
+                        <mat-progress-spinner class="example-margin"  mode="indeterminate"  [diameter]="40" >
+                        </mat-progress-spinner>
+                    </div>
+                    <img class="rounded float-left img-thumbnail" [hidden]="imageLoader" [src]="product.photo" (click)="handleClickImage()" 
+                        style="  cursor: pointer;" (load)="imageLoader = false"
+                        [alt]="product.photo">
                 </div>
                 <div class="col-sm">
                     <h2 class="card-text font-weight-bolder m-0 mb-1"> {{ product.name }}

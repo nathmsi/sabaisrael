@@ -1,15 +1,16 @@
-.drawer-container-position {
+.drawer-container-position{
     position: absolute;
     top: 117px;
     bottom: 52px;
     left: 0;
     right: 0;
  }
+ 
 
  .drawer-container-position-mobile {
   position: absolute;
   top: 112px;
-  bottom: 0;
+  bottom: 52px;
   left: 0;
   right: 0;
 }
@@ -27,9 +28,6 @@
   left: 0;
   right: 0;
 }
-.sidenav-mobile{
-  padding-top: 56px;
-}
 
 .side-style {
   background-color: rgb(119, 136, 153);
@@ -42,3 +40,15 @@
 .toolbar-spacer {
   flex: 1 1 auto;
 }
+
+/* .mat-sidenav-content,
+.mat-sidenav-container,
+.mat-drawer-content {
+    transform: none !important;
+} */
+
+/* 
+.mat-sidenav-container, .mat-sidenav-content{
+  overflow: initial
+} */
+

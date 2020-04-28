@@ -2,7 +2,7 @@ import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { WindowRef } from './services/windowRef.service';
 import { Platform } from '@angular/cdk/platform';
-import { AuthService } from './services/auth.service';
+import { AuthService } from './services/Authentication/auth.service';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {

@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AccountComponent } from './account.component';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../services/Authentication/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { ToastrModule } from 'ngx-toastr';
 import { NgForm, FormBuilder, FormsModule } from '@angular/forms';

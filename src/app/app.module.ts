@@ -35,15 +35,20 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {CdkStepperModule} from '@angular/cdk/stepper';
+import {MatStepperModule} from '@angular/material/stepper';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 // Services
-import { AuthService } from './services/auth.service'
+import { AuthService } from './services/Authentication/auth.service'
 import { ProductService } from './services/product.service'
 import { LocalStorageService } from './services/storageLocalStorage.service'
 import { WindowRef } from './services/windowRef.service'
-import { AuthGuardService } from './services/auth-guard.service'
+import { AuthGuardService } from './services/Authentication/auth-guard.service'
 import { ContactService } from './services/contact.service'
 import { TehilimsService } from './services/tehilim.service'
+import { httpClientCrudService } from './services/Authentication/httpService.service'
+import { OrderService  } from './services/order.service'
 
 // Components
 import { AppComponent } from './app.component';
@@ -59,15 +64,8 @@ import { FooterComponent } from './footer/footer.component';
 
 import { ProductCardsComponent } from './product/product-cards/product-cards.component';
 import { CardViewComponent } from './product/product-cards/card-view/card-view.component';
-import { ProductFormComponent } from './product/product-form/product-form.component'
-import { ProductUpdateComponent } from './product/product-update/product-update.component';
-import { ProductStockUpdateComponent } from './product-stock-update/product-stock-update.component';
 import { ContactMeComponent } from './contact-me/contact-me.component';
-import { ContactUpdateComponent } from './contact-update/contact-update.component';
-import { ContactViewComponent } from './contact-update/contact-view/contact-view.component';
-import { TableViewComponent } from './product-stock-update/table-view/table-view.component';
 import { ModalImageComponent } from './product/product-cards/modal-image/modal-image.component';
-import { MenuUpdateComponent } from './product-stock-update/menu-update/menu-update.component';
 import { TableViewScComponent } from './shopping-cart/table-view-sc/table-view-sc.component';
 import { ModalConfirmationComponent } from './modal-confirmation/modal-confirmation.component';
 import { ProductViewComponent } from './product/product-view/product-view.component';
@@ -79,13 +77,16 @@ import { ProductSearchViewComponent } from './product/product-search/product-sea
 import { VideoComponent } from './video/video.component';
 import { YoutubePlayerComponent } from './video/youtube-player/youtube-player.component';
 import { ImageModalComponent } from './product/product-view/image-modal/image-modal.component';
-
+import { AboutComponentComponent } from './about-component/about-component.component';
+import { ViewHeaderComponent } from './view-header/view-header.component';
+import { OrderComponent } from './shopping-cart/order/order.component';
+import { FormViewComponent } from './shopping-cart/order/form-view/form-view.component';
 
 const snackBarOption = {
   duration: 2000,
-  horizontalPosition: 'center',
-  verticalPosition : 'top',
-  panelClass: 'snack-error'
+  horizontalPosition: 'right',
+  verticalPosition : 'bottom',
+  panelClass: ['snackbar']
 }
 
 
@@ -96,16 +97,11 @@ const appRoutes: Routes = [
   { path: 'product', redirectTo: 'product/home/', pathMatch: 'full' },
   { path: 'product/:categorie', redirectTo: 'product/:categorie/', pathMatch: 'full' },
   { path: 'product/:categorie/:id', component: ProductComponent },
-  { path: 'update/product', canActivate: [AuthGuardService], component: ProductStockUpdateComponent },
   { path: 'shopping-cart', component: ShoppingCartComponent },
   { path: 'about', component: AboutComponent },
   { path: 'contact', component: ContactMeComponent },
-  { path: 'update/contact', canActivate: [AuthGuardService], component: ContactUpdateComponent },
-  { path: 'video', component: VideoComponent },
   { path: 'home', redirectTo: 'product/home/', pathMatch: 'full' },
-  { path: 'tehilims', component: TehilimsComponent },
   { path: '', redirectTo: 'product/home/', pathMatch: 'full' },
-  // { path: '', redirectTo: 'books', pathMatch: 'full' },
   { path: '**', redirectTo: '' }
 ];
 
@@ -131,7 +127,10 @@ const MAtModule = [
   MatMenuModule,
   MatAutocompleteModule,
   MatInputModule,
-  MatProgressSpinnerModule
+  MatProgressSpinnerModule,
+  MatStepperModule,
+  CdkStepperModule,
+  MatTooltipModule
 ];
 
 
@@ -150,15 +149,8 @@ const MAtModule = [
     AccountComponent,
     ProductCardsComponent,
     CardViewComponent,
-    ProductFormComponent,
-    ProductUpdateComponent,
-    ProductStockUpdateComponent,
     ContactMeComponent,
-    ContactUpdateComponent,
-    ContactViewComponent,
-    TableViewComponent,
     ModalImageComponent,
-    MenuUpdateComponent,
     TableViewScComponent,
     ModalConfirmationComponent,
     ProductViewComponent,
@@ -170,6 +162,11 @@ const MAtModule = [
     VideoComponent,
     YoutubePlayerComponent,
     ImageModalComponent,
+    AboutComponent,
+    AboutComponentComponent,
+    ViewHeaderComponent,
+    OrderComponent,
+    FormViewComponent,
   ],
   imports: [
     ...MAtModule,
@@ -194,6 +191,8 @@ const MAtModule = [
     AuthGuardService,
     ContactService,
     TehilimsService,
+    httpClientCrudService,
+    OrderService,
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: snackBarOption }
   ],
   bootstrap: [AppComponent]

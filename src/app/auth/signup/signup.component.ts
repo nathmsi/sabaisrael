@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../services/Authentication/auth.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -50,6 +50,7 @@ export class SignupComponent implements OnInit {
   }
 
   onSubmit() {
+    this.loadingContent = true;
     const email = this.signupForm.get('email').value;
     const username = this.signupForm.get('username').value;
     const password = this.signupForm.get('password').value;
@@ -57,7 +58,7 @@ export class SignupComponent implements OnInit {
     this.authService.createNewUser(email, password, username).then(
       () => {
         this.loadingContent = false;
-        this._snackBar.open( 'user created success ' + this.authService.user.name , 'close');
+        this._snackBar.open( 'user created success ' + username, 'close');
         this.router.navigate(['/']);
       },
       (error) => {

@@ -5,7 +5,7 @@ import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import { AuthService } from './auth.service';
 import { Subscription } from 'rxjs';
-import { User } from '../models/user.model';
+import { User } from '../../models/user.model';
 @Injectable()
 export class AuthGuardService implements CanActivate {
 

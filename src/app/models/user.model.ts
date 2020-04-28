@@ -6,6 +6,8 @@ export class User {
     photo: string;
     phone: string;
     level: string = "";
+    token: string = "";
+    photoUrl: string = "";
     
     constructor( name: string, email: string, uid: string,isAuth: boolean,photo: string,phone: string) {
         this.name = name;

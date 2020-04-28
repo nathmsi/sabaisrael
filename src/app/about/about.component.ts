@@ -38,7 +38,12 @@ export class AboutComponent implements OnInit {
 
   isLoaded(){
     console.log('isLoaded');
+    this.dataReceive = true;
   }
+
+  goToLink = (url: string) =>{
+    window.open(url, "_blank");
+}
 
   ngOnDestroy() {
     this.subscription.unsubscribe();

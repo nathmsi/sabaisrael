@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ShoppingCartComponent } from './shopping-cart.component';
 import { ProductService } from '../services/product.service';
 import { ToastrService, ToastrModule } from 'ngx-toastr';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../services/Authentication/auth.service';
 import { LocalStorageService } from '../services/storageLocalStorage.service';
 
 describe('ShoppingCartComponent', () => {

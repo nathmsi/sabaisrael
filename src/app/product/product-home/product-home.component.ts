@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { WindowReference } from 'src/app/models/windowRef.model';
+import { Product } from 'src/app/models/product.model';
 @Component({
   selector: 'app-product-home',
   templateUrl: './product-home.component.html',
@@ -12,9 +13,10 @@ export class ProductHomeComponent implements OnInit {
   @Input() refWindow: WindowReference;
   @Input() navigateTo: Function;
   @Input() menus: any[];
-  dataReceive: boolean = false;
+  @Input() products : Product[];
+
   menuList: string[] = [];
-  countReceive: number = 0;
+  
 
   constructor() { }
 
@@ -22,13 +24,15 @@ export class ProductHomeComponent implements OnInit {
     this.menus.forEach((element: any) => {
       element.value.forEach(val => {
         this.menuList.push(val);
-        this.countReceive++;
       });
     });
   }
 
-  setDataReceive = (menu: string) => {
-     this.countReceive--;
+
+  _filterProductByCategorie(categorie: string){
+    let limit = this.refWindow.contentMobile ? 2 : 6;
+    limit = this.refWindow.headerMobile ? 3 : limit;
+    return this.products.filter( e => e.categorie === categorie).slice(0, limit);
   }
 
 

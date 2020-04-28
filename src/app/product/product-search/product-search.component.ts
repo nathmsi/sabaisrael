@@ -4,32 +4,36 @@ import { Observable, Subscription } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { ProductService } from 'src/app/services/product.service';
 import { Router } from '@angular/router';
+import { Product } from 'src/app/models/product.model';
+
+
+
+interface ProductSearch{
+  name: string;
+  id: string;
+  categorie: string;
+  product: Product;
+}
 
 @Component({
   selector: 'app-product-search',
   templateUrl: './product-search.component.html',
   styleUrls: ['./product-search.component.css']
 })
-
-// class ProductSearch{
-//   id:string ='';
-//   name:string ='';
-//   categorie:string =''
-// }
-
 export class ProductSearchComponent implements OnInit {
 
   @Input() isMobile: boolean;
 
   myControl = new FormControl();
 
-  filteredOptions: Observable<string[]>;
+  filteredOptions: Observable<ProductSearch[]>;
 
   subscribeSearch: Subscription;
   productSeach: any[] = [];
   dataReceive: boolean = false;
   noResult: boolean = false;
-
+  // idsSelected: ProductSearch[] = [];
+  // products: Product[] = [];
 
   constructor(
     private productService: ProductService,
@@ -37,7 +41,7 @@ export class ProductSearchComponent implements OnInit {
   ) {
 
     this.subscribeSearch = this.productService.productSearchSubject.subscribe(
-      (productSeach: any[]) => {
+      (productSeach: Product[]) => {
         this.productSeach = productSeach;
         //console.log(productSeach);
         this.dataReceive = true;
@@ -50,8 +54,8 @@ export class ProductSearchComponent implements OnInit {
     this.filteredOptions = this.myControl.valueChanges
       .pipe(
         startWith(''),
-        map(value => {
-          let filteredValues = this._filter(value);
+        map( value => {
+          let filteredValues =  this._filter(value);
           if (value !== '') {
             filteredValues.length < 1 ? (this.noResult = true) : (this.noResult = false);
           }
@@ -62,17 +66,39 @@ export class ProductSearchComponent implements OnInit {
 
 
 
-  private _filter(value: string): string[] {
+  private _filter(value: string): ProductSearch[] {
     const filterValue = value.toLowerCase();
-    return filterValue === '' ? [] :
+    const filertValuer =  filterValue === '' ? [] :
       this.productSeach.filter(element => {
         return element.name.toLowerCase().includes(filterValue) || element.categorie.toLowerCase().includes(filterValue)
-      }).slice(0, 3);
+    }).slice(0, 3);
+
+
+    // this.productService.requestDataFromSH(filertValuer).then(
+    //   (data: Product[]) => {
+    //     data.forEach((e) => {
+    //       filertValuer.forEach( value =>{
+    //         if(value.id === e.id){
+    //           value.product = e;
+    //         }
+    //       })
+    //     });
+    //     console.log(filertValuer);
+    //     this.dataReceive = true;
+    //     return filertValuer;
+    //   },
+    //   (error) => {
+    //     console.log(error);
+    //     this.dataReceive = true;
+    //     return filertValuer;
+    //   }
+    // )
+    return filertValuer;
   }
 
 
-  openProduct(id, categorie) {
-    this.router.navigate(['product', categorie, id]);
+  openProduct(id) {
+    this.router.navigate(['product', 'id', id]);
     this.closeKeyboard();
   }
 
@@ -82,7 +108,7 @@ export class ProductSearchComponent implements OnInit {
       firstProduct = this._filter(this.myControl.value);
       if (firstProduct[0]) {
         //console.log(firstProduct);
-        this.openProduct(firstProduct[0].id, firstProduct[0].categorie);
+        this.openProduct(firstProduct[0].id);
         this.myControl.setValue('');
       } else {
         this.myControl.setValue('');
@@ -95,6 +121,24 @@ export class ProductSearchComponent implements OnInit {
     let activeElement = <HTMLElement>document.activeElement;
     activeElement && activeElement.blur && activeElement.blur();
   }
+
+
+
+  // getAllProducts(ids){
+  //   this.productService.requestDataFromSH(ids).then(
+  //     (data: Product[]) => {
+  //       data.forEach((e) => {
+  //         this.products.push(e);
+  //       });
+  //       this.dataReceive = true;
+  //     },
+  //     (error) => {
+  //       console.log(error);
+  //       this.products = [];
+  //       this.dataReceive = true;
+  //     }
+  //   )
+  // }
 
 
 

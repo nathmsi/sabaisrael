@@ -2,7 +2,6 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Product } from 'src/app/models/product.model';
 import {MatDialog } from '@angular/material/dialog';
 // import { DialogOverviewComponent } from 'src/app/dialog-overview/dialog-overview.component';
-import { ProductUpdateComponent } from '../../product-update/product-update.component';
 import { ModalImageComponent } from '../modal-image/modal-image.component';
 import { Router } from '@angular/router';
 import { WindowReference } from 'src/app/models/windowRef.model';

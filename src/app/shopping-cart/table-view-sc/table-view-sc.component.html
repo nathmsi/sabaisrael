@@ -7,7 +7,7 @@
                 <img *ngIf="element.photo" style="max-height: 70px; max-width: 70px; cursor: pointer;" [src]="element.photo" (click)="openProductView(element)"
                     class="card-img">
             </td>
-            <td mat-footer-cell *matFooterCellDef class="text-center" [style.color]="windowRef.colorText"> Total </td>
+            <td mat-footer-cell *matFooterCellDef class="text-center" [style.color]="windowRef.colorTheme"> Total </td>
         </ng-container>
 
 
@@ -28,13 +28,13 @@
                 <span class="btn-sm" (click)="countUpdate(element.count + 1,element.id)" style="cursor: pointer;">
                     +</span>
             </td>
-            <td mat-footer-cell *matFooterCellDef class="text-center font-weight-bolder" [style.color]="windowRef.colorText"> {{ getTotalCount() }}</td>
+            <td mat-footer-cell *matFooterCellDef class="text-center font-weight-bolder" [style.color]="windowRef.colorTheme"> {{ getTotalCount() }}</td>
         </ng-container>
 
         <ng-container matColumnDef="price">
             <th mat-header-cell *matHeaderCellDef> Price </th>
             <td mat-cell *matCellDef="let element"> {{element.price * element.count}} ₪ </td>
-            <td mat-footer-cell *matFooterCellDef class=" font-weight-bolder" [style.color]="windowRef.colorText"> {{getTotalCost()}} ₪ </td>
+            <td mat-footer-cell *matFooterCellDef class=" font-weight-bolder" [style.color]="windowRef.colorTheme"> {{getTotalCost()}} ₪ </td>
         </ng-container>
 
         <ng-container matColumnDef="action">
@@ -43,7 +43,7 @@
                 <mat-icon style="cursor: pointer;" (click)="DeleteOne(element.id)">delete</mat-icon>
             </td>
             <td mat-footer-cell *matFooterCellDef>
-                <mat-icon style="cursor: pointer;" (click)="DeleteAll()" [style.color]="windowRef.colorText">delete_forever</mat-icon>
+                <mat-icon style="cursor: pointer;" (click)="DeleteAll()" [style.color]="windowRef.colorTheme">delete_forever</mat-icon>
             </td>
         </ng-container>
 
@@ -51,7 +51,7 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: isPoPup "></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: ( true )" 
-        [style.color]="windowRef.colorText" [style.backgroundColor]="windowRef.colorTheme">
+        [style.color]="windowRef.colorTheme" >
         </tr>
 
     </table>

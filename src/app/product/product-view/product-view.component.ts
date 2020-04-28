@@ -18,6 +18,8 @@ export class ProductViewComponent implements OnInit {
   @Input() onAddToCard: Function;
   @Input() refWindow: WindowReference;
 
+  imageLoader: boolean = true;
+
   constructor(
     public dialog: MatDialog,
   ) { 
@@ -33,7 +35,8 @@ export class ProductViewComponent implements OnInit {
 
   handleClickImage(){
     const dialogRef = this.dialog.open(ImageModalComponent, {
-      maxWidth: "400px",
+      width: "90%",
+      height: this.refWindow.headerMobile? "50%" :"70%",
       data: this.product.photo
     });
     dialogRef.afterClosed().subscribe(result => {

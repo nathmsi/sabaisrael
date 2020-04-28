@@ -9,29 +9,30 @@ import { Product } from 'src/app/models/product.model';
 })
 export class ProductSearchViewComponent implements OnInit {
 
-  @Input() id:string;
-  @Input() categorie:string;
+  @Input() id:any;
+  @Input() product: Product;
 
-  product: Product = null;
-  dataReceive: boolean = false;
+  //product: Product = null;
+  //dataReceive: boolean = false;
   imageLoader: boolean = true;
 
   constructor(private productService: ProductService) { }
 
   ngOnInit(): void {
-    this.handleSelectProduct(this.categorie,this.id);
+    console.log(this.product);
+    // this.handleSelectProduct(this.id);
   }
 
-  handleSelectProduct(categorie: string,id: string){
-    this.productService.getProductByID_Categorie(categorie,id).then(
-      (product: Product) =>{
-          this.product = product;
-          this.dataReceive = true;
-      },
-      (error) =>{
-        console.log(error);
-      }
-    )
-  }
+  // handleSelectProduct(id: string){
+  //   this.productService.getProductByID_Categorie('categorie',id).then(
+  //     (product: Product) =>{
+  //         this.product = product;
+  //         this.dataReceive = true;
+  //     },
+  //     (error) =>{
+  //       console.log(error);
+  //     }
+  //   )
+  // }
 
 }

@@ -1,0 +1,130 @@
+
+
+<mat-horizontal-stepper linear #stepper  *ngIf="!windowRef.contentMobile">
+    <mat-step [stepControl]="firstFormGroup" [editable]="!firstFormGroup.invalid">
+        <form [formGroup]="firstFormGroup">
+            <ng-template matStepLabel>Name and Email</ng-template>
+            <p class="mt-1">
+                <mat-form-field>
+                    <mat-label>Name</mat-label>
+                    <input matInput placeholder="Last name, First name" formControlName="name" required>
+                </mat-form-field>
+            </p>
+            <p>
+                <mat-form-field>
+                    <mat-label>Email</mat-label>
+                    <input matInput placeholder="email" formControlName="email" required>
+                </mat-form-field>
+            </p>
+            <div>
+                <button mat-button matStepperNext [disabled]="firstFormGroup.invalid">Next</button>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="secondFormGroup" [editable]="!secondFormGroup.invalid">
+        <form [formGroup]="secondFormGroup">
+            <ng-template matStepLabel>Address and Phone</ng-template>
+            <p class="mt-1"> 
+                <mat-form-field>
+                    <mat-label>Phone</mat-label>
+                    <input matInput formControlName="phone" placeholder="phone" required>
+                </mat-form-field>
+            </p>
+            <p>
+                <mat-form-field>
+                    <mat-label>Address</mat-label>
+                    <input matInput formControlName="address" placeholder="Ex. 1 Main St, New York, NY" required>
+                </mat-form-field>
+            </p>
+            <div>
+                <button mat-button matStepperPrevious>Back</button>
+                <button mat-button matStepperNext [disabled]="secondFormGroup.invalid">Next</button>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step>
+        <ng-template matStepLabel>Done</ng-template>
+        <p>You are now done.</p>
+        <div>
+            <div class="" *ngIf="!isSave">
+                <button mat-button matStepperPrevious>Back</button>
+                <button mat-button (click)="stepper.reset(); initForm()">Reset</button>
+           
+            <button mat-stroked-button color="primary"
+                *ngIf="!isSave" 
+                matTooltip="information missing"
+                matTooltipClass="bg-danger"
+                [matTooltipDisabled]="!secondFormGroup.invalid && !firstFormGroup.invalid"
+                (click)="onSubmit()">Save from</button>
+            </div>
+
+            <button mat-stroked-button color="primary"  *ngIf="isSave" (click)="isSave = false">is save</button>
+
+        </div>
+    </mat-step>
+</mat-horizontal-stepper>
+
+
+<mat-vertical-stepper linear #stepperMobile *ngIf="windowRef.contentMobile">
+    <mat-step [stepControl]="firstFormGroup" [editable]="!firstFormGroup.invalid">
+        <form [formGroup]="firstFormGroup">
+            <ng-template matStepLabel>Name and Email</ng-template>
+            <p class="mt-1">
+                <mat-form-field>
+                    <mat-label>Name</mat-label>
+                    <input matInput placeholder="Last name, First name" formControlName="name" required>
+                </mat-form-field>
+            </p>
+            <p>
+                <mat-form-field>
+                    <mat-label>Email</mat-label>
+                    <input matInput placeholder="email" formControlName="email" required>
+                </mat-form-field>
+            </p>
+            <div>
+                <button mat-button matStepperNext [disabled]="firstFormGroup.invalid">Next</button>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="secondFormGroup" [editable]="!secondFormGroup.invalid">
+        <form [formGroup]="secondFormGroup">
+            <ng-template matStepLabel>Address and Phone</ng-template>
+            <p class="mt-1"> 
+                <mat-form-field>
+                    <mat-label>Phone</mat-label>
+                    <input matInput formControlName="phone" placeholder="phone" required>
+                </mat-form-field>
+            </p>
+            <p>
+                <mat-form-field>
+                    <mat-label>Address</mat-label>
+                    <input matInput formControlName="address" placeholder="Ex. 1 Main St, New York, NY" required>
+                </mat-form-field>
+            </p>
+            <div>
+                <button mat-button matStepperPrevious>Back</button>
+                <button mat-button matStepperNext [disabled]="secondFormGroup.invalid">Next</button>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step>
+        <ng-template matStepLabel>Done</ng-template>
+        <p>You are now done.</p>
+        <div>
+            <div class="" *ngIf="!isSave">
+                <button mat-button matStepperPrevious>Back</button>
+                <button mat-button (click)="stepperMobile.reset(); initForm()">Reset</button>
+           
+            <button  mat-stroked-button color="primary"
+                *ngIf="!isSave" 
+                matTooltip="information missing"
+                matTooltipClass="bg-danger"
+                [matTooltipDisabled]="!secondFormGroup.invalid && !firstFormGroup.invalid"
+                (click)="onSubmit()">Save form</button>
+            </div>
+
+            <button mat-stroked-button color="primary"  *ngIf="isSave" (click)="isSave = false">is Save</button>
+
+        </div>
+    </mat-step>
+</mat-vertical-stepper>

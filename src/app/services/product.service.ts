@@ -6,13 +6,13 @@ import * as firebase from 'firebase/app';
 import 'firebase/database';
 import 'firebase/storage';
 
-import { AuthService } from './auth.service';
+import { AuthService } from './Authentication/auth.service';
 
 import { Subscription, Observable, forkJoin } from 'rxjs';
 import { Product } from '../models/product.model';
 import { User } from '../models/user.model';
 import { LocalStorageService } from './storageLocalStorage.service';
-
+import { httpClientCrudService } from './Authentication/httpService.service';
 
 
 @Injectable()
@@ -26,18 +26,22 @@ export class ProductService {
     userUid: string = "";
     userSubscription: Subscription;
     private menus: string[] = [];
-    productSearch: any[] = [];
-    productSearchSubject = new Subject<Product[]>();
+    productSearch: Product[] = [];
+    productSearchSubject = new Subject<Product[]>()
 
 
-    constructor(private authService: AuthService, private localStorageService: LocalStorageService) {
+    constructor(
+        private authService: AuthService,
+        private localStorageService: LocalStorageService,
+        private httpService: httpClientCrudService
+    ) {
         this.userSubscription = this.authService.userSubject.subscribe(
             (user: User) => {
                 this.userUid = user.uid;
             }
         );
         this.authService.emitUser();
-        this.LoadMenus()
+        this.LoadMenus();
     }
 
     emitProduct() {
@@ -61,7 +65,7 @@ export class ProductService {
     }
 
     addToShoppingCard(product: Product) {
-        this.localStorageService.storeOnLocalStorageProductCard(product.id,product.categorie);
+        this.localStorageService.storeOnLocalStorageProductCard(product.id, product.categorie);
         this.getShoppingCard();
     }
 
@@ -81,251 +85,90 @@ export class ProductService {
     }
 
 
-     requestDataFromSH(list: any[]): Observable<any[]> {
-        let observables = [];
-        list.forEach(
-            (product) =>{
-                let el = this.getProductByID_Categorie(product.categorie,product.id); 
-                observables.push(el);
+    requestDataFromSH(list: any[]) {
+        // let observables = [];
+        // list.forEach(
+        //     (product) => {
+        //         let el = this.getProductByID_Categorie(product.categorie, product.id);
+        //         observables.push(el);
+        //     }
+        // )
+        // return forkJoin(observables);
+        return new Promise(
+            (resolve, reject) => {
+                const ids = list.map(e => e.id);
+                this.httpService.post('products/list/ids', { ids }).then(
+                    (data) => {
+                        resolve(data);
+                    },
+                    (error) => {
+                        reject([]);
+                        console.log(error);
+                    }
+                )
             }
         )
-        return forkJoin(observables);
-      }
+    }
 
     //////////////////////////////////////////////////////// ************* /////////////////////////////////////////////////////////////////
 
     /////////////////////////////////////************* STORE PRODUCT ADD UPDATE REMOVE *************/////////////////////////////////////////////
 
 
-    getProductByCategorie(categorie: string) {
+    getProductByCategorie(categorie: string,last:string) {
         return new Promise(
             (resolve, reject) => {
-                console.log(`%c getProducts() categorie ${categorie} `, "color:yellow");
-                firebase.database().ref('/products/' + categorie)
-                    .once('value', (data) => {
-                        const dataR = data.val() ? Object.keys(data.val()).map((i) => {
-                            let element = data.val()[i];
-                            element.id = i;
-                            return element;
-                        }) : [];
-                        resolve(dataR);
+                const lastId = last==='' ? 'none' : last;
+                const path  = 'products/categorie/' + categorie + '/' + lastId;
+                this.httpService.get(path).then(
+                    (data) =>{
+                        resolve(data);
                     },
-                        (error) => {
-                            reject(error);
-                        }
-                    );
+                    (error)=>{
+                        console.log('error categorie home ', error);
+                        reject(error);
+                    }
+                )
             }
         )
     }
 
     getProductByID_Categorie(categorie: string, id: string) {
-        //console.log(`%c getProductByID_Categorie() ${categorie} id ${id}`, "color:yellow");
         return new Promise(
             (resolve, reject) => {
-                firebase.database().ref('/products/' + categorie + '/' + id)
-                    .once('value', (data) => {
-                        let dataR = data.val()? data.val() : [];
-                        dataR.id = id;
-                        resolve(dataR);
-                    },
-                        (error) => {
-                            reject(error);
-                        }
-                    );
-            }
-        )
-    }
-
-    getProductByCategorieLimited(categorie: string, limitedNumber: number) {
-        console.log(`%c getProductByCategorieLimited() ${categorie} limit ${limitedNumber}`, "color:yellow");
-        return new Promise(
-            (resolve, reject) => {
-                firebase.database().ref('/products/' + categorie).limitToFirst(limitedNumber)
-                    .once('value', (data) => {
-                        const dataR = data.val() ? Object.keys(data.val()).map((i) => {
-                            let element = data.val()[i];
-                            element.id = i;
-                            return element;
-                        }) : [];
-                        resolve(dataR);
-                    },
-                        (error) => {
-                            reject(error);
-                        }
-                    );
-            }
-        )
-    }
-
-    createNewProduct(newProduct: Product) {
-        return new Promise(
-            (resolve, reject) => {
-                firebase.database().ref('/products/' + newProduct.categorie).push(newProduct)
-                    .then((product) => {
-                        console.log("%c createNewBook => ", "color:yellow", product);
-                        //this.getProductByCategorie(newProduct.categorie);
-                        this.setProductSearch(newProduct.name, newProduct.categorie, product.key);
-                        resolve();
-                    },
-                        () => {
-                            reject();
-                        })
-            }
-        )
-    }
-
-    updateProduct(product: Product) {
-        return new Promise(
-            (resolve, reject) => {
-                firebase.database().ref('/products/' + product.categorie + '/' + product.id).set(product)
-                    .then(() => {
-                        console.log("%c updateProduct  ", "color:yellow", product);
-                        this.getSearchProductById(product.id).then(
-                            (data) => {
-                                if (data) {
-                                    let id = Object.keys(data);
-                                    firebase.database().ref('/products-search/' + id).set({
-                                        name: product.name,
-                                        categorie: product.categorie,
-                                        id: product.id
-                                    })
-                                        .then(() => {
-                                            resolve();
-                                        },
-                                            (error) => {
-                                                reject(error);
-                                            })
-                                }
-                            }
-                        )
-                        //this.getProductByCategorie(product.categorie);
-                    },
-                        (error) => {
-                            reject(error);
-                        }
-                    )
-            });
-    }
-
-    removeProduct(product: Product) {
-        return new Promise(
-            (resolve, reject) => {
-                if (product.photo) {
-                    const storageRef = firebase.storage().refFromURL(product.photo);
-                    storageRef.delete().then(
-                        () => {
-                            console.log("%c Photo removed!  ", "color:yellow");
-                            firebase.database().ref('/products/' + product.categorie + '/' + product.id).remove().then(
-                                () => {
-                                    console.log("%c products removed! ", "color:yellow", product);
-                                    this.getSearchProductById(product.id).then(
-                                        (data) => {
-                                            if (data) {
-                                                let id = Object.keys(data);
-                                                firebase.database().ref('/products-search/' + id).remove()
-                                                    .then(() => {
-                                                        resolve();
-                                                    },
-                                                        (error) => {
-                                                            reject(error);
-                                                        })
-                                            }
-                                        }
-                                    )
-                                },
-                                (error) => {
-                                    reject(error);
-                                    console.log("%c products removed error  ", "color:red", error);
-                                }
-                            );
-                        },
-                        (error) => {
-                            console.log("%c Photo removed error ", "color:red", error);
-                            firebase.database().ref('/products/' + product.categorie + '/' + product.id).remove().then(
-                                () => {
-                                    console.log("%c products removed! ", "color:yellow", product);
-                                    this.emitProduct();
-                                    resolve();
-                                },
-                                (error) => {
-                                    reject(error);
-                                    console.log("%c products removed error  ", "color:red", error);
-                                }
-                            );
-                        }
-                    );
-                }
-            }
-        )
-    }
-
-
-
-
-   //////////////////////////////////////////////////////// ************* /////////////////////////////////////////////////////////////////
-
-   ///////////////////////////////////************* IMAGE UPLOAD UPDATE *************/////////////////////////////////////////////
-
-
-
-    uploadFile(file: File, categorie: string) {
-        return new Promise(
-            (resolve, reject) => {
-                const almostUniqueFileName = Date.now().toString();
-                const upload = firebase.storage().ref()
-                    .child('images/products/' + categorie + '/' + almostUniqueFileName + file.name).put(file);
-                upload.on(firebase.storage.TaskEvent.STATE_CHANGED,
-                    () => {
-                        console.log("%c Chargement… ", "color:yellow");
-                    },
+                this.httpService.get('products/' + id).then(
+                    (data) => resolve(data),
                     (error) => {
-                        console.log("%c Erreur Chargement… ", "color:yellow", error);
-                        reject();
-                    },
-                    () => {
-                        resolve(upload.snapshot.ref.getDownloadURL());
+                        console.log('error categorie ' + categorie, error);
+                        reject(error);
                     }
-                );
+                )
             }
-        );
+        )
     }
 
-
-
-
-    updateProductImage(file: File, photo: string, categorie: string) {
+    getProductByCategorieLimited(last: string) {
         return new Promise(
             (resolve, reject) => {
-                const storageRef = firebase.storage().refFromURL(photo);
-                storageRef.delete().then(
-                    () => {
-                        console.log("%c Photo update last removed!  ", "color:yellow");
-                        this.uploadFile(file, categorie).then(
-                            (url) => {
-                                resolve(url);
-                            },
-                            (error) => {
-                                console.log("%c Photo update error ", "color:red", error);
-                                reject();
-                            }
-                        )
+                const lastId = last==='' ? 'none' : last;
+                this.httpService.get('products/list/pagination/' + lastId).then(
+                    (data) =>{
+                        resolve(data);
                     },
-                    (error) => {
-                        console.log("%c Photo delete error ", "color:red", error);
-                        this.uploadFile(file, categorie).then(
-                            (url) => {
-                                resolve(url);
-                            },
-                            (error) => {
-                                console.log("%c Photo update error ", "color:red", error);
-                                reject();
-                            }
-                        )
+                    (error)=>{
+                        console.log('error categorie home ', error);
+                        reject(error);
                     }
-                );
+                )
             }
-        );
+        )
     }
+
+    
+
+
+
+    
 
 
 
@@ -340,12 +183,13 @@ export class ProductService {
         firebase.database().ref('/products-search')
             .once('value',
                 (data) => {
-                    const dataR = data.val() ? Object.keys(data.val()).map((i) => {
+                    let result = []
+                    Object.keys(data.val()).forEach((i) => {
                         let element = data.val()[i];
-                        //this.getSearchProductById(element.id);
-                        return element;
-                    }) : [];
-                    this.productSearch = dataR;
+                        result.push(element);
+                    });
+                    //console.log(result);
+                    this.productSearch = result;
                     this.emitProductSearch();
                 },
                 (error) => {
@@ -375,45 +219,12 @@ export class ProductService {
     }
 
 
-    setProductSearch(name, categorie, id) {
-        firebase.database().ref('/products-search').push({
-            name,
-            categorie,
-            id
-        })
-            .then(() => {
-            },
-                () => {
-                })
-    }
+    
 
-    setProductMap(categorie: string) {
-        firebase.database().ref('/products/' + categorie)
-            .once('value', (data) => {
-                const dataR = data.val() ? Object.keys(data.val()).map((i) => {
-                    let element = data.val()[i];
-                    this.setProductSearch(element.name, element.categorie, i);
-                    element.id = i;
-                    return element;
-                }) : [];
-            },
-                (error) => {
-                }
-            )
-    }
-
-    setCategorieMap(categories: string[]) {
-        console.log('setCategorieMap per categroie');
-        categories.forEach(
-            categorie => {
-                this.setProductMap(categorie)
-            }
-        )
-    }
 
     //////////////////////////// ************* ////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////************* MENU PRODUCT MAIN & CATEGORIE *************//////////////////////////////////////
-    
+
     getMenus() {
         return new Promise(
             (resolve, reject) => {
@@ -471,49 +282,9 @@ export class ProductService {
             );
     }
 
-    saveMenus(menus: string[]) {
-        return new Promise(
-            (resolve, reject) => {
-                firebase.database().ref('/products-menu').set(menus)
-                    .then(() => {
-                        firebase.database().ref('/products-menu')
-                            .once('value',
-                                (data) => {
-                                    if (data.val()) {
-                                        this.menus = data.val();
-                                    }
-                                    resolve(this.menus);
-                                },
-                                (error) => {
-                                    console.log(error);
-                                    reject();
-                                }
-                            );
-                    },
-                        () => {
-                            reject();
-                        })
-            }
-        )
-    }
-
-    ////////////// **************************************************** /////////////////////////////////////////////////////////////////
+    
 
 
-    // getProducts() {
-    //     console.log("%c getProducts() ", "color:yellow");
-    //     firebase.database().ref('/products')
-    //         .on('value', (data) => {
-    //             const dataR = data.val() ? Object.keys(data.val()).map((i) => {
-    //                 let element = data.val()[i];
-    //                 element.id = i;
-    //                 return element;
-    //             }) : [];
-    //             this.products = dataR;
-    //             this.emitProduct();
-    //         }
-    //         );
-    // }
 
 
 

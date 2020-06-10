@@ -14,12 +14,13 @@
       <button mat-icon-button *ngIf="refWindow.headerMobile" type="button" routerLink="shopping-cart"
         (click)="isMenuCollapsed = true" [style.color]="refWindow.colorText">
         <div class="d-flex align-items-center  justify-content-center">
-          <mat-icon [matBadge]="lengthShoppingCard > 0 ? lengthShoppingCard : null">shopping_cart</mat-icon>
+          <mat-icon [matBadge]="lengthShoppingCard > 0 ? lengthShoppingCard : null" [@changeDivSize]="currentState">
+            shopping_cart</mat-icon>
         </div>
       </button>
     </div>
 
-    <a class="navbar-brand" routerLink="home" *ngIf="refWindow.headerMobile" (click)="isMenuCollapsed = true"
+    <a class="navbar-brand " routerLink="home" *ngIf="refWindow.headerMobile" (click)="isMenuCollapsed = true"
       [style.color]="refWindow.colorText">
       <!-- <mat-icon aria-hidden="false" aria-label="home icon">home</mat-icon> -->
       <h3 class="m-0 ">Saba israel</h3>
@@ -39,35 +40,32 @@
 
 
 
-
   <div [ngbCollapse]="isMenuCollapsed" class=" collapse navbar-collapse ">
 
 
-    <!-- <a class="navbar-brand  ml-3   mr-3  " routerLink="home" *ngIf="!refWindow.isMobile" (click)="isMenuCollapsed = true" [style.color]="refWindow.colorText">
-      <mat-icon aria-hidden="false" aria-label="home icon">home</mat-icon>
-      <h3 class="m-0 font-weight-bolder">saba israel</h3>
-    </a> -->
+    <a class="navbar-brand p-0" style="margin-right: 120px;" routerLink="home" *ngIf="!refWindow.headerMobile" (click)="isMenuCollapsed = true"
+      [style.color]="refWindow.colorText">
+      <h3 class="m-0 lg-text">Saba israel</h3>
+    </a>
 
-    <div class=" d-flex justify-content-start">
+    <div class=" d-flex justify-content-center" [ngClass]="{'mt-4 mb-4': refWindow.headerMobile}" [style.margin]="refWindow.headerMobile? 15 : 0" >
+
       <ul class="navbar-nav    headerNavHover ">
 
-        <a class="nav-link nav-link-style " routerLink="product" [style.color]="refWindow.colorText"
-          [routerLinkActive]="['routerActive' ]" (click)="isMenuCollapsed = true">
-          <!-- <div class="p m-0">Store</div> -->
-          Store
+        <a class="nav-link nav-link-style p-0 text-center" routerLink="product" [routerLinkActive]="['routerActive' ]"
+          (click)="isMenuCollapsed = true " [style.color]="refWindow.colorText">
+          <span class="navlink-name text-center">Store</span>
         </a>
-        <a class="nav-link nav-link-style" routerLink="contact" [routerLinkActive]="['routerActive' ]"
+        <a class="nav-link nav-link-style p-0 text-center" routerLink="contact" [routerLinkActive]="['routerActive' ]"
           [routerLinkActiveOptions]="{ exact: true }" [style.color]="refWindow.colorText"
-          (click)="isMenuCollapsed = true">
-          Contact Us
+          (click)="isMenuCollapsed = true ">
+          <span class="navlink-name">Contact Us</span>
         </a>
-        <a class="nav-link nav-link-style" routerLink="about" [style.color]="refWindow.colorText"
-          [routerLinkActive]="['routerActive' ]" (click)="isMenuCollapsed = true">
-          About
+        <a class="nav-link nav-link-style p-0 text-center" routerLink="about" [style.color]="refWindow.colorText"
+          [routerLinkActive]="['routerActive' ]" (click)="isMenuCollapsed = true ">
+          <span class="navlink-name">About</span>
         </a>
 
-
-        
 
       </ul>
     </div>
@@ -76,27 +74,17 @@
     <ul class="navbar-nav ml-auto headerNavHover">
 
       <div *ngIf="!refWindow.headerMobile" class="">
-        <!-- <a   [matMenuTriggerFor]="beforeMenu" #tMenu="matMenuTrigger"  class="" style="cursor: pointer; width: 20px;"
-          [style.color]="refWindow.colorText">
-            <mat-icon *ngIf="tMenu.menuOpen"> keyboard_arrow_down</mat-icon>
-            <mat-icon *ngIf="!tMenu.menuOpen"> keyboard_arrow_up</mat-icon>
-        </a>
-        <mat-menu #beforeMenu="matMenu" xPosition="before" class="filesList">
-          <app-shopping-cart  [isPoPup]="true" [closePoPup]="clickSC"></app-shopping-cart>
-        </mat-menu> -->
         <a #anchor class="navbar-brand    pr-0 mr-2" style="cursor: pointer;" routerLink="shopping-cart"
           [style.color]="refWindow.colorText" [routerLinkActive]="['font-weight-bold']">
           <mat-icon aria-hidden="false" [matBadge]="lengthShoppingCard > 0 ? lengthShoppingCard : null"
-            aria-label="home icon">shopping_cart</mat-icon>
+            [@changeDivSize]="currentState" aria-label="home icon">shopping_cart</mat-icon>
         </a>
-        
+        <a class="navbar-brand mr-0" [matMenuTriggerFor]="menu" style="cursor: pointer;" *ngIf="!refWindow.headerMobile"
+          [style.color]="refWindow.colorText" [routerLinkActive]="['font-weight-bold']">
+          <mat-icon aria-hidden="false" [style.color]="refWindow.colorText">person_pin</mat-icon>
+        </a>
       </div>
 
-
-      <a class="navbar-brand mr-0" [matMenuTriggerFor]="menu" style="cursor: pointer;" *ngIf="!refWindow.headerMobile"
-        [style.color]="refWindow.colorText" [routerLinkActive]="['font-weight-bold']">
-        <mat-icon aria-hidden="false" [style.color]="refWindow.colorText">person_pin</mat-icon>
-      </a>
 
       <div class="d-flex justify-content-end  " *ngIf="refWindow.headerMobile">
         <a mat-icon-button [matMenuTriggerFor]="menu" #tMenuMobile="matMenuTrigger" class="p-0  "
@@ -122,12 +110,12 @@
         </button>
       </mat-menu>
 
-
-
-
     </ul>
   </div>
 
 
 
 </nav>
+
+
+

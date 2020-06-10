@@ -10,11 +10,33 @@ import {
 import { WindowRef } from '../services/windowRef.service';
 import { WindowReference } from '../models/windowRef.model';
 
+import { trigger, state, style, animate, transition, keyframes } from '@angular/animations';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  styleUrls: ['./header.component.css'],
+  animations: [
+    trigger('changeDivSize', [
+      state('initial', style({
+        transform: 'scale(1)',
+      })),
+      state('final', style({
+        transform: 'scale(1)',
+      })),
+      transition('initial<=>final', animate('1000ms ease-in', keyframes([
+        style({ transform: 'translate3d(-1px, 0, 0)', offset: 0.1 }),
+        style({ transform: 'translate3d(2px, 0, 0)', offset: 0.2 }),
+        style({ transform: 'translate3d(-4px, 0, 0)', offset: 0.3 }),
+        style({ transform: 'translate3d(4px, 0, 0)', offset: 0.4 }),
+        style({ transform: 'translate3d(-4px, 0, 0)', offset: 0.5 }),
+        style({ transform: 'translate3d(4px, 0, 0)', offset: 0.6 }),
+        style({ transform: 'translate3d(-4px, 0, 0)', offset: 0.7 }),
+        style({ transform: 'translate3d(2px, 0, 0)', offset: 0.8 }),
+        style({ transform: 'translate3d(-1px, 0, 0)', offset: 0.9 }),
+      ]))),
+    ]),
+  ]
 })
 export class HeaderComponent implements OnInit {
 
@@ -36,9 +58,13 @@ export class HeaderComponent implements OnInit {
   userSubscription: Subscription;
   SubscriptionShoppingCard: Subscription;
   SubscriptionRefWindow: Subscription;
+  currentState: string = 'initial';
 
 
-  
+  changeState() {
+    this.currentState = this.currentState === 'initial' ? 'final' : 'initial';
+  }
+
 
   constructor(
     public platform: Platform,
@@ -56,12 +82,15 @@ export class HeaderComponent implements OnInit {
 
     this.SubscriptionShoppingCard = this.product.shoppingCardSubject.subscribe(
       (products: any[]) => {
+        console.log(this.router.url);
+        if ((this.router.url !== '/shopping-cart')) {
+          this.changeState();
+        }
         this.lengthShoppingCard = products.length;
-      }
-    );
+      });
 
     this.SubscriptionRefWindow = this.windowRef.windowSubject.subscribe(
-      (windowRefer: WindowReference) =>{
+      (windowRefer: WindowReference) => {
         this.refWindow = windowRefer;
       }
     )
@@ -79,25 +108,25 @@ export class HeaderComponent implements OnInit {
   }
 
   clickSC = () => {
-    if(this.router.url === '/shopping-cart'){
-        this.showSC = false;
-    }else{
+    if (this.router.url === '/shopping-cart') {
+      this.showSC = false;
+    } else {
       this.showSC = !this.showSC;
     }
   }
 
 
 
-  @HostListener('window:scroll', ['$event']) 
-    scrollHandler(event) {
-      window.pageYOffset >= 54 && this.router.url.startsWith("/product") &&  ( this.isMenuCollapsed = true );
-    }
-  
+  @HostListener('window:scroll', ['$event'])
+  scrollHandler(event) {
+    window.pageYOffset >= 54 && this.router.url.startsWith("/product") && (this.isMenuCollapsed = true);
+  }
 
 
 
 
-  
+
+
 
   onSignOut() {
     this.authService.signOutUser();

@@ -7,8 +7,8 @@ import 'firebase/database';
 import 'firebase/storage';
 
 import { AuthService } from './Authentication/auth.service';
-
-import { Subscription, Observable, forkJoin } from 'rxjs';
+import { delay } from 'rxjs/operators';
+import { Subscription, forkJoin, of } from 'rxjs';
 import { Product } from '../models/product.model';
 import { User } from '../models/user.model';
 import { LocalStorageService } from './storageLocalStorage.service';
@@ -86,25 +86,40 @@ export class ProductService {
 
 
     requestDataFromSH(list: any[]) {
-        // let observables = [];
-        // list.forEach(
-        //     (product) => {
-        //         let el = this.getProductByID_Categorie(product.categorie, product.id);
-        //         observables.push(el);
-        //     }
-        // )
-        // return forkJoin(observables);
+        let observables = [];
+        let ids = list.map(e => e.id);
+
+        observables.push(this.getIdsProducts(ids.slice(0, 10), 0));
+        ids = ids.slice(10, ids.length);
+        while (ids.length > 10) {
+            observables.push(
+                this.getIdsProducts(ids.slice(0, 10), 500)
+            );
+            ids = ids.slice(10, ids.length);
+        }
+        ids.length > 0 && observables.push(this.getIdsProducts(ids.slice(0, 10), 500));
+
+        //console.log(observables);
+        return forkJoin(observables);
+    }
+
+    getIdsProducts(ids, timout) {
         return new Promise(
             (resolve, reject) => {
-                const ids = list.map(e => e.id);
-                this.httpService.post('products/list/ids', { ids }).then(
-                    (data) => {
-                        resolve(data);
-                    },
-                    (error) => {
-                        reject([]);
-                        console.log(error);
+                setTimeout(
+                    () => {
+                        this.httpService.post('products/list/ids', { ids }).then(
+                            (data) => {
+                                resolve(data);
+
+                            },
+                            (error) => {
+                                resolve([]);
+                                console.log(error);
+                            }
+                        )
                     }
+                    , timout
                 )
             }
         )
@@ -115,16 +130,16 @@ export class ProductService {
     /////////////////////////////////////************* STORE PRODUCT ADD UPDATE REMOVE *************/////////////////////////////////////////////
 
 
-    getProductByCategorie(categorie: string,last:string) {
+    getProductByCategorie(categorie: string, last: string) {
         return new Promise(
             (resolve, reject) => {
-                const lastId = last==='' ? 'none' : last;
-                const path  = 'products/categorie/' + categorie + '/' + lastId;
+                const lastId = last === '' ? 'none' : last;
+                const path = 'products/categorie/' + categorie + '/' + lastId;
                 this.httpService.get(path).then(
-                    (data) =>{
+                    (data) => {
                         resolve(data);
                     },
-                    (error)=>{
+                    (error) => {
                         console.log('error categorie home ', error);
                         reject(error);
                     }
@@ -150,12 +165,12 @@ export class ProductService {
     getProductByCategorieLimited(last: string) {
         return new Promise(
             (resolve, reject) => {
-                const lastId = last==='' ? 'none' : last;
+                const lastId = last === '' ? 'none' : last;
                 this.httpService.get('products/list/pagination/' + lastId).then(
-                    (data) =>{
+                    (data) => {
                         resolve(data);
                     },
-                    (error)=>{
+                    (error) => {
                         console.log('error categorie home ', error);
                         reject(error);
                     }
@@ -164,11 +179,11 @@ export class ProductService {
         )
     }
 
-    
 
 
 
-    
+
+
 
 
 
@@ -184,7 +199,7 @@ export class ProductService {
             .once('value',
                 (data) => {
                     let result = []
-                    Object.keys(data.val()).forEach((i) => {
+                    Object.keys(data.val()? data.val() : []).forEach((i) => {
                         let element = data.val()[i];
                         result.push(element);
                     });
@@ -219,7 +234,7 @@ export class ProductService {
     }
 
 
-    
+
 
 
     //////////////////////////// ************* ////////////////////////////////////////////////////////////////////////////////////////////
@@ -282,7 +297,7 @@ export class ProductService {
             );
     }
 
-    
+
 
 
 

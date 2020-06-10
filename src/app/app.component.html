@@ -1,10 +1,12 @@
 <mat-progress-bar class="" color="primary" mode="indeterminate" *ngIf="!firebaseConnected"></mat-progress-bar>
 
+<p class="loading-title" *ngIf="!firebaseConnected">Saba Israel</p>
+
 <div class="" *ngIf="firebaseConnected"  >
 
   <app-header></app-header>
 
-  <div [ngStyle]="{ 'padding-bottom': '52px'}">
+  <div [ngStyle]="{ 'padding-bottom': '55px'}">
     <router-outlet></router-outlet>
   </div>
 

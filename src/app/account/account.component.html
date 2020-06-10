@@ -38,7 +38,7 @@
                         Theme</button>
 
                     <mat-menu #beforeMenu="matMenu" xPosition="before" class=" p-1">
-                        <button class="btn  font-weight-bold  m-2" (click)="setColorTheme('#2a6592','#ffffff')"
+                        <!-- <button class="btn  font-weight-bold  m-2" (click)="setColorTheme('#2a6592','#ffffff')"
                             type="button" style="color: #ffffff; background-color: #2a6592;">
                             Blue azur
                         </button>
@@ -57,7 +57,7 @@
                         <button class="btn  font-weight-bold  m-2" (click)="setColorTheme('#922B21','#ffffff')"
                             type="button" style="color: #ffffff; background-color: #922B21">
                             Marsala
-                        </button>
+                        </button> -->
                         <button class="btn  font-weight-bold  m-2" (click)="setColorTheme('#d9534f','#ffffff')"
                             type="button" style="color: #ffffff; background-color: #d9534f; ">
                             Danger
@@ -66,8 +66,17 @@
                             type="button" style="color: #ffffff; background-color: #34495E; ">
                             blue clasic
                         </button>
+                        
                     </mat-menu>
                 </div>
+                <div class="pb-2">
+                    <button mat-button type="button" (click)="resetPassword()"
+                        [style.backgroundColor]="windowRef.colorText" [style.color]="windowRef.colorTheme">
+                    Reset password
+                </button>
+
+                </div>
+                
                 <div class="d-flex justify-content-center">
                     <button type="submit" class="btn  pl-5 pr-5  font-weight-bold" [style.color]="windowRef.colorText"
                     [style.backgroundColor]="windowRef.colorTheme">Save</button>

@@ -1,6 +1,6 @@
 .drawer-container-position{
     position: absolute;
-    top: 117px;
+    top: 120px;
     bottom: 52px;
     left: 0;
     right: 0;
@@ -9,28 +9,28 @@
 
  .drawer-container-position-mobile {
   position: absolute;
-  top: 112px;
+  top: 125px;
   bottom: 52px;
   left: 0;
   right: 0;
 }
 
-.progress-bar-position{
+.mat-progress-bar-position{
   position: absolute;
-  top: 53px;
+  top: 117px;
   left: 0;
   right: 0;
 }
 
 .progress-bar-position-mobile{
   position: absolute;
-  top: 53px;
+  top: 120px;
   left: 0;
   right: 0;
 }
 
 .side-style {
-  background-color: rgb(119, 136, 153);
+  /* background-color: rgb(119, 136, 153); */
 }
 
 .toolbar-icon {
@@ -40,6 +40,8 @@
 .toolbar-spacer {
   flex: 1 1 auto;
 }
+
+
 
 /* .mat-sidenav-content,
 .mat-sidenav-container,
@@ -52,3 +54,6 @@
   overflow: initial
 } */
 
+.mat-drawer-side{
+  border: none;
+}

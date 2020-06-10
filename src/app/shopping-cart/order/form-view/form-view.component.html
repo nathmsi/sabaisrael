@@ -25,10 +25,16 @@
         <form [formGroup]="secondFormGroup">
             <ng-template matStepLabel>Address and Phone</ng-template>
             <p class="mt-1"> 
-                <mat-form-field>
+                <!-- <mat-form-field>
                     <mat-label>Phone</mat-label>
-                    <input matInput formControlName="phone" placeholder="phone" required>
-                </mat-form-field>
+                    <input matInput type="number" formControlName="phone" placeholder="phone" required>
+                </mat-form-field> -->
+                <mat-form-field class="example-full-width">
+                    <mat-label>Telephone</mat-label>
+                    <span matPrefix>+972 &nbsp;</span>
+                    <input type="tel" matInput placeholder="" formControlName="phone" maxlength="9" required>
+                    <mat-hint align="end">{{secondFormGroup.get('phone').value.length}} / 9</mat-hint>
+                  </mat-form-field>
             </p>
             <p>
                 <mat-form-field>
@@ -90,10 +96,12 @@
         <form [formGroup]="secondFormGroup">
             <ng-template matStepLabel>Address and Phone</ng-template>
             <p class="mt-1"> 
-                <mat-form-field>
-                    <mat-label>Phone</mat-label>
-                    <input matInput formControlName="phone" placeholder="phone" required>
-                </mat-form-field>
+                <mat-form-field class="example-full-width">
+                    <mat-label>Telephone</mat-label>
+                    <span matPrefix>+972 &nbsp;</span>
+                    <input type="tel" matInput placeholder="" formControlName="phone" maxlength="9" required>
+                    <mat-hint align="end">{{secondFormGroup.get('phone').value.length}} / 9</mat-hint>
+                  </mat-form-field>
             </p>
             <p>
                 <mat-form-field>

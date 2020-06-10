@@ -25,33 +25,33 @@ export class OrderService {
     /////////////////////////////////////************* STORE PRODUCT ADD UPDATE REMOVE *************/////////////////////////////////////////////
 
 
-    getOrders() {
-        return new Promise(
-            (resolve, reject) => {
-                this.httpService.get(this.collection).then(
-                    (data) => resolve(data),
-                    (error) => {
-                        console.log('error getOrders() ', error);
-                        reject(error);
-                    }
-                )
-            }
-        )
-    }
+    // getOrders() {
+    //     return new Promise(
+    //         (resolve, reject) => {
+    //             this.httpService.get(this.collection).then(
+    //                 (data) => resolve(data),
+    //                 (error) => {
+    //                     console.log('error getOrders() ', error);
+    //                     reject(error);
+    //                 }
+    //             )
+    //         }
+    //     )
+    // }
 
-    getOrder(id: string) {
-        return new Promise(
-            (resolve, reject) => {
-                this.httpService.get(this.collection + '/' +  id).then(
-                    (data) => resolve(data),
-                    (error) => {
-                        console.log('error categorie ', error);
-                        reject(error);
-                    }
-                )
-            }
-        )
-    }
+    // getOrder(id: string) {
+    //     return new Promise(
+    //         (resolve, reject) => {
+    //             this.httpService.get(this.collection + '/' +  id).then(
+    //                 (data) => resolve(data),
+    //                 (error) => {
+    //                     console.log('error categorie ', error);
+    //                     reject(error);
+    //                 }
+    //             )
+    //         }
+    //     )
+    // }
 
 
     createNewOrder(newOrder: Order) {
@@ -71,21 +71,21 @@ export class OrderService {
         )
     }
 
-    updateOrder(order: Order) {
-        return new Promise(
-            (resolve, reject) => {
-                this.httpService.put(this.collection + '/', order).then(
-                    (data) => {
-                        console.log(data);
-                        resolve();
-                    },
-                    (error) => {
-                        reject(error);
-                        console.log(error);
-                    }
-                )
-            });
-    }
+    // updateOrder(order: Order) {
+    //     return new Promise(
+    //         (resolve, reject) => {
+    //             this.httpService.put(this.collection + '/', order).then(
+    //                 (data) => {
+    //                     console.log(data);
+    //                     resolve();
+    //                 },
+    //                 (error) => {
+    //                     reject(error);
+    //                     console.log(error);
+    //                 }
+    //             )
+    //         });
+    // }
 
 
 

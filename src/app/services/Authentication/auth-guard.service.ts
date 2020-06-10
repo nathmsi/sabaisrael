@@ -16,7 +16,7 @@ export class AuthGuardService implements CanActivate {
     constructor(private router: Router, private authService: AuthService) { 
         this.userSubscription = this.authService.userSubject.subscribe(
             (user: User) => {
-                if (user.level === 'manager') {
+                if (user) {
                     this.isAuth = true
                 } else {
                     this.isAuth = false;

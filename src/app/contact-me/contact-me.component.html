@@ -1,48 +1,45 @@
+<app-view-header title="Contact" subTitle="Sabaisrael" url="magazin3.jpg"></app-view-header>
 
-<app-view-header title="Contact" subTitle="Sabaisrael" url="magazin3.jpg" ></app-view-header>
+<div class="container mt-4">
+    <form [formGroup]="FormValidation" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <input type="text" class="form-control" id="name" name="name" placeholder="Name" formControlName="name"
+                maxlength="20">
+            <mat-error *ngIf="FormValidation.get('name').invalid && validatorInvalid"> You must enter a value
+            </mat-error>
+        </div>
+        <div class="form-group">
+            <input type="email" class="form-control" id="email" name="email" placeholder="Email"
+                formControlName="email">
+            <mat-error *ngIf="FormValidation.get('email').invalid && validatorInvalid"> You must enter a value
+            </mat-error>
+        </div>
+        <div class="form-group">
+            <input type="phone" class="form-control" id="mobile" name="mobile" placeholder="Mobile Number"
+                formControlName="mobile">
+            <mat-error *ngIf="FormValidation.get('mobile').invalid && validatorInvalid"> You must enter a value
+            </mat-error>
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" id="subject" name="subject" placeholder="Subject" maxlength="20"
+                formControlName="subject">
 
-<div class=" card border-0  p-3 m-1">
-    <div class="">
-        <form [formGroup]="FormValidation" (ngSubmit)="onSubmit()" class="container">
-            <div class="form-group">
-                <input type="text" class="form-control" id="name" name="name" placeholder="Name" formControlName="name"
-                    maxlength="20">
-                <mat-error *ngIf="FormValidation.get('name').invalid && validatorInvalid"> You must enter a value
-                </mat-error>
-            </div>
-            <div class="form-group">
-                <input type="email" class="form-control" id="email" name="email" placeholder="Email"
-                    formControlName="email">
-                <mat-error *ngIf="FormValidation.get('email').invalid && validatorInvalid"> You must enter a value
-                </mat-error>
-            </div>
-            <div class="form-group">
-                <input type="phone" class="form-control" id="mobile" name="mobile" placeholder="Mobile Number"
-                    formControlName="mobile">
-                <mat-error *ngIf="FormValidation.get('mobile').invalid && validatorInvalid"> You must enter a value
-                </mat-error>
-            </div>
-            <div class="form-group">
-                <input type="text" class="form-control" id="subject" name="subject" placeholder="Subject" maxlength="20"
-                    formControlName="subject">
+        </div>
+        <div class="form-group">
+            <textarea class="form-control" type="textarea" id="message" name="message" placeholder="Message"
+                formControlName="message" maxlength="400" rows="7"></textarea>
+            <mat-error *ngIf="FormValidation.get('message').invalid && validatorInvalid"> You must enter a value
+            </mat-error>
+        </div>
+        <div class="d-flex justify-content-center">
+            <button mat-stroked-button type="submit" id="submit" name="submit" class="pl-5 pr-5"
+                [style.color]="windowRef.colorText" [style.backgroundColor]="windowRef.colorTheme">
+                <div class="spinner-border spinner-border-sm" role="status" *ngIf="loadingContent">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <p *ngIf="!loadingContent" class="font-weight-bold m-0">Send</p>
+            </button>
+        </div>
 
-            </div>
-            <div class="form-group">
-                <textarea class="form-control" type="textarea" id="message" name="message" placeholder="Message"
-                    formControlName="message" maxlength="400" rows="7"></textarea>
-                <mat-error *ngIf="FormValidation.get('message').invalid && validatorInvalid"> You must enter a value
-                </mat-error>
-            </div>
-            <div class="d-flex justify-content-center">
-                <button type="submit" id="submit" name="submit" class="btn  pl-5 pr-5" [style.color]="windowRef.colorText" [style.backgroundColor]="windowRef.colorTheme">
-                    <div class="spinner-border spinner-border-sm" role="status" *ngIf="loadingContent">
-                        <span class="sr-only">Loading...</span>
-                    </div>
-                    <p *ngIf="!loadingContent" class="font-weight-bold m-0">Send</p>
-                </button>
-            </div>
-            
-        </form>
-    </div>
-    <div class="col-lg-2"> </div>
+    </form>
 </div>

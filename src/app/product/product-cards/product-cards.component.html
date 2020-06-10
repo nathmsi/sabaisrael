@@ -1,4 +1,4 @@
-<nav aria-label="breadcrumb" >
+<nav aria-label="breadcrumb" class="p-0 m-0 shadow-sm">
     <ol class="breadcrumb mb-2 bg-white" [style.color]="refWindow.colorTheme"  >
         <li class="breadcrumb-item ">
             <a (click)="navigateTo('home')" style="cursor: pointer;" class="font-weight-bolder">
@@ -52,7 +52,7 @@
 <div class="container-fluid p-0" *ngIf="refWindow.contentMobile && isFilterLoading">
     <div class="row no-gutters">
         <div class="col-6  p-0 m-0" *ngFor="let product of productFilter; let i = index">
-            <app-card-view [product]="product" [onAddToCard]="onAddToCard" [isMobile]="false"
+            <app-card-view [product]="product" [onAddToCard]="onAddToCard" [isMobile]="false" [refWindow]="refWindow"
                 [openProductView]="openProductView">
             </app-card-view>
         </div>

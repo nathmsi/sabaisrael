@@ -6,28 +6,34 @@
 
 
 
-<mat-progress-bar [ngClass]="{'progress-bar-position': true }" color="primary" mode="indeterminate"
+<mat-progress-bar [ngClass]="{'progress-bar-position-mobile': windowRef.headerMobile , 'progress-bar-position': !windowRef.headerMobile }" 
+color="primary" mode="indeterminate"
   *ngIf="(!dataReceive || !loadingContent ) && !isPoPup"></mat-progress-bar>
 
 <div *ngIf="dataReceive && !isPoPup" class="container-position-absolute">
   <div class="container ">
     <div class="mt-4 mb-4">
-      <h2 class="p-2 text-center" [style.color]="windowRef.colorTheme"> shopping cart </h2>
+      <h2 class="p-2 m-0 text-center" [style.color]="windowRef.colorTheme"> shopping cart </h2>
     </div>
     <div class="border  rounded-lg m-2 p-1">
       <app-table-view-sc [products]="products" [countUpdate]="countUpdate" [DeleteAll]="DeleteAll" [isPoPup]="false"
         [openProductView]="openProductView" [windowRef]="windowRef" [DeleteOne]="DeleteOne">
       </app-table-view-sc>
     </div>
-    <div class="d-flex justify-content-end m-2">
-        <button mat-raised-button (click)="openOrder()" [style.color]="windowRef.colorText"
-          [style.backgroundColor]="windowRef.colorTheme">
-          check order
-        </button>
-      </div>
+    <div class="d-flex justify-content-between m-2">
+      <button mat-raised-button (click)="goToStore()" [style.color]="windowRef.colorTheme"
+        [style.backgroundColor]="windowRef.colorText">
+        Store
+      </button>
+      <button mat-raised-button (click)="openOrder()" [style.color]="windowRef.colorText"
+        [style.backgroundColor]="windowRef.colorTheme">
+        Check order
+      </button>
+    </div>
   </div>
 
-  <mat-progress-bar color="primary" mode="indeterminate" *ngIf="(!dataReceive || !loadingContent ) && isPoPup"></mat-progress-bar>
+  <mat-progress-bar color="primary" mode="indeterminate" *ngIf="(!dataReceive || !loadingContent ) && isPoPup">
+  </mat-progress-bar>
   <div *ngIf="dataReceive && isPoPup">
     <app-table-view-sc [products]="products" [countUpdate]="countUpdate" [DeleteAll]="DeleteAll" [isPoPup]="true"
       [openProductView]="openProductView" [windowRef]="windowRef" [DeleteOne]="DeleteOne">

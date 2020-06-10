@@ -29,7 +29,7 @@ export class ShoppingCartComponent implements OnInit {
   windowRef: WindowReference;
   SubscriptionRefWindow: Subscription;
   userSubscription: Subscription;
-  user: User = new User('','','',false,'','');
+  user: User = new User('', '', '', false, '', '');
 
 
   constructor(
@@ -78,27 +78,32 @@ export class ShoppingCartComponent implements OnInit {
   getData(products: any[]) {
     this.loadingContent = false;
     const newProduct = this.getOnlyNewProduct(products);
-    // const lastProduct = this.getOnlyLastProduct(products);
     if (newProduct.length === 0) {
       this.dataReceive = true;
       this.loadingContent = true;
     } else {
-      this.productService.requestDataFromSH(newProduct).then(
-        (data: Product[]) => {
-          data.forEach((e) => {
-            e.count = this.getCount(e.id, products)
-            this.products.push(e);
-          });
+      this.productService.requestDataFromSH(newProduct).subscribe({
+        next: (data: any[]) => {
+          data.forEach(
+            (productsList) => {
+              productsList.forEach((e) => {
+                e.count = this.getCount(e.id, products)
+                this.products.push(e);
+              });
+            }
+          )
           this.dataReceive = true;
           this.loadingContent = true;
         },
-        (error) => {
+        error: (error) => {
           console.log(error);
           this.products = [];
           this.dataReceive = true;
           this.loadingContent = true;
         }
-      )
+      })
+
+
     }
   }
 
@@ -174,8 +179,8 @@ export class ShoppingCartComponent implements OnInit {
   openOrder() {
     if (this.user.isAuth) {
       const dialogRef = this.dialog.open(OrderComponent, {
-        height: this.windowRef.contentMobile? '85%' : '60%',
-        width: this.windowRef.contentMobile? '100%' : '90%',
+        height: this.windowRef.contentMobile ? '85%' : '60%',
+        width: this.windowRef.contentMobile ? '100%' : '90%',
         data: {
           products: this.products,
           windowRef: this.windowRef,
@@ -183,10 +188,15 @@ export class ShoppingCartComponent implements OnInit {
         }
       });
       dialogRef.afterClosed().subscribe((result) => {
+        result && this.DeleteAll();
       });
     } else {
       this._snackBar.open('please login before ', 'close');
     }
+  }
+
+  goToStore() {
+    this.router.navigate(['product', 'home']);
   }
 
 

@@ -35,3 +35,34 @@ button:focus, button:active:focus, button.active:focus {
 .snackbar .mat-button-wrapper {
         color: rgb(255, 255, 255) !important;  
 };
+
+
+.progress ,
+  .mat-progress-bar-buffer {
+    background-color: #34495E !important;  
+  }
+  .mat-progress-bar-fill::after {
+    background-color: #34495E !important;  
+  }
+
+  /* width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey; 
+  border-radius: 1px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(97, 97, 97); 
+  border-radius: 1px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #ffffff; 
+}

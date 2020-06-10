@@ -1,30 +1,28 @@
-.headerNavHover a:hover {
-    /* background-color: rgb(250, 250, 250);
-    color: black; */
-    /* font-weight: bolder; */
-}
 
 
-.content-dialog-sc {
+/* .content-dialog-sc {
     width: 600px;
 }
 
 
 ::ng-deep .cdk-overlay-pane .filesList{
     min-width:500px;
-}
+} */
 
 .routerActive{
-    /* background-color: rgb(156, 156, 156); */
-    font-weight: bolder;
+  
 }
 
 
-.nav-link-style {
-    margin-right: 10px;
+
+.navlink-name:hover{
+    /* color: #9b9a9e;  */
 }
 
 
+.nav-link-style{
+    margin-right: 20px;
+}
 
 
 
@@ -39,5 +37,38 @@
 
 }
 
-
+.navlink-name  {
+    /* position: relative; */
+    /* color: #000; */
+    font-size:16px;
+    font-weight: 500;
+    padding: 0;
+    text-transform: none;
+  }
   
+  .navlink-nam:before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    bottom: -5px;
+    left: 0;
+    background-color: rgb(255, 255, 255);
+    visibility: hidden;
+    -webkit-transform: scaleX(0);
+    transform: scaleX(0);
+    -webkit-transition: all 0.3s ease-in-out 0s;
+    transition: all 0.3s ease-in-out 0s;
+  }
+  
+  .navlink-nam :hover:before {
+    visibility: visible;
+    -webkit-transform: scaleX(1);
+    transform: scaleX(1);
+  }
+
+
+  .lg-text {
+    font-size:24px;
+    text-transform: none;
+  }

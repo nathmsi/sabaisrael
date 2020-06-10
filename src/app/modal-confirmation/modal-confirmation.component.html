@@ -7,9 +7,11 @@
      {{message}} 
   </div>
    
-  <div mat-dialog-actions>
-    <button mat-button (click)="onDismiss()">No</button>
-    <button mat-raised-button color="primary" (click)="onConfirm()">Yes</button>
+  <div mat-dialog-actions class="p-2">
+    <button mat-raised-button [style.color]="windowRef.colorTheme"
+    [style.backgroundColor]="windowRef.colorText" (click)="onDismiss()">No</button>
+    <button mat-raised-button [style.color]="windowRef.colorText"
+    [style.backgroundColor]="windowRef.colorTheme" color="primary" (click)="onConfirm()">Yes</button>
   </div>
 </div>
 

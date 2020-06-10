@@ -93,7 +93,7 @@ const snackBarOption = {
 const appRoutes: Routes = [
   { path: 'auth/signup', component: SignupComponent },
   { path: 'auth/signin', component: SigninComponent },
-  { path: 'account', component: AccountComponent },
+  { path: 'account', canActivate: [AuthGuardService] ,component: AccountComponent },
   { path: 'product', redirectTo: 'product/home/', pathMatch: 'full' },
   { path: 'product/:categorie', redirectTo: 'product/:categorie/', pathMatch: 'full' },
   { path: 'product/:categorie/:id', component: ProductComponent },

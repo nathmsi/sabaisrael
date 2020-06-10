@@ -4,3 +4,32 @@
     text-transform: none;
   }
  
+
+
+.containerr {
+  position: relative;
+  background: black;
+  overflow: hidden;
+}
+
+.center {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  text-align: center;
+  font-size: 18px;
+}
+
+.box{
+  text-align: left;
+}
+
+img { 
+  width: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  object-fit: cover;
+  opacity: 0.4;
+}

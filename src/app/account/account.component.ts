@@ -7,6 +7,8 @@ import { ToastrService } from 'ngx-toastr';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { WindowReference } from '../models/windowRef.model';
 import { WindowRef } from '../services/windowRef.service';
+import { ModalConfirmationComponent } from '../modal-confirmation/modal-confirmation.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-account',
@@ -35,12 +37,13 @@ export class AccountComponent implements OnInit {
   imageLoader: boolean = true;
   windowRef: WindowReference;
   SubscriptionRefWindow: Subscription;
-  
+
   constructor(
-     private authService: AuthService,
-     private _snackBar: MatSnackBar,
-     private windowRefer: WindowRef,
-     ) {
+    private authService: AuthService,
+    private _snackBar: MatSnackBar,
+    private windowRefer: WindowRef,
+    private dialog: MatDialog,
+  ) {
 
     this.userSubscription = this.authService.userSubject.subscribe(
       (user: User) => {
@@ -63,7 +66,7 @@ export class AccountComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  
+
 
   detectFiles(event) {
     this.fileDetected = event.target.files[0]
@@ -109,15 +112,32 @@ export class AccountComponent implements OnInit {
         )
       },
       (error) => {
-        this._snackBar.open('saved error', 'close', );
+        this._snackBar.open('saved error', 'close');
       }
     )
   }
 
-  setColorTheme(colorTheme: string ,textColor: string){
-    this.windowRefer.setColorTheme(colorTheme,textColor);
+  setColorTheme(colorTheme: string, textColor: string) {
+    this.windowRefer.setColorTheme(colorTheme, textColor);
   }
 
+  resetPassword() {
+    const dialogRef = this.dialog.open(ModalConfirmationComponent, {
+      maxWidth: "400px",
+      data: "Do you confirm to reset your password , we sent you email to : " + this.user.email +
+      ' to change to new password .'
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      result && this.authService.resetPassword().then(
+        () => {
+          this._snackBar.open('check your email message , we sent you password reset form', 'close');
+        },
+        (error) => {
+          this._snackBar.open('problem to reset your password', 'close');
+        }
+      )
+    })
+  }
 
   ngOnDestroy() {
     this.userSubscription.unsubscribe();

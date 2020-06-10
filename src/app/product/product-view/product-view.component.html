@@ -1,5 +1,5 @@
 <div class="m-2 ">
-    <nav aria-label="breadcrumb" class="sticky-top">
+    <nav aria-label="breadcrumb" class="sticky-top p-0 m-0 shadow-sm">
         <ol class="breadcrumb mb-2 bg-white"  [style.color]="refWindow.colorTheme"  >
             <li class="breadcrumb-item">
                 <a (click)="navigateTo('home')" style="cursor: pointer;" class="font-weight-bolder" >
@@ -17,10 +17,10 @@
         </ol>
     </nav>
 
-    <div class="card " *ngIf="product !== null">
-        <div class="card-body bg-light border-0 shadow">
+    <div class="" *ngIf="product !== null">
+        <div class="card-body bg-white  shadow-sm">
             <h1 class="card-title">
-                <span class="font-weight-bolder"> {{ product.name }}</span>
+                <span class="font-weight-bolder" [style.color]="refWindow.colorTheme"> {{ product.name }}</span>
             </h1>
             <div class="row">
                 <div class="col-sm">
@@ -33,16 +33,17 @@
                         [alt]="product.photo">
                 </div>
                 <div class="col-sm">
-                    <h2 class="card-text font-weight-bolder m-0 mb-1"> {{ product.name }}
-                        <small class="text-muted" *ngIf="product.size"> {{ product.size + ' cm'  }} </small>
+                    <h2 class="card-text font-weight-bolder m-0 mb-1" [style.color]="refWindow.colorTheme"> {{ product.name }}
+                        <small class="text-muted" *ngIf="product.size" [style.color]="refWindow.colorTheme"> {{ product.size + ' cm'  }} </small>
                     </h2>
-                    <h3>{{ product.description }}</h3>
-                    <h3 class="text-dark font-weight-bolder "> {{ product.price }} ₪ </h3>
+                    <h3 [style.color]="refWindow.colorTheme">{{ product.description }}</h3>
+                    <h3 class="text-dark font-weight-bolder " [style.color]="refWindow.colorTheme"> {{ product.price }} ₪ </h3>
 
-                    <button class="btn btn-block" (click)="addToShoppingCard()" [style.color]="refWindow.colorText" [style.backgroundColor]="refWindow.colorTheme">
-                        <h3 class="m-0 p-0">Add to cart
+                    <button mat-raised-button class="btn-block" (click)="addToShoppingCard()" [style.color]="refWindow.colorText" [style.backgroundColor]="refWindow.colorTheme">
+                        <div class="d-flex justify-content-center p-1">
+                            <h3 class="m-0 mr-1 p-0"> Add to cart </h3>
                             <mat-icon class="" style="cursor: pointer">add_shopping_cart</mat-icon>
-                        </h3>
+                        </div>
                     </button>
                 </div>
             </div>

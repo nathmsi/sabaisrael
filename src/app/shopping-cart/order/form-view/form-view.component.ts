@@ -50,8 +50,8 @@ export class FormViewComponent  {
       email: [{value: this.user.email, disabled: true}, Validators.required,Validators.email]
     });
     this.secondFormGroup = this.formBuilder.group({
-      phone: ['', Validators.required],
-      address: ['', [Validators.required]],
+      phone: ['', [Validators.required , Validators.pattern(/[0-9]{8,9}/) ]],
+      address: ['', [Validators.required ,Validators.pattern(/[0-9a-zA-Z]{6,}/)]],
     });
 
     // this.FormValidation = this.formBuilder.group({
@@ -78,7 +78,7 @@ export class FormViewComponent  {
       this.isSave = true;
       this.order.name = this.firstFormGroup.get('name').value;
       this.order.email = this.firstFormGroup.get('email').value;
-      this.order.phone = this.secondFormGroup.get('phone').value;
+      this.order.phone = '+972' +this.secondFormGroup.get('phone').value;
       this.order.address = this.secondFormGroup.get('address').value;
       this.onSaveForm(this.order);
       this.isSave = true;

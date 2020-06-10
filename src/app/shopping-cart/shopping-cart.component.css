@@ -6,10 +6,17 @@ table {
   .progress-bar-position{
     position: absolute;
     top: 53px;
-    left: 0;
-    right: 0;
+    left: 1;
+    right: 2;
+  }
+
+  .progress-bar-position-mobile{
+    position: absolute;
+    top: 56px;
+    left: 1;
+    right: 2;
   }
 
   .container-position-absolute{
-    margin-bottom: 55px;
+    margin-bottom: 53px;
   }

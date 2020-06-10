@@ -53,6 +53,7 @@ export class ProductCardsComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
    this.productFilter = this.products.map(e => e);
+   this.onSelectedOptionPrice();
  }
 
 

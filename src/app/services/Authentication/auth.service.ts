@@ -97,7 +97,7 @@ export class AuthService {
 
   setCurrentUser() {
     return new Promise(
-      (resolve,reject)=>{
+      (resolve, reject) => {
         const user = this.server.auth().currentUser;
         if (user) {
           firebase.auth().currentUser.getIdToken(true).then(
@@ -106,7 +106,7 @@ export class AuthService {
               this.isAuth(user.displayName, user.email, user.uid, true, user.photoURL || "", user.phoneNumber, token);
               resolve();
             },
-            (error)=>{
+            (error) => {
               console.log(error);
               reject(error);
             }
@@ -114,7 +114,7 @@ export class AuthService {
         }
       }
     )
-    
+
   }
 
   createNewUser(email: string, password: string, username: string) {
@@ -151,7 +151,7 @@ export class AuthService {
     return new Promise(
       (resolve, reject) => {
         this.server.auth().signInWithEmailAndPassword(email, password).then(
-         async (user) => {
+          async (user) => {
             console.log("%c signInUser  ", "color:yellow", user);
             await this.setCurrentUser();
             resolve();
@@ -266,7 +266,7 @@ export class AuthService {
     }
     return new Promise(
       (resolve, reject) => {
-        this.httpClient.post('https://us-central1-saba-israel.cloudfunctions.net/webApi/api/v1/' + 'users'
+        this.httpClient.put('https://us-central1-saba-israel.cloudfunctions.net/webApi/api/v1/' + 'users' + '/' + this.user.uid
           , {
             displayName: this.user.name,
             email: this.user.email,
@@ -296,6 +296,19 @@ export class AuthService {
         );
       }
     )
+  }
+
+  resetPassword() {
+    return new Promise(
+      (resolve, reject) => {
+        firebase.auth().sendPasswordResetEmail(this.user.email).then(function (data) {
+          console.log(data);
+          resolve();
+        }).catch(function (error) {
+          console.log(error);
+          reject();
+        });
+      })
   }
 
 

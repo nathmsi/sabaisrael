@@ -5,7 +5,7 @@ import { map, startWith } from 'rxjs/operators';
 import { ProductService } from 'src/app/services/product.service';
 import { Router } from '@angular/router';
 import { Product } from 'src/app/models/product.model';
-
+import { trigger, transition, style, animate, state } from '@angular/animations';
 
 
 interface ProductSearch{
@@ -18,11 +18,24 @@ interface ProductSearch{
 @Component({
   selector: 'app-product-search',
   templateUrl: './product-search.component.html',
-  styleUrls: ['./product-search.component.css']
+  styleUrls: ['./product-search.component.css'],
+  animations: [
+    trigger('fadeInOut', [
+      transition(':enter', [   // :enter is alias to 'void => *'
+        style({opacity:0}),
+        animate(500, style({opacity:1})) 
+      ]),
+      transition(':leave', [   // :leave is alias to '* => void'
+        animate(500, style({opacity:0})) 
+      ])
+    ])
+]
 })
 export class ProductSearchComponent implements OnInit {
 
   @Input() isMobile: boolean;
+
+  showInput : boolean = false;
 
   myControl = new FormControl();
 
@@ -71,7 +84,7 @@ export class ProductSearchComponent implements OnInit {
     const filertValuer =  filterValue === '' ? [] :
       this.productSeach.filter(element => {
         return element.name.toLowerCase().includes(filterValue) || element.categorie.toLowerCase().includes(filterValue)
-    }).slice(0, 3);
+    }).slice(0, 5);
 
 
     // this.productService.requestDataFromSH(filertValuer).then(
@@ -139,7 +152,6 @@ export class ProductSearchComponent implements OnInit {
   //     }
   //   )
   // }
-
 
 
 }

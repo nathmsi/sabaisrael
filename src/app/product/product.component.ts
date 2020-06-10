@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener, ElementRef } from '@angular/core';
 import { Product } from 'src/app/models/product.model';
 import { ProductService } from 'src/app/services/product.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -32,6 +32,10 @@ export class ProductComponent implements OnInit {
   openProductSearch: boolean = true;
   moreLoading: boolean = false;
   refWindow: WindowReference;
+  positionToolBarTop: number = 110;
+  showMoreButton: boolean = true;
+
+  @ViewChild('myname') myname: ElementRef; 
 
   constructor(
     public dialog: MatDialog,
@@ -39,15 +43,15 @@ export class ProductComponent implements OnInit {
     private windowRef: WindowRef,
     private _snackBar: MatSnackBar,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {
 
 
     this.SubscriptionRefWindow = this.windowRef.windowSubject.subscribe(
       (windowRefer: WindowReference) => {
-        this.refWindow =  windowRefer;
+        this.refWindow = windowRefer;
         this.refWindow.isMobile = windowRefer.contentMobile;
-        if (!this.refWindow.isMobile) { this.sidenavOpen = true  } else { this.sidenavOpen = false , this.openProductSearch = false }
+        if (!this.refWindow.isMobile) { this.sidenavOpen = true } else { this.sidenavOpen = false, this.openProductSearch = false }
       }
     )
 
@@ -58,14 +62,16 @@ export class ProductComponent implements OnInit {
 
 
   ngOnInit(): void {
+    
+
     this.route.params.subscribe(
-      (params: { categorie: string , id: string}) => {
+      (params: { categorie: string, id: string }) => {
         //console.log(params);
         this.dataReceive = false;
         this.products = [];
-        if(params.id !== ''){
-          this.handleSelectProduct(params.categorie,params.id);
-        }else{
+        if (params.id !== '') {
+          this.handleSelectProduct(params.categorie, params.id);
+        } else {
           params.categorie === 'home' ? this.handleSelectMenu() : this.handleSelectCatgorie_(params.categorie);
         }
       }
@@ -79,39 +85,46 @@ export class ProductComponent implements OnInit {
 
   }
 
-  handleSelectMenu(){
+  ngAfterViewInit(){
+    //console.log(this.myname.nativeElement.getBoundingClientRect() , this.myname.nativeElement.offsetTop);
+  }
+
+  handleSelectMenu() {
+    this.showMoreButton = true;
     this.showProductView = false;
     this.categorieSelected = 'Home';
     //!this.isMobile && (this.sidenavOpen = false );
-    const last = this.products.length>0 ?  this.products[this.products.length - 1].id : '';
+    const last = this.products.length > 0 ? this.products[this.products.length - 1].id : '';
     last !== '' && (this.moreLoading = true)
     this.productService.getProductByCategorieLimited(last).then(
-      (products: Product[]) =>{
-        this.products = [...this.products,...products];
+      (products: Product[]) => {
+        this.products = [...this.products, ...products];
+        products.length === 0 && (this.showMoreButton = false);
         this.showProductHome = true;
         this.moreLoading = false
         this.dataReceive = true;
       },
-      (error) =>{
+      (error) => {
         console.log(error);
       }
     )
   }
 
 
-  handleSelectProduct(categorie: string,id: string){
+  handleSelectProduct(categorie: string, id: string) {
+    this.showMoreButton = true;
     this.showProductView = false;
     this.showProductHome = false;
     this.productSelected = null;
     //!this.isMobile && (this.sidenavOpen = false );
-    this.productService.getProductByID_Categorie(categorie,id).then(
-      (product: Product) =>{
+    this.productService.getProductByID_Categorie(categorie, id).then(
+      (product: Product) => {
         this.categorieSelected = product.categorie;
         this.productSelected = product;
         this.showProductView = true;
         this.dataReceive = true;
       },
-      (error) =>{
+      (error) => {
         console.log(error);
       }
     )
@@ -120,14 +133,16 @@ export class ProductComponent implements OnInit {
 
 
   handleSelectCatgorie_(categorie: string) {
+    this.showMoreButton = true;
     this.showProductView = false;
     this.showProductHome = false;
     this.categorieSelected = categorie;
-    const last = this.products.length>0 ?  this.products[this.products.length - 1].id : '';
+    const last = this.products.length > 0 ? this.products[this.products.length - 1].id : '';
     last !== '' && (this.moreLoading = true)
-    this.productService.getProductByCategorie(categorie,last).then(
+    this.productService.getProductByCategorie(categorie, last).then(
       (products: Product[]) => {
-        this.products = [...this.products,...products];
+        this.products = [...this.products, ...products];
+        products.length === 0 && (this.showMoreButton = false);
         this.dataReceive = true;
         this.moreLoading = false;
       },
@@ -139,7 +154,7 @@ export class ProductComponent implements OnInit {
   }
 
   handleSelectCatgorie(categorie: string) {
-    this.router.navigate(['product',categorie,'']);
+    this.router.navigate(['product', categorie, '']);
   }
 
 
@@ -150,19 +165,19 @@ export class ProductComponent implements OnInit {
     snackBarRef.onAction().subscribe(() => {
       this.router.navigate(['/shopping-cart']);
     })
-    
+
   }
 
-  openProductView = (product: Product) =>{
-    this.router.navigate(['product',product.categorie,product.id]);
+  openProductView = (product: Product) => {
+    this.router.navigate(['product', product.categorie, product.id]);
   }
 
-  closeProductView = () =>{
-    this.router.navigate(['product',this.productSelected.categorie,'']);
+  closeProductView = () => {
+    this.router.navigate(['product', this.productSelected.categorie, '']);
   }
 
   navigateTo = (path: string) => {
-    this.router.navigate(['product',path,'']);
+    this.router.navigate(['product', path, '']);
   }
 
 
